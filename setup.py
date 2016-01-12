@@ -17,7 +17,7 @@ setup(
     author = "iVenus team",
     description = "Bragg Edge work at the SNS",
     license = 'BSD',
-    keywords = "neutron imaging",
+    keywords = "neutron imaging bragg edge",
     url = "https://github.com/ornlneutronimaging/BraggEdge",
     # download_url = '',
 )
