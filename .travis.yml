@@ -33,13 +33,13 @@ install:
   - python setup.py install
 #  - pip install coveralls
 #  - pip install codecov
-   - pip install rednose
+  - pip install rednose
 
 script:
+  - nosetests -v --rednose
 #   - python tests/getdata.py
 #   - python tests/ivenus/signon.py
 #   - nosetests --exe
-    - nosetests -v --rednose
 
 notifications:
   email:
