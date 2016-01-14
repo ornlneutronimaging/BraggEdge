@@ -2,3 +2,7 @@
 
 #BraggEdge
 Work concerning the Bragg Edge LDRD 
+
+#Tests
+to run the tests
+> nosetests -v --rednose
