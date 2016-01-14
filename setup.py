@@ -12,6 +12,8 @@ setup(
     test_suite = 'tests',
     install_requires = [
         'numpy',
+        'configparser',
+        'pandas',
     ],
     dependency_links = [
     ],
