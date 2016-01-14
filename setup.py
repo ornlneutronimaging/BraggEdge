@@ -16,6 +16,7 @@ setup(
         'pandas',
         'lxml',
         'html5lib',
+        'beautifulsoup4',
     ],
     dependency_links = [
     ],
