@@ -14,6 +14,8 @@ setup(
         'numpy',
         'configparser',
         'pandas',
+        'lxml',
+        'html5lib',
     ],
     dependency_links = [
     ],
