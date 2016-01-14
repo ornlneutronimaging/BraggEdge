@@ -13,6 +13,7 @@ setup(
     install_requires = [
         'numpy',
         'configparser',
+        'pandas',
     ],
     dependency_links = [
     ],
