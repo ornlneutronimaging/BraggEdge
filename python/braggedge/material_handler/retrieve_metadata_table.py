@@ -53,12 +53,14 @@ class RetrieveMetadataTable(object):
             self.retrieve_table_from_url()
             
     def retrieve_table_local(self):
-        """retrieve the local table, when retrieving via the url failed"""
-        pass
-
+        """retrieve the local table"""
+        self._local_table_file = config.local_table
+        local_table = pd.read_csv(self._local_table_file)
+        _table = local_table.set_index("Material")
+        self.table = _table
 
     def retrieve_table_from_url(self):
-        """retrieve the table using the url provided"""
+        """retrieve the table using the url defined in the config.cfg file"""
         table_list = pd.read_html(self.url)
         self.raw_table = table_list[0]
         self.format_table_from_url()

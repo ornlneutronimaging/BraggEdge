@@ -26,6 +26,19 @@ class TestRetrieveMetadataTable(unittest.TestCase):
         value_0_0 = 'Diamond (FCC)'
         self.assertEqual(value_0_0, _table.values[0][1])
 
+    def test_retrieve_local_table(self):
+        """checking if the local table is correctly loaded"""
+        
+        retrieve_meta = RetrieveMetadataTable()
+        _table = retrieve_meta.get_table()
+        _shape = _table.shape
+        
+        nbr_column = 3
+        self.assertEqual(_shape[1], nbr_column)
+        
+        value_0_0 = 'Diamond (FCC)'
+        self.assertEqual(value_0_0, _table.values[0][1])
+
     def test_retrieve_table_from_local(self):
         """checking the local table can be retrieved"""
         pass
