@@ -2,8 +2,8 @@ import unittest
 import os
 from python.braggedge.material_handler import config
 from python.braggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
-#from braggedge import config
-#from braggedge import material_hanlder
+#from braggedge.material_handler import config
+#from braggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
 
 
 
