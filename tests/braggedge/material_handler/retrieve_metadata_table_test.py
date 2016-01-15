@@ -30,6 +30,5 @@ class TestRetrieveMetadataTable(unittest.TestCase):
         """checking the local table can be retrieved"""
         pass
 
-
 if __name__ == '__main__':
     unittest.main()
