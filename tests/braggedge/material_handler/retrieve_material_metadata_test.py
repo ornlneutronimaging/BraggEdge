@@ -1,7 +1,7 @@
 import unittest
 import os
-from python.braggedge import config
-from python.braggedge.retrieve_material_metadata import RetrieveMaterialMetadata
+from python.braggedge.material_handler import config
+from python.braggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
 
 
 class TestRetrieveMaterialMetadata(unittest.TestCase):

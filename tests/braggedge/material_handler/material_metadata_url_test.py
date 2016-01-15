@@ -1,6 +1,6 @@
 import unittest
 import os
-from python.braggedge import config
+from python.braggedge.material_handler import config
 
 
 class TestMaterialMetadataURL(unittest.TestCase):

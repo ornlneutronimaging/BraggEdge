@@ -2,7 +2,7 @@
 This class will automatically retrieve the lattice parameter and the crystal structure of a given
 element
 """
-from python.braggedge.retrieve_metadata_table import RetrieveMetadataTable
+from python.braggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
 
 
 class RetrieveMaterialMetadata(object):

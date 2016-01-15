@@ -5,7 +5,7 @@ quickly retrieve the metadata for a given material
 
 import pandas as pd
 import configparser
-from python.braggedge import config
+from python.braggedge.material_handler import config
 #import config
 
 
