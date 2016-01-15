@@ -13,7 +13,8 @@ class TestRetrieveMaterialMetadata(unittest.TestCase):
 
     def test_retrieve_lattice_of_si(self):
         """assert value of lattice retrieved from Si"""
-        retrieve_material = RetrieveMaterialMetadata(material='Si')
+        retrieve_material = RetrieveMaterialMetadata(material = 'Si',
+                                                     use_local_table = False)
         lattice_expected = 5.431
         self.assertEqual(lattice_expected, retrieve_material.lattice)
 

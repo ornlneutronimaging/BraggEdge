@@ -17,7 +17,7 @@ class TestRetrieveMetadataTable(unittest.TestCase):
         """checking if the table is correctly loaded from URL"""
        
         retrieve_meta = RetrieveMetadataTable()
-        _table = retrieve_meta.get_table()
+        _table = retrieve_meta.get_table(use_local_table=False)
         _shape = _table.shape
 
         nbr_column = 3

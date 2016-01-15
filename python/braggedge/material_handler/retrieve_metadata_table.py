@@ -13,14 +13,21 @@ class RetrieveMetadataTable(object):
     """ Metadata table retriever 
     
     This class retrieves the metadata table that will allow us to get the lattice
-    parameter and the crystal structure for a given material. By default the program
-    retrieve the table from the following web page: `Lattice constant 
-    <https://en.wikipedia.org/wiki/Lattice_constant>`. If this fails (no network for example),
-    the program will use a local version of the table.    
+    parameter and the crystal structure for a given material. 
+    
+    
+    By default the program will retrieve the local version, but the web version can be retrieved
+    by using the local_version=False flag. In this case, the table is retrieved from the following
+    web page: `Lattice constant 
+    <https://en.wikipedia.org/wiki/Lattice_constant>`.  
 
     >>> from braggedge.material_hanlder.retrieve_metadata_table import RetrieveMetadataTable
-    >>> retrieve_meta = RetrieveMetadataTable()
-    >>> _table = retrieve_meta.get_table()
+    >>> retrieve_local_meta = RetrieveMetadataTable()
+    >>> _table = retrieve_local_meta.get_table()
+    
+    >>> retrieve_url_meta = RetrieveMetadataTable()
+    >>> _table = retrieve_url_meta.get_table(use_local_table = False)
+    
     
     """
     
@@ -34,12 +41,16 @@ class RetrieveMetadataTable(object):
         config_obj.read(self._config_file)
         self.url = config_obj['DEFAULT']['material_metadata_url']
         
-    def retrieve_table(self):
-        """retrieve the table that contain the material/lattice parameters...."""
-        try:
-            self.retrieve_table_from_url()
-        except:
+    def retrieve_table(self, use_local_table=True):
+        """retrieve the table that contain the material/lattice parameters....
+        by default, the local version is retrieved first, but the web version can
+        be selected instead by using False on use_local_table flag
+        
+        """
+        if use_local_table:
             self.retrieve_table_local()
+        else:
+            self.retrieve_table_from_url()
             
     def retrieve_table_local(self):
         """retrieve the local table, when retrieving via the url failed"""
@@ -60,9 +71,17 @@ class RetrieveMetadataTable(object):
         _table = _table.set_index('Material')
         self.table = _table
 
-    def get_table(self):
-        """return the table (via url or locally)"""
-        self.retrieve_table()
+    def get_table(self, use_local_table=True):
+        """return the table (via url or locally) according to flag used
+        
+        Args:
+        use_local_table (boolean): get the local table or via the url defined in the config file (default True)
+
+        Returns:
+        Pandas table of material/lattice parameters ...
+
+        """
+        self.retrieve_table(use_local_table = use_local_table)
         return self.table
         
 if __name__ == '__main__':

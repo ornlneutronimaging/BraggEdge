@@ -11,15 +11,18 @@ class RetrieveMaterialMetadata(object):
     lattice = None
     crystal_structure = None
     
-    def __init__(self, material=None):
+    def __init__(self, material=None, use_local_table=True):
+
         self._material = material
+        self.use_local_table = use_local_table
+
         self._retrieve_table()
         self._retrieve_metadata()
         
     def _retrieve_table(self):
         """retrieve the table using the url defined in the config file"""
         metadata_table = RetrieveMetadataTable()
-        self.table = metadata_table.get_table()
+        self.table = metadata_table.get_table(use_local_table = self.use_local_table)
         
     def _retrieve_metadata(self):
         """retrieve the metadata ('lattice constant','crystal structure')"""
@@ -42,6 +45,7 @@ class RetrieveMaterialMetadata(object):
     
     
 if __name__ == "__main__":
-    retrieve_material = RetrieveMaterialMetadata(material='Si')
+    retrieve_material = RetrieveMaterialMetadata(material = 'Si',
+                                                 use_local_table = False)
     
         
