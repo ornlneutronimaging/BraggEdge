@@ -5,8 +5,8 @@ quickly retrieve the metadata for a given material
 
 import pandas as pd
 import configparser
-from python.braggedge.material_handler import config
-#import config
+from .config import config_file as config_config_file
+from .config import local_table as config_local_table
 
 
 class RetrieveMetadataTable(object):
@@ -36,7 +36,7 @@ class RetrieveMetadataTable(object):
         
     def _retrieve_url(self):
         """retrieve the default url defined in the top config file"""
-        self._config_file = config.config_file
+        self._config_file = config_config_file
         config_obj = configparser.ConfigParser()
         config_obj.read(self._config_file)
         self.url = config_obj['DEFAULT']['material_metadata_url']
@@ -54,7 +54,7 @@ class RetrieveMetadataTable(object):
             
     def retrieve_table_local(self):
         """retrieve the local table"""
-        self._local_table_file = config.local_table
+        self._local_table_file = config_local_table
         local_table = pd.read_csv(self._local_table_file)
         _table = local_table.set_index("Material")
         self.table = _table
