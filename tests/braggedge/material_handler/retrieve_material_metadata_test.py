@@ -1,9 +1,6 @@
 import unittest
 import os
-from python.braggedge.material_handler import config
-from python.braggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
-#from braggedge.material_handler import config
-#from braggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
+from braggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
 
 
 class TestRetrieveMaterialMetadata(unittest.TestCase):
@@ -17,6 +14,10 @@ class TestRetrieveMaterialMetadata(unittest.TestCase):
                                                      use_local_table = False)
         lattice_expected = 5.431
         self.assertEqual(lattice_expected, retrieve_material.lattice)
+
+    def test_raise_nameerror(self):
+        """assert NameError is raised when no arguments is given"""
+        self.assertRaises(NameError, RetrieveMaterialMetadata)
 
 if __name__ == '__main__':
     unittest.main()

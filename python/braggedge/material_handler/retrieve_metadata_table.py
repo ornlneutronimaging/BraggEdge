@@ -85,11 +85,3 @@ class RetrieveMetadataTable(object):
         """
         self.retrieve_table(use_local_table = use_local_table)
         return self.table
-        
-if __name__ == '__main__':
-    retrieve_meta = RetrieveMetadataTable()
-    _table = retrieve_meta.get_table()
-
- #   retrieve_meta.format_table()
-#    _table = retrieve_meta.get_table()
-#    print(_table.values[0][1])

@@ -11,7 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-   api
+   material_handler
 
 
 Indices and tables

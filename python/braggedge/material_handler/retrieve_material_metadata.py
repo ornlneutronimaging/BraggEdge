@@ -2,17 +2,41 @@
 This class will automatically retrieve the lattice parameter and the crystal structure of a given
 element
 """
-#from python.braggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
 from .retrieve_metadata_table import RetrieveMetadataTable
 
 
 class RetrieveMaterialMetadata(object):
-    """ Retrieve the metadata for a given material """
+    """ Retrieve the metadata for a given material 
+    
+    This class retrieves the lattice parameter and the crystal structure 
+    of a given material.
+    
+    >>> from braggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
+    >>> retrieve_metadata = RetrieveMaterialMetadata("Si")
+    >>> print ("Structure is: %s" %retrieve_metadata.crystal_structure)
+    Structure is: FCC
+    >>> print ("Lattice parameter is %.2f Angstroms" %retrieve_metadata.lattice)
+    Lattice parameter is 5.43 Angstroms
+    
+    """
     
     lattice = None
     crystal_structure = None
     
     def __init__(self, material=None, use_local_table=True):
+        """Constructor that will automatically retrieve the metadata
+        
+        Args:
+        material: mandatory string (ex: "Si")
+        use_local_table: optional boolean. By default, a local table is used, but
+           user can turn off the flag to retrieve data from web site 
+           (`<https://en.wikipedia.org/wiki/Lattice_constant>`)
+        
+        Exception:
+        NameError: if no material is given
+        """
+        if material is None:
+            raise NameError("Please provide a material")
 
         self._material = material
         self.use_local_table = use_local_table
@@ -44,9 +68,3 @@ class RetrieveMaterialMetadata(object):
             _crystal_str = ''
         self.crystal_structure = _crystal_str
     
-    
-if __name__ == "__main__":
-    retrieve_material = RetrieveMaterialMetadata(material = 'Si',
-                                                 use_local_table = False)
-    
-        
