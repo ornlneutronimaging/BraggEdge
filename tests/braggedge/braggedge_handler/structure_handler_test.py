@@ -35,6 +35,13 @@ class TestBraggEdgesHandler(unittest.TestCase):
         self.assertEqual([2, 2, 1], _list_hkl[3])
         self.assertEqual([3, 0, 0], _list_hkl[4])
         
+    def test_getting_the_right_amount_of_hkl_for_FCC(self):
+        """assert that the right number of hkl set is returned for FCC"""
+        _handler = StructureHandler("FCC", 10)
+        _list_hkl = _handler.hkl
+        _nbr_hkl = len(_list_hkl)
+        self.assertEqual(10, _nbr_hkl)
+        
 
 if __name__ == '__main__':
     unittest.main()
