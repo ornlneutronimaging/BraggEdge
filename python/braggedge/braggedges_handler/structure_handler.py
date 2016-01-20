@@ -56,8 +56,7 @@ class FCCHandler(object):
         
     def _hkl_generator(self, number_of_h):
         """generator used to produce right set of hkl parameters"""
-        h, k, l = 1, 1, 1
-        for h in range(2, number_of_h):
+        for h in range(1, number_of_h):
             for k in range(1, number_of_h):
                 if k > h:
                     continue
@@ -109,7 +108,6 @@ class FCCHandler(object):
         _result = []
         for i in range(self.number_of_set):
             _result.append(next(_hkl_list))
-            print(_result)
         self.hkl = _result
         
         
