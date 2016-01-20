@@ -85,6 +85,15 @@ class TestBraggEdgesHandler(unittest.TestCase):
         self.assertRaises(ValueError, _handler.calculate_bragg_edges)
 
     def test_d_spacing_for_first_hkl_of_bcc(self):
+        """Assert the d_spacing values for the first BCC structure are correct"""
+        _handler = BraggEdgeValuesCalculator(structure_name = "BCC", lattice=1.)
+        _handler.calculate_hkl()
+        _handler.calculate_bragg_edges()
+        self.assertEqual(1.0, _handler.d_spacing[0])
+        self.assertAlmostEqual(1.1547/2., _handler.d_spacing[1], delta=0.0001)
+        self.assertAlmostEqual(0.8944/2., _handler.d_spacing[2], delta=0.0001)
+
+    def test_bragg_edge_for_first_hkl_of_bcc(self):
         """Assert the bragg edge values for the first BCC structure are correct"""
         _handler = BraggEdgeValuesCalculator(structure_name = "BCC", lattice=1.)
         _handler.calculate_hkl()
@@ -94,6 +103,15 @@ class TestBraggEdgesHandler(unittest.TestCase):
         self.assertAlmostEqual(0.8944, _handler.bragg_edges[2], delta=0.0001)
 
     def test_d_spacing_for_first_hkl_of_fcc(self):
+        """Assert the d_spacing values for the first FCC structure are correct"""
+        _handler = BraggEdgeValuesCalculator(structure_name = "FCC", lattice=1.)
+        _handler.calculate_hkl()
+        _handler.calculate_bragg_edges()
+        self.assertAlmostEqual(1.1547/2., _handler.d_spacing[0], delta=0.0001)
+        self.assertAlmostEqual(1.0/2., _handler.d_spacing[1], delta=0.0001)
+        self.assertAlmostEqual(0.7071/2., _handler.d_spacing[2], delta=0.0001)
+
+    def test_bragg_edge_for_first_hkl_of_fcc(self):
         """Assert the bragg edge values for the first FCC structure are correct"""
         _handler = BraggEdgeValuesCalculator(structure_name = "FCC", lattice=1.)
         _handler.calculate_hkl()
