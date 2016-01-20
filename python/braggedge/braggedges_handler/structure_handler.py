@@ -11,25 +11,32 @@ class BCCHandler(object):
     
     """
     
-    hkl = []
-    
     def __init__(self, number_of_set):
+        self.hkl = []
         self.number_of_set = number_of_set
         self.calculate_hkl()
 
-    def calculate_hkl(self):
-        index = 0
-        _hkl = []
-        for h in range(1, MAX_INDEX):
-            for k in range(0, MAX_INDEX):
-                for l in range(0, MAX_INDEX):
-                    if ((h + k + l) % 2 == 1) and (h >= k) and (k >= l):
-                        _hkl.append([h, k, l])
-                        index += 1
-                        if index >= self.number_of_set:
-                            self.hkl = _hkl
-                            return
+    def _hkl_generator(self, number_of_h):
+        h, k, l = 1, 0, 0
+        for h in range(1, number_of_h):
+            for k in range(number_of_h):
+                if k > h:
+                    continue
+                for l in range(number_of_h):
+                    if l > k:
+                        continue
+                    _sum = h + k + l
+                    if _sum % 2 == 1:
+                        yield [h, k, l]
         
+    def calculate_hkl(self):
+        _hkl_list = self._hkl_generator(20)
+        _result = []
+        for i in range(self.number_of_set):
+            _result.append(next(_hkl_list))
+            print(_result)
+        self.hkl = _result
+
 
 class FCCHandler(object):
     """FCC type handler"""
