@@ -43,12 +43,16 @@ class TestBraggEdgesHandler(unittest.TestCase):
         _nbr_hkl = len(_list_hkl)
         self.assertEqual(10, _nbr_hkl)
         
-    #def test_getting_the_right_first_hkl_value_for_FCC(self):
-        #"""assert that the first few hkl set calculated are correct for FCC"""
-        #_handler = StructureHandler("CC", 10)
-        #_list_hkl = _handler.hkl
-        #_nbr_hkl = len(_list_hkl)
-        #self.assertEqual([1, 1, 1], _list_hkl[1])
+    def test_getting_the_right_first_hkl_value_for_FCC(self):
+        """assert that the first few hkl set calculated are correct for FCC"""
+        _handler = StructureHandler("FCC", 10)
+        _list_hkl = _handler.hkl
+        _nbr_hkl = len(_list_hkl)
+        self.assertEqual([1, 1, 1], _list_hkl[1])
+        self.assertEqual([2, 0, 0], _list_hkl[2])
+        self.assertEqual([2, 2, 0], _list_hkl[3])
+        self.assertEqual([2, 2, 2], _list_hkl[4])
+        self.assertEqual([3, 1, 1], _list_hkl[5])
         
     def test_is_even_algorith(self):
         """assert that is_even algorithm is correct"""
