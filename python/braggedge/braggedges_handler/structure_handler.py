@@ -27,7 +27,7 @@ class BCCHandler(object):
                     if l > k:
                         continue
                     _sum = h + k + l
-                    if _sum % 2 == 1:
+                    if _sum % 2 == 0:
                         yield [h, k, l]
         
     def calculate_hkl(self):

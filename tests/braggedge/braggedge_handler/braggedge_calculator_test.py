@@ -73,11 +73,11 @@ class TestBraggEdgesHandler(unittest.TestCase):
                                              number_of_set = 5)
         _handler.calculate_hkl()
         _hkl = _handler.hkl
-        self.assertEqual([1, 0, 0], _hkl[0])
-        self.assertEqual([1, 1, 1], _hkl[1])
-        self.assertEqual([2, 1, 0], _hkl[2])
-        self.assertEqual([2, 2, 1], _hkl[3])
-        self.assertEqual([3, 0, 0], _hkl[4])
+        self.assertEqual([1, 1, 0], _hkl[0])
+        self.assertEqual([2, 0, 0], _hkl[1])
+        self.assertEqual([2, 1, 1], _hkl[2])
+        self.assertEqual([2, 2, 0], _hkl[3])
+        self.assertEqual([2, 2, 2], _hkl[4])
 
     def test_calculate_bragg_edges_algorithm_fail_when_no_lattice_given(self):
         """Assert that ValueError is correctly raised when no lattice is provided"""
@@ -89,18 +89,18 @@ class TestBraggEdgesHandler(unittest.TestCase):
         _handler = BraggEdgeCalculator(structure_name = "BCC", lattice=1.)
         _handler.calculate_hkl()
         _handler.calculate_bragg_edges()
-        self.assertEqual(1.0, _handler.d_spacing[0])
-        self.assertAlmostEqual(1.1547/2., _handler.d_spacing[1], delta=0.0001)
-        self.assertAlmostEqual(0.8944/2., _handler.d_spacing[2], delta=0.0001)
+        self.assertAlmostEqual(0.7071, _handler.d_spacing[0], delta=0.0001)
+        self.assertAlmostEqual(0.5, _handler.d_spacing[1], delta=0.0001)
+        self.assertAlmostEqual(0.4083, _handler.d_spacing[2], delta=0.0001)
 
     def test_bragg_edge_for_first_hkl_of_bcc(self):
         """Assert the bragg edge values for the first BCC structure are correct"""
         _handler = BraggEdgeCalculator(structure_name = "BCC", lattice=1.)
         _handler.calculate_hkl()
         _handler.calculate_bragg_edges()
-        self.assertEqual(2.0, _handler.bragg_edges[0])
-        self.assertAlmostEqual(1.1547, _handler.bragg_edges[1], delta=0.0001)
-        self.assertAlmostEqual(0.8944, _handler.bragg_edges[2], delta=0.0001)
+        self.assertAlmostEqual(1.4142, _handler.bragg_edges[0], delta=0.0001)
+        self.assertAlmostEqual(1.0, _handler.bragg_edges[1], delta=0.0001)
+        self.assertAlmostEqual(0.8165, _handler.bragg_edges[2], delta=0.0001)
 
     def test_d_spacing_for_first_hkl_of_fcc(self):
         """Assert the d_spacing values for the first FCC structure are correct"""
