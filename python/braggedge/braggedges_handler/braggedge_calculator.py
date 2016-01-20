@@ -3,7 +3,7 @@ import numpy as np
 from .structure_handler import StructureHandler
 
 
-class BraggEdgeValuesCalculator(object):
+class BraggEdgeCalculator(object):
     """
     This class calculates the h, k, and l values allowed for the given structure.
     The number of h,k,l set is by default set to 10 but can be changed
