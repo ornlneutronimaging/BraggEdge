@@ -48,11 +48,11 @@ class TestBraggEdgesHandler(unittest.TestCase):
         _handler = StructureHandler("FCC", 10)
         _list_hkl = _handler.hkl
         _nbr_hkl = len(_list_hkl)
-        self.assertEqual([1, 1, 1], _list_hkl[1])
-        self.assertEqual([2, 0, 0], _list_hkl[2])
-        self.assertEqual([2, 2, 0], _list_hkl[3])
-        self.assertEqual([2, 2, 2], _list_hkl[4])
-        self.assertEqual([3, 1, 1], _list_hkl[5])
+        self.assertEqual([1, 1, 1], _list_hkl[0])
+        self.assertEqual([2, 0, 0], _list_hkl[1])
+        self.assertEqual([2, 2, 0], _list_hkl[2])
+        self.assertEqual([2, 2, 2], _list_hkl[3])
+        self.assertEqual([3, 1, 1], _list_hkl[4])
         
     def test_is_even_algorith(self):
         """assert that is_even algorithm is correct"""
@@ -71,6 +71,5 @@ class TestBraggEdgesHandler(unittest.TestCase):
         self.assertFalse(_same_parity)
         
         
-
 if __name__ == '__main__':
     unittest.main()

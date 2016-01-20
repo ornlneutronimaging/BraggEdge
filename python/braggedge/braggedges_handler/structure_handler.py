@@ -56,7 +56,7 @@ class FCCHandler(object):
         
     def _hkl_generator(self, number_of_h):
         """generator used to produce right set of hkl parameters"""
-        for h in range(0, number_of_h):
+        for h in range(1, number_of_h):
             for k in range(0, number_of_h):
                 if k > h:
                     continue
@@ -129,4 +129,5 @@ class StructureHandler(object):
             _handler = BCCHandler(number_of_set = self.number_of_set)
 
         self.hkl = _handler.hkl
+        
         
