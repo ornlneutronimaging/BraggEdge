@@ -11,7 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   api
    material_handler
+   braggedges_handler
 
 
 Indices and tables
