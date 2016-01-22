@@ -21,12 +21,27 @@ class BraggEdge(object):
       hkl are: [][1,1,0],[2,0,0],[2,1,1],[2,2,0]]
       >>> print("bragg edges are: ", _handler.bragg_edges)
       bragg edges are: [2.0268, 1.4332, 1.1702, 1.0134]
+      >>> print(_handler)
+      ===================================
+      Material: Fe
+      Lattice: 2.8664A
+      Crystal Structure: BCC
+      Using local metadata Table: True
+      ===================================
+       h | k | l |   d(A)  |    BraggEdge
+      ===================================
+       1 | 1 | 0 |  2.0269 |    4.0537
+       2 | 0 | 0 |  1.4332 |    2.8664
+       2 | 1 | 1 |  1.1702 |    2.3404
+       2 | 2 | 0 |  1.0134 |    2.0269
+      ===================================
     
     """
     
     hkl = None
     metadata = None
     bragg_edges = None
+    d_spacing = None
 
     def __init__(self, material=None, 
                  number_of_bragg_edges=10, 
@@ -69,6 +84,27 @@ class BraggEdge(object):
         
     def __repr__(self):
         """This will display the metadata/hkl/d_spacing/bragg edge values"""
-        raise NotImplementedError
-    
-    
+        nbr_ticks = 45
+        print('=' * nbr_ticks)
+        print("Material: %s" %self.material)
+        print(u"Lattice : %.4f\u212B" %self.metadata['lattice'])
+        print("Crystal Structure: %s" %self.metadata['crystal_structure'])
+        print("Using local metadata Table: %s" %self.use_local_metadata_table)
+        print('=' * nbr_ticks)
+        print(u" h | k | l |\t d (\u212B)  |\t BraggEdge")
+        print('-' * nbr_ticks)
+
+        _hkl = self.hkl
+        _bragg_eges = self.bragg_edges
+        _d_spacing = self.d_spacing
+        
+        for index in range(len(_d_spacing)):
+            print(" %d | %d | %d |\t %.4f |\t %.4f" %(_hkl[index][0],
+                                                      _hkl[index][1],
+                                                      _hkl[index][2], 
+                                                      _d_spacing[index],
+                                                      _bragg_eges[index]))
+        
+        print('=' * nbr_ticks)
+        return ""
+        

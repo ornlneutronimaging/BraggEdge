@@ -40,7 +40,6 @@ class TestBraggEdge(unittest.TestCase):
         self.assertEqual([2, 1, 1], _hkl[2])
         self.assertEqual([2, 2, 0], _hkl[3])
 
-
     def test_calculating_bragg_edges_for_Fe(self):
         """Assert the first 3 bragg_edges are correct for Fe"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
@@ -48,6 +47,11 @@ class TestBraggEdge(unittest.TestCase):
         self.assertAlmostEqual(4.0537, _bragg_edges[0], delta=0.001)
         self.assertAlmostEqual(2.8664, _bragg_edges[1], delta=0.001)
         self.assertAlmostEqual(2.3404, _bragg_edges[2], delta=0.001)
+        
+    def test_printing_report(self):
+        """Assert the metadata/hkl/braggedges are correctly output"""
+        _handler = BraggEdge(material = 'Ni', number_of_bragg_edges = 5)
+        print(_handler)
 
 if __name__ == '__main__':
     unittest.main()
