@@ -15,9 +15,14 @@ class TofTest(unittest.TestCase):
         _tof_handler = TOF(tof = _tof_array)
         self.assertTrue(all(_tof_array == _tof_handler.tof))
 
-    def test_loaind_manual_tof_raise_error_if_no_data_provided(self):
+    def test_loading_manual_tof_raise_error_if_no_data_provided(self):
         """Assert that ValueError is raised if not tof array provided"""
         self.assertRaises(ValueError, TOF)
+        
+    def test_loading_file_raise_error_if_file_does_not_exist(self):
+        """Assert that IOError is raised when file does not exist"""
+        _filename = 'tests/data/fake_tof.txt'
+        self.assertRaises(IOError, TOF, _filename)
 
     def test_loading_manual_tof_in_micros_units(self):
         """Assert TOF(micros) array is correctly manually loaded and units are converted"""
@@ -46,14 +51,16 @@ class TofTest(unittest.TestCase):
         _tof_units = 'crazys'
         self.assertRaises(NotImplementedError, None, TOF, _tof_array, _tof_units)
 
-    #def test_loading_manual_none_numpy_tof_in_micros_units(self):
-        #"""Assert TOF(micros) python array is correctly manually loaded and converted to s"""
-        #_tof_array = [1.e6, 2.e6, 3.e6]
-        #_units = 'micros'
-        #_tof_handler = TOF(tof = _tof_array, units=_units)
-        #self.assertEqual([1., 2., 3.], _tof_handler.tof) 
-        #self.assertEqual('s', _tof_handler.units)
-        
+    def test_loading_good_tof_file(self):
+        """Assert that correctly formated tof file is correctly loaded"""
+        _filename = 'tests/data/good_tof.txt'
+        _tof_handler = TOF(input_file = _filename)
+        self.assertEqual([1.0, 2.0, 3.0, 4.0], _tof_handler.tof[0:4])
+
+    def test_loading_bad_tof_file(self):
+        """Assert that ValueError is correctly thrown when bad file is loaded"""
+        _filename = 'tests/data/bad_tof.txt'
+        self.assertRaises(ValueError, TOF, _filename)
 
 if __name__ == '__main__':
     unittest.main()
