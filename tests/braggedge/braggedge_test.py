@@ -77,13 +77,13 @@ class TestBraggEdge(unittest.TestCase):
         self.assertAlmostEqual(1.17020, _data[2][3], delta = 0.0001)
         self.assertAlmostEqual(2.34041, _data[2][4], delta = 0.0001)
     
-   
-    #def test_create_export_csv_file_created(self):
-           #"""Assert the correct output CSV file is created"""
-           #_handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-           #_filename = './remove_me.txt'
-           #_handler.export(format = 'csv', filename = _filename)
-           #self.assertTrue(os.path.isfile(_filename))        
+    def test_create_export_csv_file_created(self):
+        """Assert the correct output CSV file is created"""
+        _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
+        _filename = 'remove_me.txt'
+        _handler.export(filename = _filename, file_type = 'csv')
+        self.assertTrue(os.path.isfile(_filename))
+        os.remove(_filename) #clean up temp file
     
 
 if __name__ == '__main__':

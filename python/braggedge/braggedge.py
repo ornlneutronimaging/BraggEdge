@@ -117,13 +117,13 @@ class BraggEdge(object):
         print('=' * nbr_ticks)
         return ""
         
-    def export(self, filename=None, format='csv'):
+    def export(self, filename=None, file_type='csv'):
         """Export the metadata into various file format
         
         Arguments:
         
            filename: output file name to create
-           format: format of the file to create
+           file_type: format of the file to create
               only 'csv' (simple comma separated format) is supported for now
             
         Exception:
@@ -135,6 +135,34 @@ class BraggEdge(object):
         
         _metadata = self._format_metadata()
         _data = self._format_data()
+        
+        if file_type is 'csv':
+            self._create_csv_file(filename = filename, 
+                             metadata = _metadata, 
+                             data = _data)
+            return
+        
+        raise NotImplementedError
+        
+        
+        
+    def _create_csv_file(self, filename = None,
+                         metadata = None,
+                         data = None):
+        """
+        This create the CSV file. 
+        """
+        #write file
+        sep = ", "
+        f = open(filename, "w")
+        for _meta in metadata:
+            f.write(_meta +  "\n")
+        for _row in data:
+            _row_string = [str(x) for x in _row]
+            _row_format = sep.join(_row_string)
+            f.write(_row_format + "\n")
+        f.close()
+        
         
     def _format_metadata(self):
         """Format the various metadata to put at the top of output file created"""
