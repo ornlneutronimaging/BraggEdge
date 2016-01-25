@@ -36,7 +36,6 @@ class BCCHandler(object):
         _result = []
         for i in range(self.number_of_set):
             _result.append(next(_hkl_list))
-            print(_result)
         self.hkl = _result
 
 
