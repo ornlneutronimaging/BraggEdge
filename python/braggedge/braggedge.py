@@ -154,9 +154,9 @@ class BraggEdge(object):
         _bragg_edges = self.bragg_edges
         _d_spacing = self.d_spacing
         for index in range(len(_d_spacing)):
-            _data.append("%d, %d, %d, %.5f, %.5f" % (_hkl[index][0],
-                                                 _hkl[index][1],
-                                                 _hkl[index][2],
-                                                 _d_spacing[index],
-                                                 _bragg_edges[index]))
+            _data.append([_hkl[index][0],
+                         _hkl[index][1],
+                         _hkl[index][2],
+                         _d_spacing[index],
+                         _bragg_edges[index]])
         return _data

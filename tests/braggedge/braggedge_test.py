@@ -71,7 +71,11 @@ class TestBraggEdge(unittest.TestCase):
         """Assert the correct data are created for Fe when using create output file"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
         _data = _handler._format_data()
-        self.assertEqual("1", _data[0][0])
+        self.assertEqual(1, _data[0][0])
+        self.assertAlmostEqual(2.02685, _data[0][3], delta = 0.0001)
+        self.assertAlmostEqual(4.05370, _data[0][4], delta = 0.0001)
+        self.assertAlmostEqual(1.17020, _data[2][3], delta = 0.0001)
+        self.assertAlmostEqual(2.34041, _data[2][4], delta = 0.0001)
     
    
     #def test_create_export_csv_file_created(self):
