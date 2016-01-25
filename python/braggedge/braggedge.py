@@ -46,7 +46,16 @@ class BraggEdge(object):
     def __init__(self, material=None, 
                  number_of_bragg_edges=10, 
                  use_local_metadata_table=True):
-
+        """
+        Constructor
+        
+        Arguments:
+           material: name of the material such as 'Ni', 'Fe' ...
+           number_of_bragg_edge:  Default 10. Number of row to display and calculate data for.
+           use_local_metadata_table: default True. Use local defined table to retrieve lattice parameters,
+                                     crystal structure. If False, will go to wiki web page.
+        
+        """
 
         self.material = material
         self.number_of_bragg_edges = number_of_bragg_edges
@@ -76,14 +85,14 @@ class BraggEdge(object):
         self.hkl = _calculator.hkl
 
     def _calculate_braggedges(self):
-        """This method calculate the braggedges values (and the d_spacing in the same time)"""
+        """This method calculates the braggedges values (and the d_spacing in the same time)"""
         _calculator = self._calculator
         _calculator.calculate_bragg_edges()
         self.d_spacing = _calculator.d_spacing
         self.bragg_edges = _calculator.bragg_edges
         
     def __repr__(self):
-        """This will display the metadata/hkl/d_spacing/bragg edge values"""
+        """Display the metadata/hkl/d_spacing/bragg edge values"""
         nbr_ticks = 45
         print('=' * nbr_ticks)
         print("Material: %s" %self.material)
@@ -95,16 +104,59 @@ class BraggEdge(object):
         print('-' * nbr_ticks)
 
         _hkl = self.hkl
-        _bragg_eges = self.bragg_edges
+        _bragg_edges = self.bragg_edges
         _d_spacing = self.d_spacing
         
         for index in range(len(_d_spacing)):
-            print(" %d | %d | %d |\t %.4f |\t %.4f" %(_hkl[index][0],
+            print(" %d | %d | %d |\t %.5f |\t %.5f" %(_hkl[index][0],
                                                       _hkl[index][1],
                                                       _hkl[index][2], 
                                                       _d_spacing[index],
-                                                      _bragg_eges[index]))
+                                                      _bragg_edges[index]))
         
         print('=' * nbr_ticks)
         return ""
         
+    def export(self, filename=None, format='csv'):
+        """Export the metadata into various file format
+        
+        Arguments:
+        
+           filename: output file name to create
+           format: format of the file to create
+              only 'csv' (simple comma separated format) is supported for now
+            
+        Exception:
+           IOError: if no file name is provided
+        
+        """
+        if filename is None:
+            raise IOError
+        
+        _metadata = self._format_metadata()
+        _data = self._format_data()
+        
+    def _format_metadata(self):
+        """Format the various metadata to put at the top of output file created"""
+        _metadata = []
+        _metadata.append("# Material: %s" %self.material)
+        _metadata.append("# Lattice : %.4fAngstroms" %self.metadata['lattice'])
+        _metadata.append("# Crystal Structure: %s" %self.metadata['crystal_structure'])
+        _metadata.append("# Using local metadata Table: %s" %self.use_local_metadata_table)
+        _metadata.append("")
+        _metadata.append("# h, k, l, d(Angstroms), BraggEdge")
+        return _metadata
+    
+    def _format_data(self):
+        """Format the data for the output file created"""
+        _data = []
+        _hkl = self.hkl
+        _bragg_edges = self.bragg_edges
+        _d_spacing = self.d_spacing
+        for index in range(len(_d_spacing)):
+            _data.append("%d, %d, %d, %.5f, %.5f" % (_hkl[index][0],
+                                                 _hkl[index][1],
+                                                 _hkl[index][2],
+                                                 _d_spacing[index],
+                                                 _bragg_edges[index]))
+        return _data
