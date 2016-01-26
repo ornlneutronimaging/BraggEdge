@@ -116,3 +116,29 @@ class Utilities(object):
             
         return final_data
             
+    @staticmethod
+    def load_csv(filename=None):
+        """Load a csv file and return its content
+        
+        Parameters:
+        * filename: name of the csv file to load
+        
+        Returns:
+        contents of the file as an array item for each line
+        
+        Raise:
+        ValueError if format is wrong
+        
+        """
+        _input_file = filename
+        try:
+            f = open(_input_file, 'r')
+            _tof = []
+            for _line in f:
+                if '#' in _line:
+                    continue
+                _value = float(_line.strip())
+                _tof.append(_value)
+            return _tof
+        except:
+            raise ValueError("Bad file format")        

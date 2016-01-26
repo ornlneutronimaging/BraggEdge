@@ -59,21 +59,5 @@ class TOF(object):
         """Load the data from the input_file name provided"""
         
         # only loaded implemented so far !
-        self._load_csv()
-        
-    def _load_csv(self):
-        """Load the CSV input file where data have only 1 row"""
-        _input_file = self.input_file
-        try:
-            f = open(_input_file, 'r')
-            _tof = []
-            for _line in f:
-                if '#' in _line:
-                    continue
-                _value = float(_line.strip())
-                _tof.append(_value)
-                self.tof = _tof
-        except:
-            raise ValueError("Bad file format")
-            
+        self.tof = Utilities.load_csv(filename = self.input_file)
         
