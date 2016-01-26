@@ -6,11 +6,11 @@ from ..utilities import Utilities
 class LambdaWavelength(object):
     """This class handles the loading of the Lambda"""
     
-    def __init__(self, input_file=None, data=None):
+    def __init__(self, filename=None, data=None):
         """Constructor of the LambdaWavelength class
         
         Arguments:
-        * input_file: optional input file name if data array is provided
+        * filename: optional input file name if data array is provided
         If file exist, data will be automatically loaded 
         (only CSV file is supported so far)
            example: file_lambda.txt
@@ -20,7 +20,7 @@ class LambdaWavelength(object):
                     3.
                     4.
                     5.
-        * data: optional if input_file name provided. Array of lambda
+        * data: optional if filename name provided. Array of lambda
 
         Raises:
         * ValueError: - input file provided as the wrong format
@@ -30,9 +30,9 @@ class LambdaWavelength(object):
         
         """
 
-        if (input_file is not None):
-            if os.path.isfile(input_file):
-                self.input_file = input_file
+        if (filename is not None):
+            if os.path.isfile(filename):
+                self.filename = filename
                 self.load_data()
             else:
                 raise IOError("File does not exist")
@@ -50,8 +50,8 @@ class LambdaWavelength(object):
 
         
     def load_data(self):
-        """Load the data from the input_file name provided"""
+        """Load the data from the filename name provided"""
         
         # only loaded implemented so far !
-        self.lambda_array = Utilities.load_csv(filename = self.input_file)
+        self.lambda_array = Utilities.load_csv(filename = self.filename)
         

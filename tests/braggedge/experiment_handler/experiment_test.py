@@ -36,7 +36,7 @@ class ExperimentTest(unittest.TestCase):
     def test_experiment_calculate_main_coefficient(self):
         """Assert in experiment the calculation of main coefficient is correct"""
         _tof_file = 'tests/data/tof.txt'
-        _tof_obj = TOF(input_file = _tof_file)
+        _tof_obj = TOF(filename = _tof_file)
         _distance_sample_detector_m = 1.609
         _detector_offset_s = 4500e-6
         _exp_obj = Experiment(tof = _tof_obj.tof,
@@ -47,7 +47,7 @@ class ExperimentTest(unittest.TestCase):
     def test_experiment_calculate_lambda(self):
         """Assert in experiment the calculation of lambda is correct"""
         _tof_file = 'tests/data/tof.txt'
-        _tof_obj = TOF(input_file = _tof_file)
+        _tof_obj = TOF(filename = _tof_file)
         _distance_sample_detector_m = 1.609
         _detector_offset_micros = 4500
         _exp_obj = Experiment(tof = _tof_obj.tof,
@@ -67,7 +67,7 @@ class ExperimentTest(unittest.TestCase):
     def test_create_csv_lambda_file(self):
         """Assert in Experiment: the lambda file is correctly exported"""
         _tof_file = 'tests/data/tof.txt'
-        _tof_obj = TOF(input_file = _tof_file)
+        _tof_obj = TOF(filename = _tof_file)
         _distance_sample_detector_m = 1.609
         _detector_offset_micros = 4500
         _exp_obj = Experiment(tof = _tof_obj.tof,
@@ -81,7 +81,7 @@ class ExperimentTest(unittest.TestCase):
     def test_calculate_distance_sample_detector(self):
         """Assert in Experiment: the distance sample detector is corectly calculated"""
         _tof_file = 'tests/data/tof.txt'
-        _tof_obj = TOF(input_file = _tof_file)
+        _tof_obj = TOF(filename = _tof_file)
         _detector_offset_micros = 4500
         pass
 

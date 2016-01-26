@@ -54,7 +54,7 @@ class TofTest(unittest.TestCase):
     def test_loading_good_tof_file(self):
         """Assert that correctly formated tof file is correctly loaded"""
         _filename = 'tests/data/good_tof.txt'
-        _tof_handler = TOF(input_file = _filename)
+        _tof_handler = TOF(filename = _filename)
         self.assertEqual([1.0, 2.0, 3.0, 4.0], _tof_handler.tof[0:4])
 
     def test_loading_bad_tof_file(self):
