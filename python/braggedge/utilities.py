@@ -115,6 +115,25 @@ class Utilities(object):
             final_data = np.append(final_data, _value)
             
         return final_data
+           
+    @staticmethod
+    def array_divide_array(numerator=None, denominator=None):
+        """Divide two arrays of the same size
+        
+        Parameters:
+        * numerator: numpy array
+        * denominator: numpy array
+        
+        Returns:
+        * numerator / denominator
+        
+        Raises:
+        * ValueError if array do not have the same size
+        """
+        if len(numerator) != len(denominator):
+            raise ValueError("Array do not have the same size!")
+        
+        return numerator / denominator
             
     @staticmethod
     def load_csv(filename=None):

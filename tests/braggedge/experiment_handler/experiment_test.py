@@ -2,6 +2,7 @@ import unittest
 import os
 import numpy as np
 from python.braggedge.experiment_handler.tof import TOF
+from python.braggedge.experiment_handler.lambda_wavelength import LambdaWavelength
 from python.braggedge.experiment_handler.experiment import Experiment
 
 
@@ -11,30 +12,30 @@ class ExperimentTest(unittest.TestCase):
         pass
 
     def test_experiment_value_error_when_no_tof_provided(self):
-        """Assert in experiemnt that ValueError is raised when tof array is missing"""
+        """Assert in experiemnt - that ValueError is raised when tof array is missing"""
         self.assertRaises(ValueError, Experiment)
 
     def test_experiment_value_error_when_missing_argument_for_lambda_calculation(self):
-        """Assert in experiment that ValueError is raised when detector_offset or LDS are missing for lambda calculation"""
+        """Assert in experiment - that ValueError is raised when detector_offset or LDS are missing for lambda calculation"""
         _tof = [1., 2., 3., 4., 5., 6., 7.]
         self.assertRaises(ValueError, Experiment, _tof)
         self.assertRaises(ValueError, Experiment, _tof, None, 1)
         self.assertRaises(ValueError, Experiment, _tof, None, None, 2)
         
     def test_experiment_value_error_when_lambda_provided_and_either_lds_or_offset_missing(self):
-        """Assert in experiment that ValueError is raised when LdS and offset are missing when lambda provided"""
+        """Assert in experiment - that ValueError is raised when LdS and offset are missing when lambda provided"""
         _tof = [1., 2., 3., 4., 5., 6., 7.]
         _lambda = [11., 12., 13., 14., 15., 16., 17.]
         self.assertRaises(ValueError, Experiment, _tof, _lambda)
 
     def test_experiment_value_error_when_lambda_and_tof_not_same_size(self):
-        """Assert in experiment that ValueError is raised when tof and lambda array do not have the same size"""
+        """Assert in experiment - that ValueError is raised when tof and lambda array do not have the same size"""
         _tof = [1., 2., 3., 4., 5., 6., 7.]
         _lambda = [11., 12., 13., 14., 15.]
         self.assertRaises(ValueError, Experiment, _tof, _lambda, 10)
         
     def test_experiment_calculate_main_coefficient(self):
-        """Assert in experiment the calculation of main coefficient is correct"""
+        """Assert in experiment - the calculation of main coefficient is correct"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _distance_sample_detector_m = 1.609
@@ -45,7 +46,7 @@ class ExperimentTest(unittest.TestCase):
         self.assertAlmostEqual(2.45869e-7, _exp_obj._h_over_MnLds, delta = 0.0001)
     
     def test_experiment_calculate_lambda(self):
-        """Assert in experiment the calculation of lambda is correct"""
+        """Assert in experiment - the calculation of lambda is correct"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _distance_sample_detector_m = 1.609
@@ -65,7 +66,7 @@ class ExperimentTest(unittest.TestCase):
         self.assertTrue(len(_lambda_expected), len(_lambda_returned))
         
     def test_create_csv_lambda_file(self):
-        """Assert in Experiment: the lambda file is correctly exported"""
+        """Assert in Experiment - the lambda file is correctly exported"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _distance_sample_detector_m = 1.609
@@ -79,11 +80,19 @@ class ExperimentTest(unittest.TestCase):
         os.remove(_output_filename) # cleanup temp file
         
     def test_calculate_distance_sample_detector(self):
-        """Assert in Experiment: the distance sample detector is corectly calculated"""
+        """Assert in Experiment - the distance sample detector is corectly calculated"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _detector_offset_micros = 4500
-        pass
+        _lambda_file = 'tests/data/lambda.txt'
+        _lambda_obj = LambdaWavelength(filename = _lambda_file)
+        _exp_handler = Experiment(tof = _tof_obj.tof,
+                                  lambda_array = _lambda_obj.lambda_array,
+                                  detector_offset_micros = _detector_offset_micros)
+        _distance_expected = 1.609 #m
+        _distance_returned = _exp_handler.distance_sample_detector
+        self.assertAlmostEqual(_distance_expected, _distance_returned, delta = 1e-6)
+        
 
 if __name__ == '__main__':
     unittest.main()

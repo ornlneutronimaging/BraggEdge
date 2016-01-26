@@ -105,6 +105,21 @@ class UtilitiesTest(unittest.TestCase):
                                                coeff = _coeff)
         _expected_data = np.array([6., 7., 8., 9., 10.])
         self.assertTrue(all(_expected_data == _new_data))
+        
+    def test_array_divide_array_not_same_size(self):
+        """Assert in Utilities - Numerator array not same size as denominator array"""
+        _numerator = np.array([1, 2, 3])
+        _denominator = np.array([1, 2])
+        self.assertRaises(ValueError, Utilities.array_divide_array, _numerator, _denominator)
+    
+    def test_array_divide_array_works(self):
+        """Assert in Utilities - Ratio of arrays works"""
+        _numerator = np.array([10, 20, 30, 40, 50])
+        _denominator = np.array([1, 2, 3, 4, 5])
+        _ratio_expected = np.array([10, 10, 10, 10, 10])
+        _ratio_returned = Utilities.array_divide_array(numerator = _numerator,
+                                                       denominator = _denominator)
+        self.assertTrue(all(_ratio_expected == _ratio_returned))
 
 if __name__ == '__main__':
     unittest.main()
