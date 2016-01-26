@@ -33,7 +33,16 @@ class ExperimentTest(unittest.TestCase):
         _lambda = [11., 12., 13., 14., 15.]
         self.assertRaises(ValueError, Experiment, _tof, _lambda, 10)
         
-    
+    def test_experiment_calculate_lambda(self):
+        """Assert in experiment the calculation of lambda is correct"""
+        _tof_file = 'tests/data/tof.txt'
+        _tof_obj = TOF(input_file = _tof_file)
+        _distance_sample_detector_m = 1.609
+        _detector_offset_s = 4500e-6
+        _exp_obj = Experiment(tof = _tof_obj.tof,
+                              distance_sample_detector_m = _distance_sample_detector_m,
+                              detector_offset_micros = _detector_offset_s)
+        #self.assertEqual(1, _exp_obj._h_over_MnLds)
     
 
 if __name__ == '__main__':

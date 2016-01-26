@@ -1,4 +1,6 @@
 from .tof import TOF
+from ..constants import mn, h
+from ..utilities import Utilities
 
 class Experiment(object):
     """Class that allows:
@@ -9,29 +11,29 @@ class Experiment(object):
        Arguments:
        * tof: tof array in s
        * lambda_array: mandatory only if detector_offset or distance_sample_detector are unknown
-       * distance_sample_detector: mandatory only if lambda is the unknown parameter
-       * detector_offset: mandatory only if lambda is the unknown parameter
-       
-       
+       * distance_sample_detector: mandatory only if lambda is the unknown parameter (m)
+       * detector_offset: mandatory only if lambda is the unknown parameter (micros)
        """
     
-    def __init__(self, tof=None, lambda_array=None, distance_sample_detector=None, detector_offset=None):
+    def __init__(self, tof=None, lambda_array=None, 
+                 distance_sample_detector_m=None, 
+                 detector_offset_micros=None):
         if tof is None:
             raise ValueError("Missing TOF array")
         self.tof_array = tof
-        self.distance_sample_detector = distance_sample_detector
-        self.detector_offset = detector_offset
+        self.distance_sample_detector = distance_sample_detector_m
+        self.detector_offset_micros = detector_offset_micros
         self.lambda_array = lambda_array
 
         # if lambda_array is unknown, both distance_sample_detector and detector_offset must be provided
         if lambda_array is None:
-            if (distance_sample_detector is None) or (detector_offset is None):
+            if (distance_sample_detector_m is None) or (detector_offset_micros is None):
                 raise ValueError("Mssing arguments to calculate lambda_array")
 
-        # if lambda_array is provided, either distance_sample_detector or detector_offset can be missing,
+        # if lambda_array is provided, either distance_sample_detector_m or detector_offset_micros can be missing,
         # but not both
         if lambda_array is not None:
-            if (distance_sample_detector is None) and (detector_offset is None):
+            if (distance_sample_detector_m is None) and (detector_offset_micros is None):
                 raise ValueError("Missing either distance_sample detector or detector_offset")
 
             if len(lambda_array) != len(tof):
@@ -63,5 +65,13 @@ class Experiment(object):
     
     def calculate_lambda(self):
         """return the lambda array when tof_array, distance_sample_detector and detector_offset are provided"""
-        pass
+        _tof = self.tof_array
+        lSD = self.distance_sample_detector
+        detector_offset_micros = self.detector_offset_micros
+        detector_offset_s = Utilities.convert_time_units(detector_offset_micros,
+                                                         from_units = 'micros',
+                                                         to_units = 's')
+        
+        self._h_over_MnLds = h / (mn * lSD)
+        
         
