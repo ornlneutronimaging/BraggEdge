@@ -74,4 +74,12 @@ class Experiment(object):
         
         self._h_over_MnLds = h / (mn * lSD)
         
+        _lambda = []
+        for t in _tof:
+            _value = t * self._h_over_MnLds
+            _lambda.append(_value)
+            
+            
+        self.lambda_array = _lambda
+        
         

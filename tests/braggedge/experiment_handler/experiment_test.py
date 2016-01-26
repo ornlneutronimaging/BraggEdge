@@ -33,8 +33,8 @@ class ExperimentTest(unittest.TestCase):
         _lambda = [11., 12., 13., 14., 15.]
         self.assertRaises(ValueError, Experiment, _tof, _lambda, 10)
         
-    def test_experiment_calculate_lambda(self):
-        """Assert in experiment the calculation of lambda is correct"""
+    def test_experiment_calculate_main_coefficient(self):
+        """Assert in experiment the calculation of main coefficient is correct"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(input_file = _tof_file)
         _distance_sample_detector_m = 1.609
@@ -42,7 +42,19 @@ class ExperimentTest(unittest.TestCase):
         _exp_obj = Experiment(tof = _tof_obj.tof,
                               distance_sample_detector_m = _distance_sample_detector_m,
                               detector_offset_micros = _detector_offset_s)
-        #self.assertEqual(1, _exp_obj._h_over_MnLds)
+        self.assertAlmostEqual(2.45869e-7, _exp_obj._h_over_MnLds, delta = 0.0001)
+    
+    #def test_experiment_calculate_lambda(self):
+        #"""Assert in experiment the calculation of lambda is correct"""
+        #_tof_file = 'tests/data/tof.txt'
+        #_tof_obj = TOF(input_file = _tof_file)
+        #_distance_sample_detector_m = 1.609
+        #_detector_offset_s = 4500e-6
+        #_exp_obj = Experiment(tof = _tof_obj.tof,
+                              #distance_sample_detector_m = _distance_sample_detector_m,
+                              #detector_offset_micros = _detector_offset_s)
+        #print(_exp_obj.lambda_array)
+        #self.assertEquals(1, 2)
     
 
 if __name__ == '__main__':
