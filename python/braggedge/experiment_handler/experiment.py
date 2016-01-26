@@ -86,7 +86,11 @@ class Experiment(object):
         self.lambda_array = _lambda
         
     def export_lambda(self, filename=None):
-        """export the lambda array into a CSV data file"""
+        """export the lambda array into a CSV data file
+        
+        Parameters:
+        * filename: name of output file to create
+        """
         if filename is None:
             return
         

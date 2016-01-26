@@ -77,6 +77,13 @@ class ExperimentTest(unittest.TestCase):
         _exp_obj.export_lambda(filename = _output_filename)
         self.assertTrue(os.path.isfile(_output_filename))
         os.remove(_output_filename) # cleanup temp file
+        
+    def test_calculate_distance_sample_detector(self):
+        """Assert in Experiment: the distance sample detector is corectly calculated"""
+        _tof_file = 'tests/data/tof.txt'
+        _tof_obj = TOF(input_file = _tof_file)
+        _detector_offset_micros = 4500
+        pass
 
 if __name__ == '__main__':
     unittest.main()
