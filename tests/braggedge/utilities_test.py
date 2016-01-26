@@ -87,6 +87,15 @@ class UtilitiesTest(unittest.TestCase):
         self.assertTrue(all(_data == Utilities.convert_time_units(data = _data,
                                                              from_units = 's',
                                                              to_units = 's')))
+        
+    def test_multiply_array_by_coeff(self):
+        """Assert in utilities - multiply array by coeff value"""
+        _data = np.array([1., 2., 3., 4., 5.])
+        _coeff = 2.5
+        _new_data = Utilities.multiply_array_by_coeff( data = _data, 
+                                                       coeff = _coeff)
+        _expected_data = np.array([2.5, 5., 7.5, 10, 12.5])
+        self.assertTrue(all(_expected_data == _new_data))
 
 if __name__ == '__main__':
     unittest.main()

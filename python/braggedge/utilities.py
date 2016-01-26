@@ -33,6 +33,18 @@ class Utilities(object):
     
     @staticmethod
     def get_time_conversion_coeff(from_units='micros', to_units='s'):
+        """return the coefficient to use to convert from first units to second units
+        
+        Arguments:
+        * from_units: default 'micros'. Must be in the list of list_of_time_units
+        * to_units: default 's'. Must be in the list of list_of_time_units
+        
+        Returns:
+        * coefficient to apply to data to convert from first units to second units provided
+        
+        Raises:
+        * ValueError: if any of the units is not supported
+        """
 
         if (not (from_units in Utilities.list_of_time_units) or
         not(to_units in Utilities.list_of_time_units)):
@@ -61,5 +73,23 @@ class Utilities(object):
             if to_units == 'ms': return 1.e-6
             if to_units == 'micros': return 1.e-3
 
+    @staticmethod
+    def multiply_array_by_coeff(data=None, coeff=1):
+        """multiply each element of the array by the coeff
         
+        Parameters:
+        * data: array to apply coefficient on
+        * coeff: default value is 1. Coefficient to apply
+        
+        Returns:
+        * data * coefficient
+        """
+        if data is None:
+            return None
     
+        final_data = np.array([])
+        for _item in data:
+            _value = float(_item) * float(coeff)
+            final_data = np.append(final_data, _value)
+            
+        return final_data
