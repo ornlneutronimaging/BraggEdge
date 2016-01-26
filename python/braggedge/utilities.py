@@ -74,7 +74,7 @@ class Utilities(object):
             if to_units == 'micros': return 1.e-3
 
     @staticmethod
-    def multiply_array_by_coeff(data=None, coeff=1):
+    def array_multiply_coeff(data=None, coeff=1):
         """multiply each element of the array by the coeff
         
         Parameters:
@@ -93,3 +93,26 @@ class Utilities(object):
             final_data = np.append(final_data, _value)
             
         return final_data
+    
+    @staticmethod
+    def array_add_coeff(data=None, coeff=1.):
+        """Add coefficient to each element of the array
+        
+        Parameters:
+        * data: array to apply coefficient on
+        * coeff: default value is 1. Coefficient to apply
+        
+        Returns:
+        * data + coefficient
+        """
+        if data is None:
+            return None
+        
+        final_data = np.array([])
+        for index in range(len(data)):
+            _item = data[index]
+            _value = _item + coeff
+            final_data = np.append(final_data, _value)
+            
+        return final_data
+            

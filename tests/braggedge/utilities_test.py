@@ -69,10 +69,10 @@ class UtilitiesTest(unittest.TestCase):
         self.assertEqual(5, Utilities.convert_time_units(data = 5,
                                                          from_units = 's',
                                                          to_units = 's'))
-        self.assertAlmostEqual(15.e-6, Utilities.convert_time_units(data = 15.,
+        self.assertAlmostEqual(4.5e-3, Utilities.convert_time_units(data = 4500.,
                                                          from_units = 'micros',
                                                          to_units = 's'),
-                               delta = 0.00001)
+                               delta = 0.000000001)
         
     def test_convert_time_units_list_array(self):
         """Assert in utilities - converting list time units value"""
@@ -88,13 +88,22 @@ class UtilitiesTest(unittest.TestCase):
                                                              from_units = 's',
                                                              to_units = 's')))
         
-    def test_multiply_array_by_coeff(self):
+    def test_array_multiply_coeff(self):
         """Assert in utilities - multiply array by coeff value"""
         _data = np.array([1., 2., 3., 4., 5.])
         _coeff = 2.5
-        _new_data = Utilities.multiply_array_by_coeff( data = _data, 
-                                                       coeff = _coeff)
-        _expected_data = np.array([2.5, 5., 7.5, 10, 12.5])
+        _new_data = Utilities.array_multiply_coeff( data = _data, 
+                                                    coeff = _coeff)
+        _expected_data = np.array([2.5, 5., 7.5, 10, 12.5]) 
+        self.assertTrue(all(_expected_data == _new_data))   
+
+    def test_array_add_coeff(self):
+        """Assert in utilities - adding coeff to array"""
+        _data = np.array([1., 2., 3., 4., 5.])
+        _coeff = 5.
+        _new_data = Utilities.array_add_coeff( data = _data, 
+                                               coeff = _coeff)
+        _expected_data = np.array([6., 7., 8., 9., 10.])
         self.assertTrue(all(_expected_data == _new_data))
 
 if __name__ == '__main__':

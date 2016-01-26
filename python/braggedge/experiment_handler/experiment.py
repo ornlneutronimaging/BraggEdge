@@ -65,20 +65,23 @@ class Experiment(object):
     
     def calculate_lambda(self):
         """return the lambda array when tof_array, distance_sample_detector and detector_offset are provided"""
-        _tof = self.tof_array
-        lSD = self.distance_sample_detector
         detector_offset_micros = self.detector_offset_micros
         detector_offset_s = Utilities.convert_time_units(detector_offset_micros,
                                                          from_units = 'micros',
                                                          to_units = 's')
-        
-        self._h_over_MnLds = h / (mn * lSD)
-        
-        _lambda = []
-        for t in _tof:
-            _value = t * self._h_over_MnLds
-            _lambda.append(_value)
-            
+        # apply detector offset to tof array
+        _tof = self.tof_array 
+        _tof_with_offset = Utilities.array_add_coeff(data = _tof,
+                                                     coeff = detector_offset_s)
+
+        # calculate the constant factor
+        lSD = self.distance_sample_detector
+        _coeff = h / (mn * lSD)
+        self._h_over_MnLds = _coeff
+
+        # multiply constant factor by tof array
+        _lambda = Utilities.array_multiply_coeff(data = _tof_with_offset, 
+                                                coeff = _coeff)
             
         self.lambda_array = _lambda
         
