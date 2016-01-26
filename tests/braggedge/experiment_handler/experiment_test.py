@@ -63,6 +63,20 @@ class ExperimentTest(unittest.TestCase):
         self.assertTrue(_lambda_expected[5], _lambda_returned[5])
         self.assertTrue(_lambda_expected[-1], _lambda_returned[-1])
         self.assertTrue(len(_lambda_expected), len(_lambda_returned))
+        
+    def test_create_csv_lambda_file(self):
+        """Assert in Experiment: the lambda file is correctly exported"""
+        _tof_file = 'tests/data/tof.txt'
+        _tof_obj = TOF(input_file = _tof_file)
+        _distance_sample_detector_m = 1.609
+        _detector_offset_micros = 4500
+        _exp_obj = Experiment(tof = _tof_obj.tof,
+                              distance_sample_detector_m = _distance_sample_detector_m,
+                              detector_offset_micros = _detector_offset_micros)
+        _output_filename = 'tests/data/remove_me.txt'
+        _exp_obj.export_lambda(filename = _output_filename)
+        self.assertTrue(os.path.isfile(_output_filename))
+        os.remove(_output_filename) # cleanup temp file
 
 if __name__ == '__main__':
     unittest.main()

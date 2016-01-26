@@ -142,3 +142,23 @@ class Utilities(object):
             return _tof
         except:
             raise ValueError("Bad file format")        
+        
+    def save_csv(filename=None, metadata=None, data=None):
+        """Create comma separated file (CSV)
+        
+        Arguments:
+        * filename: name of output file
+        * metadata: metadata string array (will be placed at the top of the file with '#' in front)
+        * data: data float array"""
+        sep = ", "
+        f = open(filename, "w")
+        for _meta in metadata:
+            f.write("# " + _meta +  "\n")
+        for _row in data:
+            if (type(_row) is np.ndarray) or (type(_row) is list):
+                _row_string = [str(x) for x in _row]
+                _row_format = sep.join(_row_string)
+            else:
+                _row_format = str(_row)
+            f.write(_row_format + "\n")
+        f.close()        

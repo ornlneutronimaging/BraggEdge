@@ -1,5 +1,6 @@
 from .material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
 from .braggedges_handler.braggedge_calculator import BraggEdgeCalculator
+from .utilities import Utilities
 
 
 class BraggEdge(object):
@@ -137,42 +138,23 @@ class BraggEdge(object):
         _data = self._format_data()
         
         if file_type is 'csv':
-            self._create_csv_file(filename = filename, 
-                             metadata = _metadata, 
-                             data = _data)
+            Utilities.save_csv(filename = filename,
+                               data = _data,
+                               metadata = _metadata)
             return
         
         raise NotImplementedError
         
         
-        
-    def _create_csv_file(self, filename = None,
-                         metadata = None,
-                         data = None):
-        """
-        This create the CSV file. 
-        """
-        #write file
-        sep = ", "
-        f = open(filename, "w")
-        for _meta in metadata:
-            f.write(_meta +  "\n")
-        for _row in data:
-            _row_string = [str(x) for x in _row]
-            _row_format = sep.join(_row_string)
-            f.write(_row_format + "\n")
-        f.close()
-        
-        
     def _format_metadata(self):
         """Format the various metadata to put at the top of output file created"""
         _metadata = []
-        _metadata.append("# Material: %s" %self.material)
-        _metadata.append("# Lattice : %.4fAngstroms" %self.metadata['lattice'])
-        _metadata.append("# Crystal Structure: %s" %self.metadata['crystal_structure'])
-        _metadata.append("# Using local metadata Table: %s" %self.use_local_metadata_table)
+        _metadata.append("Material: %s" %self.material)
+        _metadata.append("Lattice : %.4fAngstroms" %self.metadata['lattice'])
+        _metadata.append("Crystal Structure: %s" %self.metadata['crystal_structure'])
+        _metadata.append("Using local metadata Table: %s" %self.use_local_metadata_table)
         _metadata.append("")
-        _metadata.append("# h, k, l, d(Angstroms), BraggEdge")
+        _metadata.append("h, k, l, d(Angstroms), BraggEdge")
         return _metadata
     
     def _format_data(self):

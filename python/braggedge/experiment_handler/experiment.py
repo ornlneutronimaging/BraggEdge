@@ -85,4 +85,19 @@ class Experiment(object):
             
         self.lambda_array = _lambda
         
+    def export_lambda(self, filename=None):
+        """export the lambda array into a CSV data file"""
+        if filename is None:
+            return
         
+        _metadata = []
+        _metadata.append("Lambda (Angstroms)")
+        _metadata.append("")
+        _metadata.append("Distance sample-detector (m): %.4f" %self.distance_sample_detector)
+        _metadata.append("Detector offset (micros): %.4f" %self.detector_offset_micros)
+        _metadata.append("")
+        _metadata.append("Lambda (Angstroms)")
+        
+        Utilities.save_csv(filename = filename, 
+                           data = self.lambda_array,
+                           metadata = _metadata)

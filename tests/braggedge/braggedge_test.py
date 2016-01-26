@@ -62,10 +62,10 @@ class TestBraggEdge(unittest.TestCase):
         """Assert the correct metadata data are created for Fe when using create output file"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
         _metadata = _handler._format_metadata()
-        self.assertEqual("# Material: Fe", _metadata[0])
-        self.assertEqual("# Lattice : 2.8664Angstroms", _metadata[1])
-        self.assertEqual("# Crystal Structure: BCC", _metadata[2])
-        self.assertEqual("# Using local metadata Table: True", _metadata[3])
+        self.assertEqual("Material: Fe", _metadata[0])
+        self.assertEqual("Lattice : 2.8664Angstroms", _metadata[1])
+        self.assertEqual("Crystal Structure: BCC", _metadata[2])
+        self.assertEqual("Using local metadata Table: True", _metadata[3])
         
     def test_create_export_csv_data(self):
         """Assert the correct data are created for Fe when using create output file"""
@@ -83,7 +83,7 @@ class TestBraggEdge(unittest.TestCase):
         _filename = 'remove_me.txt'
         _handler.export(filename = _filename, file_type = 'csv')
         self.assertTrue(os.path.isfile(_filename))
-        os.remove(_filename) #clean up temp file
+        os.remove(_filename) #cleanup temp file
     
 
 if __name__ == '__main__':
