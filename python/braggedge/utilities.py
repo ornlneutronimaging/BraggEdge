@@ -143,6 +143,7 @@ class Utilities(object):
         except:
             raise ValueError("Bad file format")        
         
+    @staticmethod
     def save_csv(filename=None, metadata=None, data=None):
         """Create comma separated file (CSV)
         
