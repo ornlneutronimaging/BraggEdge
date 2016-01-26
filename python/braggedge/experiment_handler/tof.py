@@ -1,5 +1,6 @@
 import numpy as np
 import os
+from ..utilities import Utilities
 
 
 class TOF(object):
@@ -49,27 +50,10 @@ class TOF(object):
             raise ValueError("Please provide a tof array")
 
         if units is not 's':
-            self._convert_units(input_units = units,
-                                input_tof = tof)
-            
+            self.tof = Utilities.convert_time_units(data = tof,
+                                                    from_units = units,
+                                                    to_units = 's')
         
-    def _convert_units(self, input_units = 's', input_tof = None):
-        """Converts the tof array from the units provided to s
-        
-        Arguments:
-        * input_units: Default 's', but can be 'micros', 'nano', 'ms'
-        * input_tof: numpy 1D array
-        """
-        if input_units is 'micros':
-            _coeff = 1.e-6
-        elif input_units is 'ns':
-            _coeff = 1.e-9
-        elif input_units is 'ms':
-            _coeff = 1.e-3
-        else:
-            raise NotImplementedError
-        
-        self.tof = input_tof * _coeff
         
     def load_data(self):
         """Load the data from the input_file name provided"""
