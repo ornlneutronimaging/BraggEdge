@@ -82,8 +82,6 @@ class Experiment(object):
         _ratio = Utilities.array_divide_array(numerator = _numerator,
                                               denominator = _denominator)
 
-        print(_ratio)
-
         self.distance_sample_detector = np.mean(_ratio)
 
     def calculate_detector_offset(self):
