@@ -92,7 +92,13 @@ class Experiment(object):
         If lambda_array and tof_array are provided, the offset is calculated
         Otherwise, the detector_offset argument must be provided
         """
-        pass
+
+        # calculate the constant factor
+        lSD = self.distance_sample_detector
+        _coeff = h / (mn * lSD)
+        self._h_over_MnLds = _coeff
+
+
     
     def calculate_lambda(self):
         """return the lambda array when tof_array, distance_sample_detector and detector_offset are provided"""
