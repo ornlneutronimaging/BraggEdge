@@ -14,6 +14,8 @@ Contents:
    api
    material_handler
    braggedges_handler
+   experiment_handler
+   utilities
 
 
 Indices and tables

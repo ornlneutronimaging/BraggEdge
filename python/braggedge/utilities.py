@@ -2,6 +2,7 @@ import numpy as np
 
 
 class Utilities(object):
+    """Utilities class"""
 
     list_of_time_units = ['s', 'ms', 'micros', 'ns']
 

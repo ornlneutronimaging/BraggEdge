@@ -7,3 +7,6 @@ The Material Handler Reference
 .. automodule:: braggedge.material_handler.retrieve_metadata_table
     :members:
      
+.. automodule:: braggedge.material_handler.config
+    :members:
+     
