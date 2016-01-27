@@ -105,7 +105,8 @@ class ExperimentTest(unittest.TestCase):
                                   distance_sample_detector_m = _distance_sample_detector_m)
         _offset_expected_micros = 4500 #micros
         _offset_calculated = _exp_handler.detector_offset_micros
-#        self.assertEqual(_offset_expected_micros, _offset_calculated)
+        self.assertAlmostEqual(_offset_expected_micros, _offset_calculated, 
+                               delta = 1e-6)
 
 if __name__ == '__main__':
     unittest.main()

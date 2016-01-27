@@ -82,7 +82,6 @@ class Experiment(object):
         _ratio = Utilities.array_divide_array(numerator = _numerator,
                                               denominator = _denominator)
 
-        print(_ratio)
 
         self.distance_sample_detector = np.mean(_ratio)
 
@@ -96,9 +95,23 @@ class Experiment(object):
         # calculate the constant factor
         lSD = self.distance_sample_detector
         _coeff = h / (mn * lSD)
-        self._h_over_MnLds = _coeff
+        _MnLds_over_h = 1./_coeff
+        
+        # lambda / coeff
+        _lambda_array = self.lambda_array
+        _lambda_over_coeff = Utilities.array_multiply_coeff(data = _lambda_array,
+                                                            coeff = _MnLds_over_h)
 
-
+        # (lambda/coeff) - tof
+        _tof = self.tof_array
+        
+        _detector_offset_array = Utilities.array_minus_array(array1 = _lambda_over_coeff,
+                                              array2 = _tof)
+        _detector_offset_s = np.mean(_detector_offset_array)
+        self.detector_offset_micros = Utilities.convert_time_units(data = _detector_offset_s,
+                                                                   from_units = 's',
+                                                                   to_units = 'micros')
+        
     
     def calculate_lambda(self):
         """return the lambda array when tof_array, distance_sample_detector and detector_offset are provided"""
