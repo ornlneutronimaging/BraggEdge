@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   demo
    api
    material_handler
    braggedges_handler
