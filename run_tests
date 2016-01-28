@@ -1,1 +1,1 @@
-nosetests -v --rednose
+nosetests -v --rednose  --with-coverage
