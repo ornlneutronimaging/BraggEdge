@@ -1,10 +1,7 @@
 import unittest
 import os
-from python.braggedge.material_handler import config
-from python.braggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
-#from braggedge.material_handler import config
-#from braggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
-
+from neutronbraggedge.material_handler import config
+from neutronbraggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
 
 
 class TestRetrieveMetadataTable(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 import os
-from braggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
+from neutronbraggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
 
 
 class TestRetrieveMaterialMetadata(unittest.TestCase):

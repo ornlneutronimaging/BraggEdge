@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from python.braggedge.experiment_handler.tof import TOF
+from neutronbraggedge.experiment_handler.tof import TOF
 
 
 class TofTest(unittest.TestCase):

@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 
 setup(
-    name = "braggedge",
+    name = "neutronbraggedge",
     version = "0.1",
     packages = find_packages("python", exclude=['tests', 'notebooks']),
     package_dir = {'': "python"},

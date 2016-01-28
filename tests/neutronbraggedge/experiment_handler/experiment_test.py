@@ -1,9 +1,9 @@
 import unittest
 import os
 import numpy as np
-from python.braggedge.experiment_handler.tof import TOF
-from python.braggedge.experiment_handler.lambda_wavelength import LambdaWavelength
-from python.braggedge.experiment_handler.experiment import Experiment
+from neutronbraggedge.experiment_handler.tof import TOF
+from neutronbraggedge.experiment_handler.lambda_wavelength import LambdaWavelength
+from neutronbraggedge.experiment_handler.experiment import Experiment
 
 
 class ExperimentTest(unittest.TestCase):

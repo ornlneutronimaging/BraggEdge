@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from python.braggedge.utilities import Utilities
+from neutronbraggedge.utilities import Utilities
 
 
 class UtilitiesTest(unittest.TestCase):

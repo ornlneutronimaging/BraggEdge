@@ -1,6 +1,6 @@
 import unittest
 import os
-from braggedge.braggedges_handler.braggedge_calculator import BraggEdgeCalculator
+from neutronbraggedge.braggedges_handler.braggedge_calculator import BraggEdgeCalculator
 
 
 class TestBraggEdgesHandler(unittest.TestCase):

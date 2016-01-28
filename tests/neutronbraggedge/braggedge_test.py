@@ -1,6 +1,6 @@
 import unittest
 import os
-from braggedge.braggedge import BraggEdge
+from neutronbraggedge.braggedge import BraggEdge
 
 
 class TestBraggEdge(unittest.TestCase):

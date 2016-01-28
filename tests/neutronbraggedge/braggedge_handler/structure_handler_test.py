@@ -1,7 +1,7 @@
 import unittest
 import os
-from braggedge.braggedges_handler.structure_handler import StructureHandler
-from braggedge.braggedges_handler.structure_handler import FCCHandler
+from neutronbraggedge.braggedges_handler.structure_handler import StructureHandler
+from neutronbraggedge.braggedges_handler.structure_handler import FCCHandler
 
 
 class TestBraggEdgesHandler(unittest.TestCase):

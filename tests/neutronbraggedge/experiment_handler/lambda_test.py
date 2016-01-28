@@ -1,7 +1,7 @@
 import unittest
 import os
 import numpy as np
-from python.braggedge.experiment_handler.lambda_wavelength import LambdaWavelength
+from neutronbraggedge.experiment_handler.lambda_wavelength import LambdaWavelength
 
 
 class TofTest(unittest.TestCase):
