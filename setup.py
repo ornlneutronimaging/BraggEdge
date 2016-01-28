@@ -6,10 +6,10 @@ from setuptools import setup, find_packages
 
 setup(
     name = "neutronbraggedge",
-    version = "0.1",
+    version = "0.2",
     packages = find_packages("python", exclude=['tests', 'notebooks']),
     package_dir = {'': "python"},
-    package_data = { 'data' : ['material_list.dat']},
+    package_data = { 'neutronbraggedge' : ['data/material_list.dat']},
     test_suite = 'tests',
     install_requires = [
         'numpy',
@@ -28,7 +28,7 @@ setup(
     keywords = "neutron imaging bragg edge",
     url = "https://github.com/ornlneutronimaging/BraggEdge",
     classifiers = ['Development Status :: 3 - Alpha',
-                   'Intended Audience :: Neutron Imaging Scientists',
+                   'Intended Audience :: Developers',
                    'Programming Language :: Python :: 2.7',
                    'Programming Language :: Python :: 3.5'],
     # download_url = '',
