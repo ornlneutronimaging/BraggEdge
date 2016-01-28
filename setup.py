@@ -9,6 +9,7 @@ setup(
     version = "0.1",
     packages = find_packages("python", exclude=['tests', 'notebooks']),
     package_dir = {'': "python"},
+    package_data = { 'data' : ['material_list.dat']},
     test_suite = 'tests',
     install_requires = [
         'numpy',
@@ -21,10 +22,15 @@ setup(
     dependency_links = [
     ],
     author = "iVenus team",
+    author_email = "bilheuxjm@ornl.gov",
     description = "Bragg Edge work at the SNS",
     license = 'BSD',
     keywords = "neutron imaging bragg edge",
     url = "https://github.com/ornlneutronimaging/BraggEdge",
+    classifiers = ['Development Status :: 3 - Alpha',
+                   'Intended Audience :: Neutron Imaging Scientists',
+                   'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3.5'],
     # download_url = '',
 )
 
