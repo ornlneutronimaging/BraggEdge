@@ -55,7 +55,7 @@ Lambda Calculation
 >>> import braggedge.experiment_handler
 
 In order to convert a TOF range into lambda, you will need to provide:
- - distance sample-detector (in meters)
+ - distance source-detector (in meters)
  - detector offset (micros)
  - tof array 
  
@@ -69,9 +69,9 @@ or by providing the name of an ascii file name where each tof is on its own row
  
 Then it is possible to calculate the Lambda array
 
->>> distance_sample_detector_m = 1.609
+>>> distance_source_detector_m = 1.609
 >>> detector_offset_micros = 4500
->>> _exp = Experiment(tof = _tof_handler.tof, distance_sample_detector_m = distance_sample_detector_m, detector_offset_micros = detector_offset_micros)
+>>> _exp = Experiment(tof = _tof_handler.tof, distance_source_detector_m = distance_source_detector_m, detector_offset_micros = detector_offset_micros)
 >>> print(_exp.lambda_array)
 [1.10664e-9, 1.109165e-9, 1.111682e-9, 1.114200e-9]
 
@@ -80,12 +80,12 @@ To export lambda into a csv file
 >>> _exp.export_lambda(filename = 'my_lambda_file.txt')
 
 
-Distance Sample-Detector Calculation
+Distance source-Detector Calculation
 ------------------------------------
 
 >>> import braggedge.experiment_handler
 
-In order to calculate the *Sample-detector* length, you must provide:
+In order to calculate the *source-detector* length, you must provide:
  - detector offset (micros)
  - tof array
  - lambda array (Angstroms)
@@ -110,7 +110,7 @@ Then
 
 >>> detector_offset_micros = 4500
 >>> _exp = Experiment(tof = _tof_handler.tof, lambda_array = _lambda_handler.lambda, detector_offset_micros = detector_offset_micros)
->>> print(_exp.distance_sample_detector_m)
+>>> print(_exp.distance_source_detector_m)
 1.609
 
 
@@ -120,7 +120,7 @@ Detector Offset Calculation
 >>> import braggedge.experiment_handler
 
 In order to calculate the *detector offsetr*, you must provide:
- - distance sample-detector (m)
+ - distance source-detector (m)
  - tof array
  - lambda array (Angstroms)
  
@@ -142,7 +142,7 @@ or by providing the name of an ascii file where each lambda is on its own row
 
 Then
 
->>> distance_sample_detector_m = 1.409
->>> _exp = Experiment(tof = _tof_handler.tof, lambda_array = _lambda_handler.lambda, distance_sample_detector_m = distance_sample_detector_m)
+>>> distance_source_detector_m = 1.409
+>>> _exp = Experiment(tof = _tof_handler.tof, lambda_array = _lambda_handler.lambda, distance_source_detector_m = distance_source_detector_m)
 >>> print(_exp.detector_offset_micros)
 4500

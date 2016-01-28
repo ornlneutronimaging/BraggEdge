@@ -38,10 +38,10 @@ class ExperimentTest(unittest.TestCase):
         """Assert in experiment - the calculation of main coefficient is correct"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
-        _distance_sample_detector_m = 1.609
+        _distance_source_detector_m = 1.609
         _detector_offset_s = 4500e-6
         _exp_obj = Experiment(tof = _tof_obj.tof,
-                              distance_sample_detector_m = _distance_sample_detector_m,
+                              distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_s)
         self.assertAlmostEqual(2.45869e-7, _exp_obj._h_over_MnLds, delta = 0.0001)
     
@@ -49,10 +49,10 @@ class ExperimentTest(unittest.TestCase):
         """Assert in experiment - the calculation of lambda is correct"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
-        _distance_sample_detector_m = 1.609
+        _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
         _exp_obj = Experiment(tof = _tof_obj.tof,
-                              distance_sample_detector_m = _distance_sample_detector_m,
+                              distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
         _lambda_expected = np.array([1.10664704e-09, 1.10916474e-09, 1.11168244e-09, 1.11420014e-09,
                                      1.11671784e-09, 1.11923554e-09, 1.12175324e-09, 1.12427094e-09,
@@ -69,18 +69,18 @@ class ExperimentTest(unittest.TestCase):
         """Assert in Experiment - the lambda file is correctly exported"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
-        _distance_sample_detector_m = 1.609
+        _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
         _exp_obj = Experiment(tof = _tof_obj.tof,
-                              distance_sample_detector_m = _distance_sample_detector_m,
+                              distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
         _output_filename = 'tests/data/remove_me.txt'
         _exp_obj.export_lambda(filename = _output_filename)
         self.assertTrue(os.path.isfile(_output_filename))
         os.remove(_output_filename) # cleanup temp file
         
-    def test_calculate_distance_sample_detector(self):
-        """Assert in Experiment - the distance sample detector is corectly calculated"""
+    def test_calculate_distance_source_detector(self):
+        """Assert in Experiment - the distance source detector is corectly calculated"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _detector_offset_micros = 4500
@@ -90,19 +90,19 @@ class ExperimentTest(unittest.TestCase):
                                   lambda_array = _lambda_obj.lambda_array,
                                   detector_offset_micros = _detector_offset_micros)
         _distance_expected = 1.609 #m
-        _distance_returned = _exp_handler.distance_sample_detector
+        _distance_returned = _exp_handler.distance_source_detector
         self.assertAlmostEqual(_distance_expected, _distance_returned, delta = 1e-6)
         
     def test_calculate_detector_offset(self):
         """Assert in Experiment - the detector offset is correctly calculated"""
         _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
-        _distance_sample_detector_m = 1.609
+        _distance_source_detector_m = 1.609
         _lambda_file = 'tests/data/lambda.txt'
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
         _exp_handler = Experiment(tof = _tof_obj.tof,
                                   lambda_array = _lambda_obj.lambda_array,
-                                  distance_sample_detector_m = _distance_sample_detector_m)
+                                  distance_source_detector_m = _distance_source_detector_m)
         _offset_expected_micros = 4500 #micros
         _offset_calculated = _exp_handler.detector_offset_micros
         self.assertAlmostEqual(_offset_expected_micros, _offset_calculated, 
