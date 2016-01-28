@@ -1,6 +1,5 @@
 [![Build Status](https://travis-ci.org/ornlneutronimaging/BraggEdge.svg?branch=master)](https://travis-ci.org/ornlneutronimaging/BraggEdge)
-[![codecov.io](http://codecov.io/github/ornlneutronimaging/BraggEdge/coverage.svg?branch=master)](http://codecov.io/github/ornlneutronimaging/BraggEdge?branch=master)
-
+[![codecov.io](https://codecov.io/github/ornlneutronimaging/BraggEdge/coverage.svg?branch=master)](https://codecov.io/github/ornlneutronimaging/BraggEdge?branch=master)
 
 # BraggEdge
 Work concerning the Bragg Edge LDRD (check the documentation for more details)
