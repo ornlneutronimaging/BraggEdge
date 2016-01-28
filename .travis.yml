@@ -40,7 +40,7 @@ install:
   - pip install rednose
 
 script:
-  - nosetests -v --rednose
+  - nosetests -v --rednose  --with-coverage
 #   - python tests/getdata.py
 #   - python tests/ivenus/signon.py
 #   - nosetests --exe
