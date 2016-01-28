@@ -22,7 +22,7 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p /home/travis/mc
   - export PATH=/home/travis/mc/bin:$PATH
-  - pip install codecov
+#  - pip install codecov
 
 after_success:
   - codecov
@@ -36,7 +36,7 @@ install:
   - source activate testenv
   - python setup.py install
 #  - pip install coveralls
-#  - pip install codecov
+  - pip install codecov
   - pip install rednose
 
 script:

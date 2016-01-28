@@ -6,7 +6,7 @@ Work concerning the Bragg Edge LDRD (check the documentation for more details)
 
 # Tests
 to run the tests
-> nosetests -v --rednose
+> nosetests -v --rednose --with-coverage
 
 # Documentation
 to build the documentation
