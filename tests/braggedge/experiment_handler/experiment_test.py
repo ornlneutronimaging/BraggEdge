@@ -93,6 +93,20 @@ class ExperimentTest(unittest.TestCase):
         _distance_returned = _exp_handler.distance_sample_detector
         self.assertAlmostEqual(_distance_expected, _distance_returned, delta = 1e-6)
         
+    def test_calculate_detector_offset(self):
+        """Assert in Experiment - the detector offset is correctly calculated"""
+        _tof_file = 'tests/data/tof.txt'
+        _tof_obj = TOF(filename = _tof_file)
+        _distance_sample_detector_m = 1.609
+        _lambda_file = 'tests/data/lambda.txt'
+        _lambda_obj = LambdaWavelength(filename = _lambda_file)
+        _exp_handler = Experiment(tof = _tof_obj.tof,
+                                  lambda_array = _lambda_obj.lambda_array,
+                                  distance_sample_detector_m = _distance_sample_detector_m)
+        _offset_expected_micros = 4500 #micros
+        _offset_calculated = _exp_handler.detector_offset_micros
+        self.assertAlmostEqual(_offset_expected_micros, _offset_calculated, 
+                               delta = 1e-6)
 
 if __name__ == '__main__':
     unittest.main()

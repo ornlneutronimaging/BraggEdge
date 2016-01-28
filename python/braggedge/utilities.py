@@ -2,6 +2,7 @@ import numpy as np
 
 
 class Utilities(object):
+    """Utilities class"""
 
     list_of_time_units = ['s', 'ms', 'micros', 'ns']
 
@@ -131,9 +132,28 @@ class Utilities(object):
         * ValueError if array do not have the same size
         """
         if len(numerator) != len(denominator):
-            raise ValueError("Array do not have the same size!")
+            raise ValueError("Arrays do not have the same size!")
         
         return numerator / denominator
+            
+    @staticmethod
+    def array_minus_array(array1=None, array2=None):
+        """Substract second array from first array provided
+        
+        Parameters:
+        * array1: left side of the '-' operator
+        * array2: right side of the '-' operator
+        
+        Returns:
+        * Array1 - Array2
+        
+        Raises:
+        * ValueError if arrays do not have the same size
+        """
+        if len(array1) != len(array2):
+            raise ValueError("Arrays do not have the same size!")
+        
+        return array1 - array2
             
     @staticmethod
     def load_csv(filename=None):

@@ -8,34 +8,50 @@ class BraggEdge(object):
         
     Variables:
         
-      * metadata: dictionary of 'lattice' and 'crystal_structure' of material given
-      * hkl: array of first 'number_of_bragg_edges' hkl available values 
-      * bragg_edges: array of first 'number_of_bragg_edges' bragg edges values
+      From **python**, first you need to import the package
+
+    >>> from braggedge.braggedge import BraggEdge
     
-      >>> from braggedge.braggedge import BraggEdge
-      >>> _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-      >>> print("Crystal Structure is: %s" %_handler.metadata['cyrstal_structure]))
-      'BCC'
-      >>> print("Lattice is %.2f" %_handler.metadata['lattice'])
-      2.87
-      >>> print("hkl are: " , _handler.hkl)
-      hkl are: [][1,1,0],[2,0,0],[2,1,1],[2,2,0]]
-      >>> print("bragg edges are: ", _handler.bragg_edges)
-      bragg edges are: [2.0268, 1.4332, 1.1702, 1.0134]
-      >>> print(_handler)
-      ===================================
-      Material: Fe
-      Lattice: 2.8664A
-      Crystal Structure: BCC
-      Using local metadata Table: True
-      ===================================
-       h | k | l |   d(A)  |    BraggEdge
-      ===================================
-       1 | 1 | 0 |  2.0269 |    4.0537
-       2 | 0 | 0 |  1.4332 |    2.8664
-       2 | 1 | 1 |  1.1702 |    2.3404
-       2 | 2 | 0 |  1.0134 |    2.0269
-      ===================================
+    For a particular element you can retrieve:
+     - lattice parameter
+     - h, k and l values
+     - Crystal structure
+     - bragg edges values
+     
+    For this example, we are retrieving the data for *Fe* and we are only
+    interested by the first *4* crystal orientation.
+    
+    >>> _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
+    >>> print("Crystal Structure is: %s" %_handler.metadata['cyrstal_structure]))
+    'BCC'
+    >>> print("Lattice is %.2f" %_handler.metadata['lattice'])
+    2.87
+    >>> print("hkl are: " , _handler.hkl)
+    hkl are: [][1,1,0],[2,0,0],[2,1,1],[2,2,0]]
+    >>> print("bragg edges are: ", _handler.bragg_edges)
+    bragg edges are: [2.0268, 1.4332, 1.1702, 1.0134]
+    
+    
+    It is also possible to display all metadata at once
+    
+    >>> print(_handler)
+    ===================================
+    Material: Fe
+    Lattice: 2.8664A
+    Crystal Structure: BCC
+    Using local metadata Table: True
+    ===================================
+     h | k | l |   d(A)  |    BraggEdge
+    ===================================
+     1 | 1 | 0 |  2.0269 |    4.0537
+     2 | 0 | 0 |  1.4332 |    2.8664
+     2 | 1 | 1 |  1.1702 |    2.3404
+     2 | 2 | 0 |  1.0134 |    2.0269
+    ===================================
+    
+    Then you can export the resulting metadata into a CSV file
+    
+    >>> _handler.export(filename = 'my_file_name.txt')
     
     """
     

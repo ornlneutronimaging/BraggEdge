@@ -120,6 +120,20 @@ class UtilitiesTest(unittest.TestCase):
         _ratio_returned = Utilities.array_divide_array(numerator = _numerator,
                                                        denominator = _denominator)
         self.assertTrue(all(_ratio_expected == _ratio_returned))
-
+        
+    def test_array_minus_array_raise_error(self):
+        """Assert in Utilities - array1 minus array2 raise error if not same size"""
+        _array1 = np.array([1, 2, 3])
+        _array2 = np.array([1, 2])
+        self.assertRaises(ValueError, Utilities.array_minus_array, _array1, _array2)
+        
+    def test_array_minus_array_works(self):
+        """Assert in Utilities - array1 minus array2 works returns correct array"""
+        _array1 = np.array([2, 4, 6])
+        _array2 = np.array([2, 3, 4])
+        _array_returned = Utilities.array_minus_array(_array1, _array2)
+        _array_expected = np.array([0, 1, 2])
+        self.assertTrue(all(_array_expected == _array_returned))
+        
 if __name__ == '__main__':
     unittest.main()
