@@ -1,6 +1,6 @@
 import unittest
 import os
-from neutronbraggedge.material_handler import config
+from neutronbraggedge import config
 from neutronbraggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
 
 

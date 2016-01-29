@@ -1,6 +1,8 @@
 import sys
 import numpy as np
+import configparser
 from .structure_handler import StructureHandler
+from ..config import config_file as config_config_file
 
 
 class BraggEdgeCalculator(object):
@@ -13,8 +15,6 @@ class BraggEdgeCalculator(object):
     
     """
     
-    _list_structure = ['FCC', 'BCC']
-
     def __init__(self, structure_name="FCC", lattice=None, number_of_set=10):
         self.structure = structure_name #only used to test validity of input
         self._structure = structure_name
@@ -27,7 +27,12 @@ class BraggEdgeCalculator(object):
     
     @structure.setter
     def structure(self, structure_name):
-        print('here')
+        
+        _config_file = config_config_file
+        config_obj = configparser.ConfigParser()
+        config_obj.read(_config_file)
+        self._list_structure = config_obj['DEFAULT']['list_structure']
+        
         if not (structure_name in self._list_structure):
             raise ValueError("Structure name should be in the list " , self._list_structure)
         self._structure = structure_name

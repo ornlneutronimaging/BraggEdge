@@ -5,8 +5,8 @@ quickly retrieve the metadata for a given material
 
 import pandas as pd
 import configparser
-from .config import config_file as config_config_file
-from .config import local_table as config_local_table
+from ..config import config_file as config_config_file
+from ..config import local_table as config_local_table
 
 
 class RetrieveMetadataTable(object):
@@ -27,7 +27,6 @@ class RetrieveMetadataTable(object):
     
     >>> retrieve_url_meta = RetrieveMetadataTable()
     >>> _table = retrieve_url_meta.get_table(use_local_table = False)
-    
     
     """
     

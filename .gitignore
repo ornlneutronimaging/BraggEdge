@@ -3,3 +3,5 @@
 .ipynb*
 /tests/BraggEdge_data_set
 /docs/_build/*
+.coverage
+/cover/*
