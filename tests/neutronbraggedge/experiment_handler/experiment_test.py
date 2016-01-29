@@ -79,6 +79,18 @@ class ExperimentTest(unittest.TestCase):
         self.assertTrue(os.path.isfile(_output_filename))
         os.remove(_output_filename) # cleanup temp file
         
+    def test_create_csv_lambda_file_without_providing_name(self):
+        """Assert in Experiment - no file is created if no filename is provided"""
+        _tof_file = 'tests/data/tof.txt'
+        _tof_obj = TOF(filename = _tof_file)
+        _distance_source_detector_m = 1.609
+        _detector_offset_micros = 4500
+        _output_file_name = 'tests/data/no_file.txt'
+        _exp_obj = Experiment(tof = _tof_obj.tof,
+                              distance_source_detector_m = _distance_source_detector_m,
+                              detector_offset_micros = _detector_offset_micros)
+        self.assertRaises(ValueError, _exp_obj.export_lambda)
+
     def test_calculate_distance_source_detector(self):
         """Assert in Experiment - the distance source detector is corectly calculated"""
         _tof_file = 'tests/data/tof.txt'

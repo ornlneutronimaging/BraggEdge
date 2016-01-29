@@ -134,7 +134,7 @@ class Experiment(object):
         * filename: name of output file to create
         """
         if filename is None:
-            return
+            raise ValueError("Please provide a file name!")
         
         _metadata = []
         _metadata.append("Lambda (Angstroms)")
@@ -147,3 +147,4 @@ class Experiment(object):
         Utilities.save_csv(filename = filename, 
                            data = self.lambda_array,
                            metadata = _metadata)
+        

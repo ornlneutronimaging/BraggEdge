@@ -37,6 +37,7 @@ install:
 #  - pip install coveralls
   - pip install codecov
   - pip install rednose
+  - pip install coverage
 
 script:
   - nosetests -v --rednose --cover-package=neutronbraggedge --with-coverage 
