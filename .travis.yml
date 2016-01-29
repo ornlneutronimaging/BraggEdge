@@ -40,7 +40,7 @@ install:
   - pip install rednose
 
 script:
-  - nosetests -v --rednose  --with-coverage
+  - nosetests -v --rednose  --with-coverage --cover-package=python.neutronbraggedge
 #   - python tests/getdata.py
 #   - python tests/ivenus/signon.py
 #   - nosetests --exe
