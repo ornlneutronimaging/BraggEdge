@@ -22,7 +22,6 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p /home/travis/mc
   - export PATH=/home/travis/mc/bin:$PATH
-#  - pip install codecov
 
 after_success:
   - codecov
@@ -40,7 +39,7 @@ install:
   - pip install rednose
 
 script:
-  - nosetests -v --rednose  --with-coverage --cover-package=python.neutronbraggedge
+  - nosetests -v --rednose --cover-package=neutronbraggedge --with-coverage 
 #   - python tests/getdata.py
 #   - python tests/ivenus/signon.py
 #   - nosetests --exe
