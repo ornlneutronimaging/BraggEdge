@@ -13,6 +13,11 @@ class TestBraggEdgesHandler(unittest.TestCase):
         _handler = BraggEdgeCalculator()
         self.assertEqual("FCC", _handler.structure)
         
+    def test_braggedge_calculator_eror_when_bad_structure_given(self):
+        """Assert in braggedge calculator - error is raised when bad structure given"""
+        _structure_name = "FakeStructure"
+        self.assertRaises(ValueError, BraggEdgeCalculator, _structure_name)
+
     def test_right_structure_name_is_passed_in_constructor(self):
         """Assert that structure name passed in constructor is correctly used"""
         _structure_name = "BCC"

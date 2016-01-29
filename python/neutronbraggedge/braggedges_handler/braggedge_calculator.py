@@ -16,6 +16,7 @@ class BraggEdgeCalculator(object):
     _list_structure = ['FCC', 'BCC']
 
     def __init__(self, structure_name="FCC", lattice=None, number_of_set=10):
+        self.structure = structure_name #only used to test validity of input
         self._structure = structure_name
         self._number_of_set = number_of_set
         self.lattice = lattice
@@ -26,6 +27,7 @@ class BraggEdgeCalculator(object):
     
     @structure.setter
     def structure(self, structure_name):
+        print('here')
         if not (structure_name in self._list_structure):
             raise ValueError("Structure name should be in the list " , self._list_structure)
         self._structure = structure_name
