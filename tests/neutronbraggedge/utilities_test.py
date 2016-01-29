@@ -88,6 +88,10 @@ class UtilitiesTest(unittest.TestCase):
                                                              from_units = 's',
                                                              to_units = 's')))
         
+    def test_array_multiply_coeff_with_no_array(self):
+        """Assert in utilities - multiply nothing by a coeff value"""
+        self.assertRaises(ValueError, Utilities.array_multiply_coeff)
+
     def test_array_multiply_coeff(self):
         """Assert in utilities - multiply array by coeff value"""
         _data = np.array([1., 2., 3., 4., 5.])
@@ -96,6 +100,10 @@ class UtilitiesTest(unittest.TestCase):
                                                     coeff = _coeff)
         _expected_data = np.array([2.5, 5., 7.5, 10, 12.5]) 
         self.assertTrue(all(_expected_data == _new_data))   
+
+    def test_array_add_coeff_with_no_array(self):
+        """Assert in utilities - add nothing to a coeff value"""
+        self.assertRaises(ValueError, Utilities.array_add_coeff)
 
     def test_array_add_coeff(self):
         """Assert in utilities - adding coeff to array"""

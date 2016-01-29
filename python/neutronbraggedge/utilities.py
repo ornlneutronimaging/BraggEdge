@@ -86,7 +86,7 @@ class Utilities(object):
         * data * coefficient
         """
         if data is None:
-            return None
+            raise ValueError("Give me at least something to multiply!")
     
         final_data = np.array([])
         for _item in data:
@@ -107,7 +107,7 @@ class Utilities(object):
         * data + coefficient
         """
         if data is None:
-            return None
+            raise ValueError("Give ma at least something to add!")
         
         final_data = np.array([])
         for index in range(len(data)):
