@@ -1,1 +1,1 @@
-nosetests -v --rednose  --with-coverage
+nosetests -v --rednose  --with-coverage --cover-package=python.neutronbraggedge
