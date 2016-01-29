@@ -15,6 +15,16 @@ class TofTest(unittest.TestCase):
         _lambda_handler = LambdaWavelength(data = _lambda_array)
         self.assertTrue(all(_lambda_array == _lambda_handler.lambda_array))
 
+    def test_loading_normal_array_data(self):
+        """Assert in LambdaWavelength - loading of np.array array"""
+        _lambda_array = np.array([1, 2., 3., 4.])
+        _lambda_handler = LambdaWavelength(data = _lambda_array)
+        self.assertTrue(all(_lambda_array == _lambda_handler.lambda_array))
+
+    def test_not_lambda_array_provided(self):
+        """Assert in LambdaWavelength - no lambda array provided"""
+        self.assertRaises(ValueError, LambdaWavelength)
+
     def test_loading_auto_lambda_array(self):
         """Assert in LambdaWavelength - auto loading of array"""
         _lambda_filename = 'tests/data/lambda.txt'
@@ -27,6 +37,11 @@ class TofTest(unittest.TestCase):
                                      1.14441253343e-09, 1.14693023313e-09, 1.14944793284e-09,
                                      1.15196563254e-09, 1.15448333225e-09]) 
         self.assertTrue(all(_lambda_expected[0:5] == _lambda_handler.lambda_array[0:5]))
+
+    def test_load_bad_file_name(self):
+        """Assert in LambdaWavelength - file name is provided but does not exist"""
+        _lambda_filename = 'tests/data/i_do_not_exist.txt'
+        self.assertRaises(IOError, LambdaWavelength, _lambda_filename)
 
 if __name__ == '__main__':
     unittest.main()

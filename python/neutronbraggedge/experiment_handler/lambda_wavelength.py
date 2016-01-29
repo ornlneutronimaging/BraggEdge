@@ -45,9 +45,6 @@ class LambdaWavelength(object):
             else:
                 raise ValueError("Please provide a lambda array")
 
-        if self.lambda_array is None:
-            raise ValueError("Please provide a lambda array")
-
         
     def load_data(self):
         """Load the data from the filename name provided"""
