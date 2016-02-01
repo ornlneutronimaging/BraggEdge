@@ -6,7 +6,7 @@ from ..utilities import Utilities
 class TOF(object):
     """This class handles the loading of the TOF and the automatic conversion to 's'"""
     
-    def __init__(self, filename=None, tof=None, units='s'):
+    def __init__(self, filename=None, tof_array=None, units='s'):
         """Constructor of the TOF class
         
         Arguments:
@@ -20,7 +20,7 @@ class TOF(object):
                     4.
                     5.
 
-        * tof: optional tof array. This argument will be ignored if filename is not None
+        * tof_array: optional tof array. This argument will be ignored if filename is not None
         * units: optional units of the input tof array (default to 'seconds')
 
         Raises:
@@ -38,16 +38,16 @@ class TOF(object):
             else:
                 raise IOError("File does not exist")
         else:
-            if (tof is not None):
-                if (not type(tof) is np.ndarray):
-                    self.tof = np.array(tof)
+            if (tof_array is not None):
+                if (not type(tof_array) is np.ndarray):
+                    self.tof_array = np.array(tof_array)
                 else:
-                    self.tof = tof
+                    self.tof_array = tof_array
             else:
                 raise ValueError("Please provide a tof array")
 
         if units is not 's':
-            self.tof = Utilities.convert_time_units(data = tof,
+            self.tof_array = Utilities.convert_time_units(data = tof_array,
                                                     from_units = units,
                                                     to_units = 's')
         
@@ -56,5 +56,5 @@ class TOF(object):
         """Load the data from the filename name provided"""
         
         # only loaded implemented so far !
-        self.tof = Utilities.load_csv(filename = self.filename)
+        self.tof_array = Utilities.load_csv(filename = self.filename)
         
