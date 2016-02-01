@@ -51,7 +51,10 @@ class RetrieveMaterialMetadata(object):
         
     def _retrieve_metadata(self):
         """retrieve the metadata ('lattice constant','crystal structure')"""
-        _metadata = self.table.loc[self._material]
+        try:
+            _metadata = self.table.loc[self._material]
+        except KeyError:
+            raise KeyError("Material unknown")
         self._retrieve_lattice(_metadata)
         self._retrieve_crystal_structure(_metadata)
         
@@ -60,11 +63,12 @@ class RetrieveMaterialMetadata(object):
         
     def _retrieve_crystal_structure(self, _metadata):
         _full_crystal_str = _metadata[1]
+
         if 'FCC' in _full_crystal_str:
             _crystal_str = 'FCC'
         elif 'BCC' in _full_crystal_str:
             _crystal_str = 'BCC'
         else:
-            _crystal_str = ''
+            raise NameError("Crystal Structure not supported yet!")
         self.crystal_structure = _crystal_str
     
