@@ -85,6 +85,12 @@ class TestBraggEdge(unittest.TestCase):
         self.assertTrue(os.path.isfile(_filename))
         os.remove(_filename) #cleanup temp file
     
+    def test_create_export_unsuported_file_raise_error(self):
+        """Assert in BraggEdge - NotImplementedError raised when trying to create unsuported output format"""
+        _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
+        _filename = 'remove_me.txt'
+        self.assertRaises(NotImplementedError, _handler.export, _filename, 'do_not_exist_yet')
+
 
 if __name__ == '__main__':
     unittest.main()
