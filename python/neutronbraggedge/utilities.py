@@ -183,6 +183,27 @@ class Utilities(object):
             raise ValueError("Bad file format")        
         
     @staticmethod
+    def load_ascii(filename=None, sep=''):
+        """Load an ascii file using the separator provided to separete the value in the same row
+        
+        Parameters:
+        * filename: ascii full file name of file to load
+        * sep: default ' '. Separator to use to separate values in the same row
+        
+        Returns:
+        Array of values 
+        
+        Raise:
+        ValueError if file does not exist or format is wrong
+        """
+        _input_file = filename
+        try:
+            _final_array = np.genfromtxt(_input_file, delimiter = sep)
+            return _final_array
+        except:
+            raise ValueError("Bad file format!")
+        
+    @staticmethod
     def save_csv(filename=None, metadata=None, data=None):
         """Create comma separated file (CSV)
         

@@ -113,7 +113,9 @@ class Experiment(object):
         
     
     def calculate_lambda(self):
-        """return the lambda array when tof_array, distance_source_detector and detector_offset are provided"""
+        """return the lambda array when tof_array, distance_source_detector and 
+        detector_offset are provided
+        """
         _tof_with_offset = self.calculate_tof_with_detector_offset() 
 
         # calculate the constant factor

@@ -142,6 +142,21 @@ class UtilitiesTest(unittest.TestCase):
         _array_returned = Utilities.array_minus_array(_array1, _array2)
         _array_expected = np.array([0, 1, 2])
         self.assertTrue(all(_array_expected == _array_returned))
+
+    def test_load_ascii_raise_value_error(self):
+        """Assert in Utilities - testing load_ascii - ValueError is raised when file format is wrong"""
+        input_file = 'tests/data/bad_file.txt'
+        self.assertRaises(ValueError, Utilities.load_ascii, input_file)
+
+    def test_load_ascii_with_space_separator(self):
+        """Assert in Utilities - testing load_ascii - space separated file read correctly"""
+        input_file = 'tests/data/good_tof.txt'
+        _array = Utilities.load_ascii(filename = input_file,
+                                      sep = ' ')[0]
+        expected_start_of_array = np.array([[1., 20.],[2., 21.]])[0]
+        returned_array = _array[0:2]
+        self.assertTrue(all(expected_start_of_array == returned_array))
+
         
 if __name__ == '__main__':
     unittest.main()

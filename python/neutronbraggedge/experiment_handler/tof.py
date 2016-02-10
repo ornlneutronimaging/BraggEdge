@@ -47,7 +47,7 @@ class TOF(object):
                 raise ValueError("Please provide a tof array")
 
         if units is not 's':
-            self.tof = Utilities.convert_time_units(data = tof,
+            self.tof = Utilities.convert_time_units(data = self.tof,
                                                     from_units = units,
                                                     to_units = 's')
         
@@ -55,6 +55,12 @@ class TOF(object):
     def load_data(self):
         """Load the data from the filename name provided"""
         
-        # only loaded implemented so far !
-        self.tof = Utilities.load_csv(filename = self.filename)
+        # only loader implemented so far !
+        _ascii_array = Utilities.load_ascii(filename = self.filename, sep='')
+        try:
+            _tof_column = _ascii_array[:,0]
+            self.tof = _tof_column
+        except:
+            ValueError("File Format Invalid!")
+
         

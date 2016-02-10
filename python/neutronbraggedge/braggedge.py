@@ -186,3 +186,4 @@ class BraggEdge(object):
                          _d_spacing[index],
                          _bragg_edges[index]])
         return _data
+
