@@ -40,7 +40,7 @@ class ExperimentTest(unittest.TestCase):
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_s = 4500e-6
-        _exp_obj = Experiment(tof = _tof_obj.tof,
+        _exp_obj = Experiment(tof = _tof_obj.tof_array,
                               distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_s)
         self.assertAlmostEqual(2.45869e-7, _exp_obj._h_over_MnLds, delta = 0.0001)
@@ -51,7 +51,7 @@ class ExperimentTest(unittest.TestCase):
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
-        _exp_obj = Experiment(tof = _tof_obj.tof,
+        _exp_obj = Experiment(tof = _tof_obj.tof_array,
                               distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
         _lambda_expected = np.array([1.10664704e-09, 1.10916474e-09, 1.11168244e-09, 1.11420014e-09,
@@ -71,7 +71,7 @@ class ExperimentTest(unittest.TestCase):
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
-        _exp_obj = Experiment(tof = _tof_obj.tof,
+        _exp_obj = Experiment(tof = _tof_obj.tof_array,
                               distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
         _output_filename = 'tests/data/remove_me.txt'
@@ -86,7 +86,7 @@ class ExperimentTest(unittest.TestCase):
         _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
         _output_file_name = 'tests/data/no_file.txt'
-        _exp_obj = Experiment(tof = _tof_obj.tof,
+        _exp_obj = Experiment(tof = _tof_obj.tof_array,
                               distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
         self.assertRaises(ValueError, _exp_obj.export_lambda)
@@ -98,11 +98,10 @@ class ExperimentTest(unittest.TestCase):
         _detector_offset_micros = 4500
         _lambda_file = 'tests/data/lambda.txt'
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
-
-        _tof = _tof_obj.tof[0:20]
+        _tof_array = _tof_obj.tof_array[0:20]
         _lambda_array = _lambda_obj.lambda_array[0:20]
 
-        _exp_handler = Experiment(tof = _tof,
+        _exp_handler = Experiment(tof = _tof_array,
                                   lambda_array = _lambda_array,
                                   detector_offset_micros = _detector_offset_micros)
         _distance_expected = 1.609 #m
@@ -117,11 +116,10 @@ class ExperimentTest(unittest.TestCase):
         _distance_source_detector_m = 1.609
         _lambda_file = 'tests/data/lambda.txt'
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
-
-        _tof = _tof_obj.tof[0:20]
+        _tof_array = _tof_obj.tof_array[0:20]
         _lambda_array = _lambda_obj.lambda_array[0:20]
 
-        _exp_handler = Experiment(tof = _tof,
+        _exp_handler = Experiment(tof = _tof_array,
                                   lambda_array = _lambda_array,
                                   distance_source_detector_m = _distance_source_detector_m)
         _offset_expected_micros = 4500 #micros
