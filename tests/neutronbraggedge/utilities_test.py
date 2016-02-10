@@ -143,6 +143,11 @@ class UtilitiesTest(unittest.TestCase):
         _array_expected = np.array([0, 1, 2])
         self.assertTrue(all(_array_expected == _array_returned))
 
+    def test_load_csv_raise_value_error(self):
+        """Assert in Utilities - testing load_csv - ValueError raised when wrong file format"""
+        input_file = 'tests/data/bad_file.txt'
+        self.assertRaises(ValueError, Utilities.load_csv, input_file)
+
     def test_load_ascii_raise_value_error(self):
         """Assert in Utilities - testing load_ascii - ValueError is raised when file format is wrong"""
         input_file = 'tests/data/bad_file.txt'

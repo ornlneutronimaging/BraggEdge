@@ -57,9 +57,6 @@ class TOF(object):
         
         # only loader implemented so far !
         _ascii_array = Utilities.load_ascii(filename = self.filename, sep='')
-        try:
-            _tof_column = _ascii_array[:,0]
-            self.tof_array = _tof_column
-        except:
-            ValueError("File Format Invalid!")
+        _tof_column = _ascii_array[:,0]
+        self.tof_array = _tof_column
 
