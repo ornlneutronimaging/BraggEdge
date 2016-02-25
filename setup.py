@@ -11,7 +11,7 @@ setup(
     package_dir = {'': "python"},
     package_data = { 'python.neutronbraggedge' : ['material_list.dat']},
 #    package_data = { 'python.neutronbraggedge' : ['python/neutronbraggedgedata/material_list.dat']},
-    include_package_data = False,
+    include_package_data = True,
     test_suite = 'tests',
     install_requires = [
         'numpy',
