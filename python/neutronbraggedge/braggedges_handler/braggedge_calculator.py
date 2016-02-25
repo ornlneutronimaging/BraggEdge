@@ -29,6 +29,7 @@ class BraggEdgeCalculator(object):
     def structure(self, structure_name):
         
         _config_file = config_config_file
+        print(_config_file)
         config_obj = configparser.ConfigParser()
         config_obj.read(_config_file)
         self._list_structure = config_obj['DEFAULT']['list_structure']
