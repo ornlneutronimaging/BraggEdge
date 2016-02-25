@@ -10,6 +10,7 @@ setup(
     packages = find_packages("python", exclude=['tests', 'notebooks']),
     package_dir = {'': "python"},
     package_data = { 'python.neutronbraggedge' : ['data/material_list.dat']},
+    include_package_data = True,
     test_suite = 'tests',
     install_requires = [
         'numpy',
