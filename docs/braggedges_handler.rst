@@ -1,9 +1,9 @@
 The BraggEdges Handler Reference
 ================================
 
-.. automodule:: braggedge.braggedges_handler.braggedge_calculator
+.. automodule:: neutronbraggedge.braggedges_handler.braggedge_calculator
     :members:
     
-.. automodule:: braggedge.braggedges_handler.structure_handler
+.. automodule:: neutronbraggedge.braggedges_handler.structure_handler
     :members:
 

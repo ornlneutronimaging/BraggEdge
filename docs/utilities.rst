@@ -1,6 +1,6 @@
 The Utilities Reference
 =======================
 
-.. automodule:: braggedge.utilities
+.. automodule:: neutronbraggedge.utilities
     :members:
 

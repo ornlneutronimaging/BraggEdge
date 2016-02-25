@@ -1,5 +1,5 @@
 The API Reference
 =================
 
-.. automodule:: braggedge.braggedge
+.. automodule:: neutronbraggedge.braggedge
     :members:

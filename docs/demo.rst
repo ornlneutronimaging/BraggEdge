@@ -1,12 +1,12 @@
 How to use This library
 =======================
 
->>> import braggedge
+>>> import neutronbraggedge
 
 From **python**, first you need to import the package
 
 
->>> from braggedge.braggedge import BraggEdge
+>>> from neutronbraggedge.braggedge import BraggEdge
 
 Metadata of Elements
 --------------------
@@ -52,7 +52,7 @@ Using local metadata Table: True
 Lambda Calculation
 ------------------
 
->>> import braggedge.experiment_handler
+>>> import neutronbraggedge.experiment_handler
 
 In order to convert a TOF range into lambda, you will need to provide:
  - distance source-detector (in meters)
@@ -69,11 +69,11 @@ or by providing the name of an ascii file name where each tof is on its own row
  
 Then it is possible to calculate the Lambda array
 
->>> distance_source_detector_m = 1.609
+>>> distance_source_detector_m = 16.09
 >>> detector_offset_micros = 4500
->>> _exp = Experiment(tof = _tof_handler.tof, distance_source_detector_m = distance_source_detector_m, detector_offset_micros = detector_offset_micros)
+>>> _exp = Experiment(tof = _tof_handler.tof_array, distance_source_detector_m = distance_source_detector_m, detector_offset_micros = detector_offset_micros)
 >>> print(_exp.lambda_array)
-[1.10664e-9, 1.109165e-9, 1.111682e-9, 1.114200e-9]
+[1.10664e-10, 1.109165e-10, 1.111682e-10, 1.114200e-10]
 
 To export lambda into a csv file
 
@@ -83,7 +83,7 @@ To export lambda into a csv file
 Distance source-Detector Calculation
 ------------------------------------
 
->>> import braggedge.experiment_handler
+>>> import neutronbraggedge.experiment_handler
 
 In order to calculate the *source-detector* length, you must provide:
  - detector offset (micros)
@@ -100,7 +100,7 @@ or by providing the name of an ascii file name where each tof is on its own row
  
 Same thing with lambda array
 
->>> _lambda_handler = LambdaWavelength(data = [1.10664e-9, 1.109165e-9, 1.111682e-9, 1.114200e-9])
+>>> _lambda_handler = LambdaWavelength(data = [1.10664e-10, 1.109165e-10, 1.111682e-10, 1.114200e-10])
 
 or by providing the name of an ascii file where each lambda is on its own row
 
@@ -109,15 +109,15 @@ or by providing the name of an ascii file where each lambda is on its own row
 Then
 
 >>> detector_offset_micros = 4500
->>> _exp = Experiment(tof = _tof_handler.tof, lambda_array = _lambda_handler.lambda, detector_offset_micros = detector_offset_micros)
+>>> _exp = Experiment(tof = _tof_handler.tof_array, lambda_array = _lambda_handler.lambda, detector_offset_micros = detector_offset_micros)
 >>> print(_exp.distance_source_detector_m)
-1.609
+16.09
 
 
 Detector Offset Calculation
 ---------------------------
 
->>> import braggedge.experiment_handler
+>>> import neutronbraggedge.experiment_handler
 
 In order to calculate the *detector offsetr*, you must provide:
  - distance source-detector (m)
@@ -142,7 +142,7 @@ or by providing the name of an ascii file where each lambda is on its own row
 
 Then
 
->>> distance_source_detector_m = 1.409
->>> _exp = Experiment(tof = _tof_handler.tof, lambda_array = _lambda_handler.lambda, distance_source_detector_m = distance_source_detector_m)
+>>> distance_source_detector_m = 14.09
+>>> _exp = Experiment(tof = _tof_handler.tof_array, lambda_array = _lambda_handler.lambda, distance_source_detector_m = distance_source_detector_m)
 >>> print(_exp.detector_offset_micros)
 4500

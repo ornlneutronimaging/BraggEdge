@@ -1,12 +1,12 @@
 The Material Handler Reference
 ==============================
 
-.. automodule:: braggedge.material_handler.retrieve_material_metadata
+.. automodule:: neutronbraggedge.material_handler.retrieve_material_metadata
     :members:
 
-.. automodule:: braggedge.material_handler.retrieve_metadata_table
+.. automodule:: neutronbraggedge.material_handler.retrieve_metadata_table
     :members:
      
-.. automodule:: braggedge.material_handler.config
+.. automodule:: neutronbraggedge.config
     :members:
      

@@ -1,11 +1,11 @@
 The Experiment Handler Reference
 ================================
 
-.. automodule:: braggedge.experiment_handler.experiment
+.. automodule:: neutronbraggedge.experiment_handler.experiment
     :members:
 
-.. automodule:: braggedge.experiment_handler.tof
+.. automodule:: neutronbraggedge.experiment_handler.tof
     :members:
 
-.. automodule:: braggedge.experiment_handler.lambda_wavelength
+.. automodule:: neutronbraggedge.experiment_handler.lambda_wavelength
     :members:
