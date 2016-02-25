@@ -2,7 +2,7 @@
 This class will retrieve the table from the URL and reformat it to be able to 
 quickly retrieve the metadata for a given material
 """
-
+#import os
 import pandas as pd
 import configparser
 from ..config import config_file as config_config_file
@@ -56,6 +56,10 @@ class RetrieveMetadataTable(object):
     def retrieve_table_local(self):
         """retrieve the local table"""
         self._local_table_file = config_local_table
+        
+
+
+
         local_table = pd.read_csv(self._local_table_file)
         _table = local_table.set_index("Material")
         self.table = _table
