@@ -13,8 +13,8 @@ class TestRetrieveMetadataTable(unittest.TestCase):
     def test_retrieve_table_from_url(self):
         """checking if the table is correctly loaded from URL"""
        
-        retrieve_meta = RetrieveMetadataTable()
-        _table = retrieve_meta.get_table(use_local_table=False)
+        retrieve_meta = RetrieveMetadataTable(use_local_table=False)
+        _table = retrieve_meta.get_table()
         _shape = _table.shape
 
         nbr_column = 3

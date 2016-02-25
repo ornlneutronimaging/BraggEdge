@@ -47,7 +47,7 @@ class RetrieveMaterialMetadata(object):
     def _retrieve_table(self):
         """retrieve the table using the url defined in the config file"""
         metadata_table = RetrieveMetadataTable()
-        self.table = metadata_table.get_table(use_local_table = self.use_local_table)
+        self.table = metadata_table.get_table()
         
     def _retrieve_metadata(self):
         """retrieve the metadata ('lattice constant','crystal structure')"""

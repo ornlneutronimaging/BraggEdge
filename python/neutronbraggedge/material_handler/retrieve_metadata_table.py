@@ -30,8 +30,10 @@ class RetrieveMetadataTable(object):
     
     """
     
-    def __init__(self):
-        self._retrieve_url()
+    def __init__(self, use_local_table=True):
+        self.use_local_table = use_local_table
+        if not use_local_table: 
+            self._retrieve_url()        
         
     def _retrieve_url(self):
         """retrieve the default url defined in the top config file"""
@@ -40,13 +42,13 @@ class RetrieveMetadataTable(object):
         config_obj.read(self._config_file)
         self.url = config_obj['DEFAULT']['material_metadata_url']
         
-    def retrieve_table(self, use_local_table=True):
+    def retrieve_table(self):
         """retrieve the table that contain the material/lattice parameters....
         by default, the local version is retrieved first, but the web version can
         be selected instead by using False on use_local_table flag
         
         """
-        if use_local_table:
+        if self.use_local_table:
             self.retrieve_table_local()
         else:
             self.retrieve_table_from_url()
@@ -72,7 +74,7 @@ class RetrieveMetadataTable(object):
         _table = _table.set_index('Material')
         self.table = _table
 
-    def get_table(self, use_local_table=True):
+    def get_table(self):
         """return the table (via url or locally) according to flag used
         
         Args:
@@ -82,5 +84,5 @@ class RetrieveMetadataTable(object):
         Pandas table of material/lattice parameters ...
 
         """
-        self.retrieve_table(use_local_table = use_local_table)
+        self.retrieve_table()
         return self.table
