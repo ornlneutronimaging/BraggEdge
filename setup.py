@@ -9,7 +9,7 @@ setup(
     version = "0.2",
     packages = find_packages("python", exclude=['tests', 'notebooks']),
     package_dir = {'': "python"},
-    package_data = { 'python.neutronbraggedge' : ['material_list.dat']},
+    package_data = { 'python.neutronbraggedge' : ['material_list.dat', 'config.cfg']},
     include_package_data = True,
     test_suite = 'tests',
     install_requires = [
