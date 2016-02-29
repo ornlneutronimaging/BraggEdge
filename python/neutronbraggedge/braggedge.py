@@ -4,7 +4,7 @@ from .utilities import Utilities
 
 
 class BraggEdge(object):
-    """This is from where the user will retrieve all metadtaa and calculation
+    """This is from where the user will retrieve all metadata and calculation
         
     Variables:
         
