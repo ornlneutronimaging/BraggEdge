@@ -146,3 +146,87 @@ Then
 >>> _exp = Experiment(tof = _tof_handler.tof_array, lambda_array = _lambda_handler.lambda, distance_source_detector_m = distance_source_detector_m)
 >>> print(_exp.detector_offset_micros)
 4500
+
+
+Lattice Calculator
+------------------
+
+>>> from neutronbraggedge.lattice_handler.lattice import Lattice
+
+In order to calculate the average lattice for a given material, the following information must be
+provided:
+  - material name
+  - crystal structure
+  - bragg edge array 
+  
+example:
+
+>>> o_lattice = Lattice(material = "Si",
+                        crystal_structure = "FCC",
+                        bragg_edge_array = [1.1, None, 3.3, 4.4])
+
+The algorithm automatically calculate the hkl bragg edge sequence and the lattice
+
+Those calculation can be display using 
+>>> o_lattice.display_hkl_bragg_edge()
+hkl Bragg Edge Table
+==================================================
+hkl 		 Bragg Edge 	 Lattice
+--------------------------------------------------
+[1, 1, 1]	 1.1000		 0.9526
+[2, 0, 0]	 nan		 nan
+[2, 2, 0]	 3.3000		 4.6669
+[2, 2, 2]	 4.4000		 7.6210
+--------------------------------------------------
+
+
+or
+
+>>> o_lattice.display_lattice_statistics()
+Lattice Statistics
+==================================================
+min: 0.95263
+max: 7.62102
+median: 4.66690
+mean: 4.41352
+std: 2.72825
+--------------------------------------------------
+
+
+or
+
+>> o_lattice.display_recap()
+ -- Recap --
+==================================================
+Material: 'Si'
+Crystal Structure: 'FCC'
+--------------------------------------------------
+
+hkl Bragg Edge Table
+==================================================
+hkl 		 Bragg Edge 	 Lattice
+--------------------------------------------------
+[1, 1, 1]	 1.1000		 0.9526
+[2, 0, 0]	 nan		 nan
+[2, 2, 0]	 3.3000		 4.6669
+[2, 2, 2]	 4.4000		 7.6210
+--------------------------------------------------
+Lattice Statistics
+==================================================
+min: 0.95263
+max: 7.62102
+median: 4.66690
+mean: 4.41352
+std: 2.72825
+--------------------------------------------------
+
+
+To retrieve the various values:
+>>> print(o_lattice.hkl)
+[[1, 1, 1], [2, 0, 0], [2, 2, 0], [2, 2, 2]]
+
+>>> print(o_lattice.lattice_statistics)
+{'mean': 4.4135187510990521, 'min': 0.95262794416288255, 'median': 4.6669047558312133, 'max': 7.6210235533030604, 'std': 2.7282507644454284}
+
+>>> print(o_lattice.lattice_statistics['mean'])
+4.4135187511
