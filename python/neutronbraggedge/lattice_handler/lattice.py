@@ -34,7 +34,7 @@ class Lattice(object):
         o_bragg_calculator.calculate_hkl()
         self.hkl = o_bragg_calculator.hkl
         
-        self.calculate()
+        self._calculate()
     
     @property
     def crystal_structure(self):
@@ -61,7 +61,7 @@ class Lattice(object):
         _bragg_edge_array_formated = np.array(_bragg_edge_array_formated)
         return _bragg_edge_array_formated
         
-    def calculate(self):
+    def _calculate(self):
         """calculate the lattice parameters step by step"""
         self._match_bragg_edge_with_hkl()
         self._calculate_lattice_array()
@@ -158,6 +158,7 @@ class Lattice(object):
         print("")
     
     def display_recap(self):
+        """Display a summary of input and outputs"""
         print(" -- Recap --")
         print("=" * self.space)
         print("Material: %r" %self.material)

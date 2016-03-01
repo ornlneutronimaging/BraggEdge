@@ -16,6 +16,7 @@ Contents:
    material_handler
    braggedges_handler
    experiment_handler
+   lattice_handler
    utilities
 
 
