@@ -56,10 +56,6 @@ class RetrieveMetadataTable(object):
     def retrieve_table_local(self):
         """retrieve the local table"""
         self._local_table_file = config_local_table
-        
-
-
-
         local_table = pd.read_csv(self._local_table_file)
         _table = local_table.set_index("Material")
         self.table = _table
