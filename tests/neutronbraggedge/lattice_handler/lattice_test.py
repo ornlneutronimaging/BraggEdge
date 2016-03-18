@@ -131,7 +131,7 @@ class TestLattice(unittest.TestCase):
         self.assertAlmostEqual(0.952628, _statistics['min'], delta = _delta)
         self.assertAlmostEqual(7.621024, _statistics['max'], delta = _delta)
         self.assertAlmostEqual(3.433452, _statistics['median'], delta = _delta)
-        self.assertAlmostEqual(3.860139, _statistics['mean'], delta = _delta)
+        self.assertAlmostEqual(3.860139, _statistics['mean'][0], delta = _delta)
 
     def test_display_statistics(self):
         """Assert in Lattice - lattice statistics correctly displayed for Si"""

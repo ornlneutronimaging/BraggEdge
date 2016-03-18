@@ -153,11 +153,8 @@ class Lattice(object):
         
         #mean
         _mean = np.nanmean(self.lattice_array)
-        _lattice_statistics['mean'] = _mean
-        
-        #error
         _error = np.sqrt(np.sum(np.power(self.lattice_error, self.lattice_error)))
-        _lattice_statistics['error'] = _error
+        _lattice_statistics['mean'] = [_mean, _error]
         
         #std
         _std = np.nanstd(self.lattice_array)
@@ -173,7 +170,7 @@ class Lattice(object):
         print("min: %.5f" %_lattice_statistics['min'])
         print("max: %.5f" %_lattice_statistics['max'])
         print("median: %.5f" %_lattice_statistics['median'])
-        print("mean: %.5f +/- %.5f" %(_lattice_statistics['mean'], _lattice_statistics['error']))
+        print("mean: %.5f +/- %.5f" %(_lattice_statistics['mean'][0], _lattice_statistics['mean'][1]))
         print("std: %.5f" %_lattice_statistics['std'])
         print("-" * self.space)
         print("")
