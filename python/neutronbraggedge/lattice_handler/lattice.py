@@ -9,7 +9,7 @@ class Lattice(object):
     lattice parameter
     """
     
-    space = 50
+    space = 75
     
     material = None
     crystal_structure = None
@@ -87,14 +87,18 @@ class Lattice(object):
         """Display the hkl_bragg_edge list using pretty table form"""
         print("hkl Bragg Edge Table")
         print("=" * self.space)
-        print("hkl \t\t Bragg Edge \t Lattice")
+        print("hkl \t\t Bragg Edge Value\t Bragg Edge Error \t Lattice")
         print("-" * self.space)
         _lattice_array = self.lattice_array
         for _index, _row in enumerate(self.hkl_bragg_edge):
             _key = _row[0]
             _value = _row[1]
+            _error = _row[2]
             _lattice = _lattice_array[_index]
-            print("%r\t %.4f\t\t %.4f" %(_key, _value, _lattice))
+            if np.isnan(_error):
+                print("%r\t %.5f \t\t\t %.5f \t\t\t %.5f" %(_key, _value, _error, _lattice))
+            else:
+                print("%r\t %.5f \t\t %.5f \t\t %.5f" %(_key, _value, _error, _lattice))
         print("-" * self.space)
         print()
         return True
@@ -153,7 +157,7 @@ class Lattice(object):
         
         #mean
         _mean = np.nanmean(self.lattice_array)
-        _error = np.sqrt(np.sum(np.power(self.lattice_error, self.lattice_error)))
+        _error = self._calculate_mean_error(self.lattice_error)
         _lattice_statistics['mean'] = [_mean, _error]
         
         #std
@@ -161,6 +165,18 @@ class Lattice(object):
         _lattice_statistics['std'] = _std
         
         self.lattice_statistics = _lattice_statistics
+       
+    def  _calculate_mean_error(self, lattice_error):
+        _mean_error = 0
+        _index = 0
+        _sum = 0
+        for _error in lattice_error:
+            if not np.isnan(_error):
+                _step1 = _error * _error
+                _sum += _step1
+                _index += 1
+        _mean_error = np.sqrt(_sum)/ _index
+        return _mean_error
         
     def display_lattice_statistics(self):
         """Display the lattice statistics using a pretty table form"""
