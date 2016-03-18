@@ -19,6 +19,7 @@ class Lattice(object):
     def __init__(self, material=None, 
                  crystal_structure=None, 
                  bragg_edge_array=None,
+                 bragg_edge_error_array=None,
                  use_local_metadata_table=True):
         
         self.material = material
@@ -26,6 +27,7 @@ class Lattice(object):
         self.crystal_structure = crystal_structure #only used to run test
         self.use_local_metadata = use_local_metadata_table
         self.bragg_edge_array = self._format_array(bragg_edge_array)
+        self.bragg_edge_error_array = self._format_array(bragg_edge_error_array)
     
         #retrieve hkl
         o_bragg_calculator = BraggEdgeCalculator(structure_name = crystal_structure, 
@@ -54,6 +56,12 @@ class Lattice(object):
     def _format_array(self, bragg_edge_array):
         """Make sure that None value are replaced by np.NaN"""
         _bragg_edge_array_formated = []
+
+        if bragg_edge_array is None:
+            sz = len(self.bragg_edge_array)
+            _bragg_edge_array_formated = np.zeros((sz))
+            return _bragg_edge_array_formated
+
         for _value in bragg_edge_array:
             if _value is None:
                 _value = np.NaN
@@ -70,8 +78,9 @@ class Lattice(object):
     def _match_bragg_edge_with_hkl(self):
         """Match each bragg edge with its equivalent hkl"""
         _bragg_edge_array = self.bragg_edge_array
+        _bragg_edge_array_error = self.bragg_edge_error_array
         
-        zipped = zip(self.hkl, _bragg_edge_array)
+        zipped = zip(self.hkl, _bragg_edge_array, _bragg_edge_array_error)
         self.hkl_bragg_edge = list(zipped)
         
     def display_hkl_bragg_edge(self):
@@ -94,22 +103,30 @@ class Lattice(object):
         """Calculate the array of lattice parameters"""
         _hkl_bragg_edge = self.hkl_bragg_edge
         _lattice_array = []
+        _lattice_error_array = []
         for _row in _hkl_bragg_edge:
             _hkl = _row[0]
             _bragg_edge = _row[1]
-            _lattice = self._calculate_lattice_coefficient(hkl = _hkl,
-                                                          bragg_edge = _bragg_edge)
+            _bragg_error = _row[2]
+            [_lattice, _lattice_error] = self._calculate_lattice_coefficient(hkl = _hkl,
+                                                                             bragg_edge = _bragg_edge,
+                                                                             bragg_error = _bragg_error)
             _lattice_array.append(_lattice)
+            _lattice_error_array.append(_lattice_error)
+
         self.lattice_array = _lattice_array
+        self.lattice_error = _lattice_error_array
             
-    def _calculate_lattice_coefficient(self, hkl=None, bragg_edge=None):
+    def _calculate_lattice_coefficient(self, hkl=None, bragg_edge=None, bragg_error=None):
         """Calculate the lattice coefficient for the given set of hkl and bragg edge"""
         _h, _k, _l = hkl
         _term1 = np.sqrt(_h**2 + _k**2 + _l**2)
         _term2 = bragg_edge/2.
         
         _lattice = _term2 * _term1
-        return _lattice
+        _lattice_error = _term1 * bragg_error / 2.
+
+        return [_lattice, _lattice_error]
     
     def _calculate_lattice_statistics(self):
         """Calculate the statistics of the lattice array
@@ -138,6 +155,10 @@ class Lattice(object):
         _mean = np.nanmean(self.lattice_array)
         _lattice_statistics['mean'] = _mean
         
+        #error
+        _error = np.sqrt(np.sum(np.power(self.lattice_error, self.lattice_error)))
+        _lattice_statistics['error'] = _error
+        
         #std
         _std = np.nanstd(self.lattice_array)
         _lattice_statistics['std'] = _std
@@ -152,7 +173,7 @@ class Lattice(object):
         print("min: %.5f" %_lattice_statistics['min'])
         print("max: %.5f" %_lattice_statistics['max'])
         print("median: %.5f" %_lattice_statistics['median'])
-        print("mean: %.5f" %_lattice_statistics['mean'])
+        print("mean: %.5f +/- %.5f" %(_lattice_statistics['mean'], _lattice_statistics['error']))
         print("std: %.5f" %_lattice_statistics['std'])
         print("-" * self.space)
         print("")

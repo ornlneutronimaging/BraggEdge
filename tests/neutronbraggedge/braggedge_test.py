@@ -1,5 +1,6 @@
 import unittest
 import os
+import numpy as np
 from neutronbraggedge.braggedge import BraggEdge
 
 
@@ -90,6 +91,21 @@ class TestBraggEdge(unittest.TestCase):
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
         _filename = 'remove_me.txt'
         self.assertRaises(NotImplementedError, _handler.export, _filename, 'do_not_exist_yet')
+
+    def test_calculate_experimental_lattice_with_no_input_provided(self):
+        """Assert in BraggEdge - calculate exp. lattice - ValueError raised if no experimental bragg edge array provided """
+        _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
+        self.assertRaises(ValueError, _handler.get_experimental_lattice_parameter)
+        
+    def test_calculate_experimental_lattice_with_value_and_error_different_size(self):
+        """Assert in BraggEdge - bragg edge value and error have different sizes"""
+        _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
+        exp_bragg_value = np.array([1,2,3])
+        exp_bragg_error = np.array([0.1, 0.2])
+        self.assertRaises(ValueError, _handler.get_experimental_lattice_parameter, exp_bragg_value,
+                          exp_bragg_error)
+        
+        
 
 
 if __name__ == '__main__':

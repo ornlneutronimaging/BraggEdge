@@ -1,5 +1,6 @@
 import unittest
 import os
+import numpy as np
 from neutronbraggedge.braggedges_handler.braggedge_calculator import BraggEdgeCalculator
 
 
@@ -116,15 +117,34 @@ class TestBraggEdgesHandler(unittest.TestCase):
         self.assertAlmostEqual(1.0/2., _handler.d_spacing[1], delta=0.0001)
         self.assertAlmostEqual(0.7071/2., _handler.d_spacing[2], delta=0.0001)
 
-    def test_bragg_edge_for_first_hkl_of_fcc(self):
-        """Assert the bragg edge values for the first FCC structure are correct"""
-        _handler = BraggEdgeCalculator(structure_name = "FCC", lattice=1.)
-        _handler.calculate_hkl()
-        _handler.calculate_bragg_edges()
-        self.assertAlmostEqual(1.1547, _handler.bragg_edges[0], delta=0.0001)
-        self.assertAlmostEqual(1.0, _handler.bragg_edges[1], delta=0.0001)
-        self.assertAlmostEqual(0.7071, _handler.bragg_edges[2], delta=0.0001)
+    #def test_bragg_edge_for_first_hkl_of_fcc(self):
+        #"""Assert the bragg edge values for the first FCC structure are correct"""
+        #_handler = BraggEdgeCalculator(structure_name = "FCC", lattice=1.)
+        #_handler.calculate_hkl()
+        #_handler.calculate_bragg_edges()
+        #self.assertAlmostEqual(1.1547, _handler.bragg_edges[0], delta=0.0001)
+        #self.assertAlmostEqual(1.0, _handler.bragg_edges[1], delta=0.0001)
+        #self.assertAlmostEqual(0.7071, _handler.bragg_edges[2], delta=0.0001)
 
+    #def test_bragg_edge_calculate_exp_lattice(self):
+        #"""Assert braggedge_calculator - experimental lattice correctly calculated"""
+        #_handler = BraggEdgeCalculator(structure_name = "FCC", lattice=1.)
+        #_handler.calculate_hkl()
+        #_bragg_edge_exp_value = np.array([4.15297, 3.59671, 2.54284, 2.16852])
+        #_bragg_edge_exp_error = np.array([0.00017, 0.00010, 0.00008, 0.00007])
+        #_handler.calculate_lattice_array(_bragg_edge_exp_value, _bragg_edge_exp_error)
+        #_lattice_exp = _handler.lattice_experimental
+        #_expected_value = np.array([3.59658, 3.59671, 3.59612, 3.755987])
+        #self.assertAlmostEqual(_expected_value[0], _lattice_exp[0], delta=0.00001)
+        #self.assertAlmostEqual(_expected_value[1], _lattice_exp[1], delta=0.00001)
+        #self.assertAlmostEqual(_expected_value[2], _lattice_exp[2], delta=0.00001)
+        #self.assertAlmostEqual(_expected_value[3], _lattice_exp[3], delta=0.00001)
+        #_expected_error = np.array([0.00015, 0.0001, 0.000113, 0.00012])
+        #_lattice_error = _handler.lattice_error_experimental
+        #self.assertAlmostEqual(_expected_error[0], _lattice_error[0], delta=0.00001)
+        #self.assertAlmostEqual(_expected_error[1], _lattice_error[1], delta=0.00001)
+        #self.assertAlmostEqual(_expected_error[2], _lattice_error[2], delta=0.00001)
+        #self.assertAlmostEqual(_expected_error[3], _lattice_error[3], delta=0.00001)
 
 if __name__ == '__main__':
     unittest.main()

@@ -82,6 +82,24 @@ class BraggEdge(object):
         self._calculate_hkl()
         self._calculate_braggedges()
         
+    def get_experimental_lattice_parameter(self, experimental_bragg_edge_values = None,
+                                    experimental_bragg_edge_error = None):
+        """calculates the experimental lattice parameter values given an array of 
+        bragg edge values"""
+        
+        if experimental_bragg_edge_error is None:
+            raise ValueError("Please provide an array of bragg edge values")
+        
+        if experimental_bragg_edge_error is not None:
+            if len(experimental_bragg_edge_error) != len(experimental_bragg_edge_values):
+                raise ValueError("Make sure exp. bragg edge value and error have the same size!")
+        
+        _calculator = self._calculator
+        _calculator.calculate_lattice_array(experimental_bragg_edge_values,
+                                            experimental_bragg_edge_error)
+        exp_lattice_parameter = _calculator.lattice_experimentatl
+        return exp_lattice_parameter
+        
     def _retrieve_metadata(self):
         """This method retrieves the lattice and crystal structure of the material"""
         _handler = RetrieveMaterialMetadata(material = self.material,
