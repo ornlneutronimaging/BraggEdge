@@ -38,9 +38,12 @@ install:
   - pip install codecov
   - pip install rednose
   - pip install coverage
+  - pip install flake8 pyflakes
 
 script:
   - nosetests -v --rednose --cover-package=neutronbraggedge --with-coverage 
+  - pyflakes setup.py versioneer.py git_version.py
+  - flake8 git_version.py versioneer.py
 #   - python tests/getdata.py
 #   - python tests/ivenus/signon.py
 #   - nosetests --exe
