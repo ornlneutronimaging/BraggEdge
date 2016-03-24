@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-import versioneer
 from setuptools import setup, find_packages
 
 
 setup(
     name = "neutronbraggedge",
-    version = versioneer.get_version(),
-    cmdclass = versioneer.get_cmdclass(),
+    version = "1.0.1",
     author = "Jean Bilheux",
     author_email = "bilheuxjm@ornl.gov", 
     packages = find_packages("python", exclude=['tests', 'notebooks']),
