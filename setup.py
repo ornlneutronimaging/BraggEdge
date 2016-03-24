@@ -1,12 +1,14 @@
 
 #!/usr/bin/env python
-
+import versioneer
 from setuptools import setup, find_packages
-
 
 setup(
     name = "neutronbraggedge",
-    version = "0.2",
+    version = versioneer.get_version(),
+    cmdclass = versioneer.get_cmdclass(),
+    author = "Jean Bilheux",
+    author_email = "bilheuxjm@ornl.gov", 
     packages = find_packages("python", exclude=['tests', 'notebooks']),
     package_dir = {'': "python"},
     #package_data = { 'python.neutronbraggedge' : ['material_list.dat']},
