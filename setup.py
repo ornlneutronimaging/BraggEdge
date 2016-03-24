@@ -27,8 +27,6 @@ setup(
     ],
     dependency_links = [
     ],
-    author = "iVenus team",
-    author_email = "bilheuxjm@ornl.gov",
     description = "Bragg Edge work at the SNS",
     license = 'BSD',
     keywords = "neutron imaging bragg edge",
