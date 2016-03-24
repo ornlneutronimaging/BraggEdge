@@ -1,0 +1,2 @@
+include versioneer.py
+include python/neutronbraggedge/_version.py
