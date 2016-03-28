@@ -1,0 +1,214 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>neutronbraggedge.experiment_handler.experiment &mdash; braggedge 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="braggedge 1.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../../../index.html">
+          <span>braggedge 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>neutronbraggedge.experiment_handler.experiment</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for neutronbraggedge.experiment_handler.experiment</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">.tof</span> <span class="kn">import</span> <span class="n">TOF</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="kn">import</span> <span class="n">mn</span><span class="p">,</span> <span class="n">h</span>
+<span class="kn">from</span> <span class="nn">..utilities</span> <span class="kn">import</span> <span class="n">Utilities</span>
+
+<div class="viewcode-block" id="Experiment"><a class="viewcode-back" href="../../../experiment_handler.html#neutronbraggedge.experiment_handler.experiment.Experiment">[docs]</a><span class="k">class</span> <span class="nc">Experiment</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class that allows:</span>
+<span class="sd">       - convert the TOF scale into Lambda</span>
+<span class="sd">       - distance source - detector</span>
+<span class="sd">       - detector time offset</span>
+<span class="sd">       </span>
+<span class="sd">       Arguments:</span>
+<span class="sd">       * tof: tof array in s</span>
+<span class="sd">       * lambda_array: mandatory only if detector_offset or distance_source_detector are unknown</span>
+<span class="sd">       * distance_source_detector: mandatory only if lambda is the unknown parameter (m)</span>
+<span class="sd">       * detector_offset: mandatory only if lambda is the unknown parameter (micros)</span>
+<span class="sd">       &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tof</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">lambda_array</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+                 <span class="n">distance_source_detector_m</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> 
+                 <span class="n">detector_offset_micros</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">tof</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Missing TOF array&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tof_array</span> <span class="o">=</span> <span class="n">tof</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance_source_detector</span> <span class="o">=</span> <span class="n">distance_source_detector_m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="n">detector_offset_micros</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_array</span> <span class="o">=</span> <span class="n">lambda_array</span>
+
+        <span class="c1"># if lambda_array is unknown, both distance_source_detector and detector_offset must be provided</span>
+        <span class="k">if</span> <span class="n">lambda_array</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">distance_source_detector_m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">detector_offset_micros</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Mssing arguments to calculate lambda_array&quot;</span><span class="p">)</span>
+
+        <span class="c1"># if lambda_array is provided, either distance_source_detector_m or detector_offset_micros can be missing,</span>
+        <span class="c1"># but not both</span>
+        <span class="k">if</span> <span class="n">lambda_array</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">distance_source_detector_m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">detector_offset_micros</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Missing either distance_source detector or detector_offset&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">lambda_array</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">tof</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;TOF and Lambda do not have the same size !&quot;</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">distance_source_detector_m</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">calculate_distance_source_detector</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">calculate_detector_offset</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">calculate_lambda</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="Experiment.calculate_tof_with_detector_offset"><a class="viewcode-back" href="../../../experiment_handler.html#neutronbraggedge.experiment_handler.experiment.Experiment.calculate_tof_with_detector_offset">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_tof_with_detector_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return the tof with detector_offset applied to it&quot;&quot;&quot;</span>
+        <span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">detector_offset_micros</span>
+        <span class="n">detector_offset_s</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">convert_time_units</span><span class="p">(</span><span class="n">detector_offset_micros</span><span class="p">,</span>
+                                                         <span class="n">from_units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">,</span>
+                                                         <span class="n">to_units</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">)</span>
+        <span class="c1"># apply detector offset to tof array</span>
+        <span class="n">_tof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tof_array</span> 
+        <span class="n">_tof_with_offset</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">array_add_coeff</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">_tof</span><span class="p">,</span>
+                                                     <span class="n">coeff</span> <span class="o">=</span> <span class="n">detector_offset_s</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">_tof_with_offset</span>        </div>
+
+
+<div class="viewcode-block" id="Experiment.calculate_distance_source_detector"><a class="viewcode-back" href="../../../experiment_handler.html#neutronbraggedge.experiment_handler.experiment.Experiment.calculate_distance_source_detector">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_distance_source_detector</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return the distance source detector</span>
+<span class="sd">        </span>
+<span class="sd">        If lambda_array and tof_array are provided, the distance is calculated</span>
+<span class="sd">        Otherwise, the distance_source_detector must be provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_tof_with_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_tof_with_detector_offset</span><span class="p">()</span> 
+        
+        <span class="c1"># calculate the constant factor</span>
+        <span class="n">_coeff</span> <span class="o">=</span> <span class="n">h</span> <span class="o">/</span> <span class="n">mn</span>
+
+        <span class="c1"># multiply constant facor by tof array</span>
+        <span class="n">_numerator</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">array_multiply_coeff</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">_tof_with_offset</span><span class="p">,</span> 
+                                                <span class="n">coeff</span> <span class="o">=</span> <span class="n">_coeff</span><span class="p">)</span>
+
+        <span class="n">_denominator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_array</span>
+        
+        <span class="c1"># divide numerator by denominator</span>
+        <span class="n">_ratio</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">array_divide_array</span><span class="p">(</span><span class="n">numerator</span> <span class="o">=</span> <span class="n">_numerator</span><span class="p">,</span>
+                                              <span class="n">denominator</span> <span class="o">=</span> <span class="n">_denominator</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">distance_source_detector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">_ratio</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Experiment.calculate_detector_offset"><a class="viewcode-back" href="../../../experiment_handler.html#neutronbraggedge.experiment_handler.experiment.Experiment.calculate_detector_offset">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_detector_offset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return the detector time offset value</span>
+<span class="sd">        </span>
+<span class="sd">        If lambda_array and tof_array are provided, the offset is calculated</span>
+<span class="sd">        Otherwise, the detector_offset argument must be provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># calculate the constant factor</span>
+        <span class="n">lSD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_source_detector</span>
+        <span class="n">_coeff</span> <span class="o">=</span> <span class="n">h</span> <span class="o">/</span> <span class="p">(</span><span class="n">mn</span> <span class="o">*</span> <span class="n">lSD</span><span class="p">)</span>
+        <span class="n">_MnLds_over_h</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">/</span><span class="n">_coeff</span>
+        
+        <span class="c1"># lambda / coeff</span>
+        <span class="n">_lambda_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_array</span>
+        <span class="n">_lambda_over_coeff</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">array_multiply_coeff</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">_lambda_array</span><span class="p">,</span>
+                                                            <span class="n">coeff</span> <span class="o">=</span> <span class="n">_MnLds_over_h</span><span class="p">)</span>
+
+        <span class="c1"># (lambda/coeff) - tof</span>
+        <span class="n">_tof</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">tof_array</span>
+        
+        <span class="n">_detector_offset_array</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">array_minus_array</span><span class="p">(</span><span class="n">array1</span> <span class="o">=</span> <span class="n">_lambda_over_coeff</span><span class="p">,</span>
+                                              <span class="n">array2</span> <span class="o">=</span> <span class="n">_tof</span><span class="p">)</span>
+        <span class="n">_detector_offset_s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">_detector_offset_array</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">convert_time_units</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">_detector_offset_s</span><span class="p">,</span>
+                                                                   <span class="n">from_units</span> <span class="o">=</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span>
+                                                                   <span class="n">to_units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span></div>
+        
+    
+<div class="viewcode-block" id="Experiment.calculate_lambda"><a class="viewcode-back" href="../../../experiment_handler.html#neutronbraggedge.experiment_handler.experiment.Experiment.calculate_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;return the lambda array when tof_array, distance_source_detector and </span>
+<span class="sd">        detector_offset are provided</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">_tof_with_offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">calculate_tof_with_detector_offset</span><span class="p">()</span> 
+
+        <span class="c1"># calculate the constant factor</span>
+        <span class="n">lSD</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance_source_detector</span>
+        <span class="n">_coeff</span> <span class="o">=</span> <span class="n">h</span> <span class="o">/</span> <span class="p">(</span><span class="n">mn</span> <span class="o">*</span> <span class="n">lSD</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_h_over_MnLds</span> <span class="o">=</span> <span class="n">_coeff</span>
+
+        <span class="c1"># multiply constant factor by tof array</span>
+        <span class="n">_lambda</span> <span class="o">=</span> <span class="n">Utilities</span><span class="o">.</span><span class="n">array_multiply_coeff</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="n">_tof_with_offset</span><span class="p">,</span> 
+                                                <span class="n">coeff</span> <span class="o">=</span> <span class="n">_coeff</span><span class="p">)</span>
+            
+        <span class="bp">self</span><span class="o">.</span><span class="n">lambda_array</span> <span class="o">=</span> <span class="n">_lambda</span></div>
+        
+<div class="viewcode-block" id="Experiment.export_lambda"><a class="viewcode-back" href="../../../experiment_handler.html#neutronbraggedge.experiment_handler.experiment.Experiment.export_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">export_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;export the lambda array into a CSV data file</span>
+<span class="sd">        </span>
+<span class="sd">        Parameters:</span>
+<span class="sd">        * filename: name of output file to create</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">filename</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Please provide a file name!&quot;</span><span class="p">)</span>
+        
+        <span class="n">_metadata</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Lambda (Angstroms)&quot;</span><span class="p">)</span>
+        <span class="n">_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Distance source-detector (m): </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">distance_source_detector</span><span class="p">)</span>
+        <span class="n">_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Detector offset (micros): </span><span class="si">%.4f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">detector_offset_micros</span><span class="p">)</span>
+        <span class="n">_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">_metadata</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Lambda (Angstroms)&quot;</span><span class="p">)</span>
+        
+        <span class="n">Utilities</span><span class="o">.</span><span class="n">save_csv</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span><span class="p">,</span> 
+                           <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lambda_array</span><span class="p">,</span>
+                           <span class="n">metadata</span> <span class="o">=</span> <span class="n">_metadata</span><span class="p">)</span></div></div>
+        
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, JeanBilheux.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>
