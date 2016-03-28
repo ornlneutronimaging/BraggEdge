@@ -13,13 +13,13 @@ class TestBraggEdge(unittest.TestCase):
         """Assert the correct metadata are returned for Ni"""
         _handler = BraggEdge(material = 'Ni')
         _metadata = _handler.metadata
-        self.assertAlmostEqual(3.5238, _metadata['lattice'], delta = 0.01)
-        self.assertEqual('FCC', _metadata['crystal_structure'])
+        self.assertAlmostEqual(3.5238, _metadata['lattice']['Ni'], delta = 0.01)
+        self.assertEqual('FCC', _metadata['crystal_structure']['Ni'])
     
     def test_retrieving_correct_number_and_first_2_values_hkl_for_Si(self):
         """Assert the correct hkl first 2values are returned for Si, and the correct number"""
         _handler = BraggEdge(material = 'Si', number_of_bragg_edges = 4)
-        _hkl = _handler.hkl
+        _hkl = _handler.hkl['Si']
         self.assertEqual([1, 1, 1], _hkl[0])
         self.assertEqual([2, 0, 0], _hkl[1])
         self.assertEqual(4, len(_hkl))
@@ -27,7 +27,7 @@ class TestBraggEdge(unittest.TestCase):
     def test_calculating_d_spacing_values_for_Ni(self):
         """Assert the first 3 d_spacing are correct for Ni"""
         _handler = BraggEdge(material = 'Ni', number_of_bragg_edges = 4)
-        _d_spacing = _handler.d_spacing
+        _d_spacing = _handler.d_spacing['Ni']
         self.assertAlmostEqual(2.0345, _d_spacing[0], delta = 0.001)
         self.assertAlmostEqual(1.7619, _d_spacing[1], delta = 0.001)
         self.assertAlmostEqual(1.2459, _d_spacing[2], delta = 0.001)
@@ -35,7 +35,7 @@ class TestBraggEdge(unittest.TestCase):
     def test_retrieving_first_2_values_hkl_for_Fe(self):
         """Assert the correct hkl first 2 values are returned for Fe """
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-        _hkl = _handler.hkl
+        _hkl = _handler.hkl['Fe']
         self.assertEqual([1, 1, 0], _hkl[0])
         self.assertEqual([2, 0, 0], _hkl[1])
         self.assertEqual([2, 1, 1], _hkl[2])
@@ -44,7 +44,7 @@ class TestBraggEdge(unittest.TestCase):
     def test_calculating_bragg_edges_for_Fe(self):
         """Assert the first 3 bragg_edges are correct for Fe"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-        _bragg_edges = _handler.bragg_edges
+        _bragg_edges = _handler.bragg_edges['Fe']
         self.assertAlmostEqual(4.0537, _bragg_edges[0], delta = 0.001)
         self.assertAlmostEqual(2.8664, _bragg_edges[1], delta = 0.001)
         self.assertAlmostEqual(2.3404, _bragg_edges[2], delta = 0.001)
@@ -52,7 +52,6 @@ class TestBraggEdge(unittest.TestCase):
     def test_printing_report(self):
         """Assert the metadata/hkl/braggedges are correctly output"""
         _handler = BraggEdge(material = 'Ni', number_of_bragg_edges = 5)
-        print(_handler)
 
     def test_create_export_csv_no_file_raise_error(self):
         """Assert the IOError is raised when no file name given"""
@@ -62,7 +61,7 @@ class TestBraggEdge(unittest.TestCase):
     def test_create_export_csv_metadata(self):
         """Assert the correct metadata data are created for Fe when using create output file"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-        _metadata = _handler._format_metadata()
+        _metadata = _handler._format_metadata('Fe')
         self.assertEqual("Material: Fe", _metadata[0])
         self.assertEqual("Lattice : 2.8664Angstroms", _metadata[1])
         self.assertEqual("Crystal Structure: BCC", _metadata[2])
@@ -71,7 +70,7 @@ class TestBraggEdge(unittest.TestCase):
     def test_create_export_csv_data(self):
         """Assert the correct data are created for Fe when using create output file"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-        _data = _handler._format_data()
+        _data = _handler._format_data('Fe')
         self.assertEqual(1, _data[0][0])
         self.assertAlmostEqual(2.02685, _data[0][3], delta = 0.0001)
         self.assertAlmostEqual(4.05370, _data[0][4], delta = 0.0001)
@@ -83,13 +82,13 @@ class TestBraggEdge(unittest.TestCase):
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
         _filename = 'remove_me.txt'
         _handler.export(filename = _filename, file_type = 'csv')
-        self.assertTrue(os.path.isfile(_filename))
-        os.remove(_filename) #cleanup temp file
+        self.assertTrue(os.path.isfile('remove_me_Fe.txt'))
+        os.remove('remove_me_Fe.txt') #cleanup temp file
     
     def test_create_export_unsuported_file_raise_error(self):
         """Assert in BraggEdge - NotImplementedError raised when trying to create unsuported output format"""
         _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-        _filename = 'remove_me.txt'
+        _filename = 'remove_me_Fe.txt'
         self.assertRaises(NotImplementedError, _handler.export, _filename, 'do_not_exist_yet')
 
     def test_calculate_experimental_lattice_with_no_input_provided(self):
@@ -104,6 +103,10 @@ class TestBraggEdge(unittest.TestCase):
         exp_bragg_error = np.array([0.1, 0.2])
         self.assertRaises(ValueError, _handler.get_experimental_lattice_parameter, exp_bragg_value,
                           exp_bragg_error)
+        
+    def test_loading_single_material_in_list(self):
+        """Assert in BraggEdge - single element Al data listed in a list correctly caluclated"""
+        _handler = BraggEdge(material = ['Al'], number_of_bragg_edges = 4)
         
         
 

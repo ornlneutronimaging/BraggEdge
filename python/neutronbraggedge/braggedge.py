@@ -1,6 +1,7 @@
 from .material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
 from .braggedges_handler.braggedge_calculator import BraggEdgeCalculator
 from .utilities import Utilities
+import os
 
 
 class BraggEdge(object):
@@ -74,6 +75,9 @@ class BraggEdge(object):
         
         """
 
+        if not (type(material) is list):
+            material = [material]
+
         self.material = material
         self.number_of_bragg_edges = number_of_bragg_edges
         self.use_local_metadata_table = use_local_metadata_table
@@ -102,54 +106,87 @@ class BraggEdge(object):
         
     def _retrieve_metadata(self):
         """This method retrieves the lattice and crystal structure of the material"""
-        _handler = RetrieveMaterialMetadata(material = self.material,
-                                            use_local_table = self.use_local_metadata_table)
-        self.lattice = _handler.lattice
-        self.crystal_structure = _handler.crystal_structure
+        _lattice = {}
+        _crystal_structure = {}
+
+        for _material in self.material:
+            _handler = RetrieveMaterialMetadata(material = _material,
+                                                use_local_table = self.use_local_metadata_table)
+            _lattice[_material] = _handler.lattice
+            _crystal_structure[_material] = _handler.crystal_structure
+                
+
+        self.lattice = _lattice
+        self.crystal_structure = _crystal_structure
     
         self.metadata = {'lattice': self.lattice, 
                 'crystal_structure': self.crystal_structure}
 
     def _calculate_hkl(self):
         """This method calculate the set of hkl up to the number_of_bragg_edges specified"""
-        _calculator = BraggEdgeCalculator(structure_name = self.metadata['crystal_structure'],
-                                          lattice = self.metadata['lattice'],
-                                          number_of_set = self.number_of_bragg_edges)
-        _calculator.calculate_hkl()
-        self._calculator = _calculator
-        self.hkl = _calculator.hkl
+        calculator = {}
+        _hkl = {}
+        
+        for _material in self.material:
+            _structure_name = self.metadata['crystal_structure'][_material]
+            _lattice = self.metadata['lattice'][_material]
+            
+            _calculator = BraggEdgeCalculator(structure_name = _structure_name,
+                                              lattice = _lattice,
+                                              number_of_set = self.number_of_bragg_edges)
+            
+            _calculator.calculate_hkl()
+            calculator[_material] = _calculator
+            _hkl[_material] = _calculator.hkl
+
+        self._calculator = calculator
+        self.hkl = _hkl
 
     def _calculate_braggedges(self):
         """This method calculates the braggedges values (and the d_spacing in the same time)"""
-        _calculator = self._calculator
-        _calculator.calculate_bragg_edges()
-        self.d_spacing = _calculator.d_spacing
-        self.bragg_edges = _calculator.bragg_edges
+        _d_spacing = {}
+        _bragg_edges = {}
+
+        
+        for _material in self.material:
+            _calculator = self._calculator[_material]
+            
+            _calculator.calculate_bragg_edges()
+            _d_spacing[_material] = _calculator.d_spacing
+            _bragg_edges[_material] = _calculator.bragg_edges
+
+        self.d_spacing = _d_spacing
+        self.bragg_edges = _bragg_edges
         
     def __repr__(self):
         """Display the metadata/hkl/d_spacing/bragg edge values"""
         nbr_ticks = 45
-        print('=' * nbr_ticks)
-        print("Material: %s" %self.material)
-        print(u"Lattice : %.4f\u212B" %self.metadata['lattice'])
-        print("Crystal Structure: %s" %self.metadata['crystal_structure'])
-        print("Using local metadata Table: %s" %self.use_local_metadata_table)
-        print('=' * nbr_ticks)
-        print(u" h | k | l |\t d (\u212B)  |\t BraggEdge")
-        print('-' * nbr_ticks)
+        
+        for _material in self.material:
 
-        _hkl = self.hkl
-        _bragg_edges = self.bragg_edges
-        _d_spacing = self.d_spacing
+            print('=' * nbr_ticks)
+            print("Material: %s" %_material)
+            print(u"Lattice : %.4f\u212B" %self.metadata['lattice'][_material])
+            print("Crystal Structure: %s" %self.metadata['crystal_structure'][_material])
+            print("Using local metadata Table: %s" %self.use_local_metadata_table)
+            print('=' * nbr_ticks)
+            print(u" h | k | l |\t d (\u212B)  |\t BraggEdge")
+            print('-' * nbr_ticks)
+
+            _hkl = self.hkl[_material]
+            _bragg_edges = self.bragg_edges[_material]
+            _d_spacing = self.d_spacing[_material]
         
-        for index in range(len(_d_spacing)):
-            print(" %d | %d | %d |\t %.5f |\t %.5f" %(_hkl[index][0],
-                                                      _hkl[index][1],
-                                                      _hkl[index][2], 
-                                                      _d_spacing[index],
-                                                      _bragg_edges[index]))
+            for index in range(len(_d_spacing)):
+                print(" %d | %d | %d |\t %.5f |\t %.5f" %(_hkl[index][0],
+                                                          _hkl[index][1],
+                                                          _hkl[index][2], 
+                                                          _d_spacing[index],
+                                                          _bragg_edges[index]))
         
-        print('=' * nbr_ticks)
+            print('=' * nbr_ticks)
+
+
         return ""
         
     def export(self, filename=None, file_type='csv'):
@@ -167,36 +204,44 @@ class BraggEdge(object):
         """
         if filename is None:
             raise IOError
+
+        for _material in self.material:
+            
+            _filename = self._format_filename(filename, _material)
+            _metadata = self._format_metadata(_material)
+            _data = self._format_data(_material)
+            
+            if file_type is 'csv':
+                Utilities.save_csv(filename = _filename,
+                                   data = _data,
+                                   metadata = _metadata)
         
-        _metadata = self._format_metadata()
-        _data = self._format_data()
-        
-        if file_type is 'csv':
-            Utilities.save_csv(filename = filename,
-                               data = _data,
-                               metadata = _metadata)
-            return
-        
-        raise NotImplementedError
+            else:
+                raise NotImplementedError
         
         
-    def _format_metadata(self):
+    def _format_filename(self, filename, material):
+        _filename, _extension = os.path.splitext(filename)
+        new_filename = os.path.join(_filename + '_' + material + _extension)
+        return new_filename
+        
+    def _format_metadata(self, _material):
         """Format the various metadata to put at the top of output file created"""
         _metadata = []
-        _metadata.append("Material: %s" %self.material)
-        _metadata.append("Lattice : %.4fAngstroms" %self.metadata['lattice'])
-        _metadata.append("Crystal Structure: %s" %self.metadata['crystal_structure'])
+        _metadata.append("Material: %s" %_material)
+        _metadata.append("Lattice : %.4fAngstroms" %self.metadata['lattice'][_material])
+        _metadata.append("Crystal Structure: %s" %self.metadata['crystal_structure'][_material])
         _metadata.append("Using local metadata Table: %s" %self.use_local_metadata_table)
         _metadata.append("")
         _metadata.append("h, k, l, d(Angstroms), BraggEdge")
         return _metadata
     
-    def _format_data(self):
+    def _format_data(self, _material):
         """Format the data for the output file created"""
         _data = []
-        _hkl = self.hkl
-        _bragg_edges = self.bragg_edges
-        _d_spacing = self.d_spacing
+        _hkl = self.hkl[_material]
+        _bragg_edges = self.bragg_edges[_material]
+        _d_spacing = self.d_spacing[_material]
         for index in range(len(_d_spacing)):
             _data.append([_hkl[index][0],
                          _hkl[index][1],
