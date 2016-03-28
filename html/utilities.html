@@ -1,0 +1,180 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>The Utilities Reference &mdash; braggedge 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="static/jquery.js"></script>
+    <script type="text/javascript" src="static/underscore.js"></script>
+    <script type="text/javascript" src="static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="braggedge 1.0.0 documentation" href="index.html" />
+    <link rel="prev" title="The Lattice Handler Reference" href="lattice_handler.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="index.html">
+          <span>braggedge 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>The Utilities Reference</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        «&#160;&#160;<a href="lattice_handler.html">The Lattice Handler Reference</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="module-neutronbraggedge.utilities">
+<span id="the-utilities-reference"></span><h1>The Utilities Reference<a class="headerlink" href="#module-neutronbraggedge.utilities" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="neutronbraggedge.utilities.Utilities">
+<em class="property">class </em><code class="descclassname">neutronbraggedge.utilities.</code><code class="descname">Utilities</code><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities" title="Permalink to this definition">¶</a></dt>
+<dd><p>Utilities class</p>
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.array_add_coeff">
+<em class="property">static </em><code class="descname">array_add_coeff</code><span class="sig-paren">(</span><em>data=None</em>, <em>coeff=1.0</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.array_add_coeff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.array_add_coeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add coefficient to each element of the array</p>
+<p>Parameters:
+* data: array to apply coefficient on
+* coeff: default value is 1. Coefficient to apply</p>
+<p>Returns:
+* data + coefficient</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.array_divide_array">
+<em class="property">static </em><code class="descname">array_divide_array</code><span class="sig-paren">(</span><em>numerator=None</em>, <em>denominator=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.array_divide_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.array_divide_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Divide two arrays of the same size</p>
+<p>Parameters:
+* numerator: numpy array
+* denominator: numpy array</p>
+<p>Returns:
+* numerator / denominator</p>
+<p>Raises:
+* ValueError if array do not have the same size</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.array_minus_array">
+<em class="property">static </em><code class="descname">array_minus_array</code><span class="sig-paren">(</span><em>array1=None</em>, <em>array2=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.array_minus_array"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.array_minus_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Substract second array from first array provided</p>
+<p>Parameters:
+* array1: left side of the &#8216;-&#8216; operator
+* array2: right side of the &#8216;-&#8216; operator</p>
+<p>Returns:
+* Array1 - Array2</p>
+<p>Raises:
+* ValueError if arrays do not have the same size</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.array_multiply_coeff">
+<em class="property">static </em><code class="descname">array_multiply_coeff</code><span class="sig-paren">(</span><em>data=None</em>, <em>coeff=1</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.array_multiply_coeff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.array_multiply_coeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>multiply each element of the array by the coeff</p>
+<p>Parameters:
+* data: array to apply coefficient on
+* coeff: default value is 1. Coefficient to apply</p>
+<p>Returns:
+* data * coefficient</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.convert_time_units">
+<em class="property">static </em><code class="descname">convert_time_units</code><span class="sig-paren">(</span><em>data=None</em>, <em>from_units='micros'</em>, <em>to_units='s'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.convert_time_units"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.convert_time_units" title="Permalink to this definition">¶</a></dt>
+<dd><p>convert the time units</p>
+<p>Parameters:
+* vdata: single data or array of value to convert
+* from_units: default &#8216;micros&#8217;. Must be either [&#8216;s&#8217;,&#8217;micros&#8217;,&#8217;ns&#8217;]
+* to_units: default &#8216;s&#8217;. Must be either [&#8216;s&#8217;, &#8216;micros&#8217;, &#8216;ns&#8217;]</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.get_time_conversion_coeff">
+<em class="property">static </em><code class="descname">get_time_conversion_coeff</code><span class="sig-paren">(</span><em>from_units='micros'</em>, <em>to_units='s'</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.get_time_conversion_coeff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.get_time_conversion_coeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>return the coefficient to use to convert from first units to second units</p>
+<p>Arguments:
+* from_units: default &#8216;micros&#8217;. Must be in the list of list_of_time_units
+* to_units: default &#8216;s&#8217;. Must be in the list of list_of_time_units</p>
+<p>Returns:
+* coefficient to apply to data to convert from first units to second units provided</p>
+<p>Raises:
+* ValueError: if any of the units is not supported</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.load_ascii">
+<em class="property">static </em><code class="descname">load_ascii</code><span class="sig-paren">(</span><em>filename=None</em>, <em>sep=''</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.load_ascii"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.load_ascii" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load an ascii file using the separator provided to separete the value in the same row</p>
+<p>Parameters:
+* filename: ascii full file name of file to load
+* sep: default &#8216; &#8216;. Separator to use to separate values in the same row</p>
+<p>Returns:
+Array of values</p>
+<p>Raise:
+ValueError if file does not exist or format is wrong</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.load_csv">
+<em class="property">static </em><code class="descname">load_csv</code><span class="sig-paren">(</span><em>filename=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.load_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.load_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a csv file and return its content</p>
+<p>Parameters:
+* filename: name of the csv file to load</p>
+<p>Returns:
+contents of the file as an array item for each line</p>
+<p>Raise:
+ValueError if format is wrong</p>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="neutronbraggedge.utilities.Utilities.save_csv">
+<em class="property">static </em><code class="descname">save_csv</code><span class="sig-paren">(</span><em>filename=None</em>, <em>metadata=None</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="modules/neutronbraggedge/utilities.html#Utilities.save_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#neutronbraggedge.utilities.Utilities.save_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create comma separated file (CSV)</p>
+<p>Arguments:
+* filename: name of output file
+* metadata: metadata string array (will be placed at the top of the file with &#8216;#&#8217; in front)
+* data: data float array</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        «&#160;&#160;<a href="lattice_handler.html">The Lattice Handler Reference</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, JeanBilheux.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>

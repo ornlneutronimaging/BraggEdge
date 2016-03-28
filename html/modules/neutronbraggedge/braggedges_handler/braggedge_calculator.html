@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>neutronbraggedge.braggedges_handler.braggedge_calculator &mdash; braggedge 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../../../static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../../static/jquery.js"></script>
+    <script type="text/javascript" src="../../../static/underscore.js"></script>
+    <script type="text/javascript" src="../../../static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="braggedge 1.0.0 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
+  </head>
+  <body role="document">
+      <div class="header" role="banner"><h1 class="heading"><a href="../../../index.html">
+          <span>braggedge 1.0.0 documentation</span></a></h1>
+        <h2 class="heading"><span>neutronbraggedge.braggedges_handler.braggedge_calculator</span></h2>
+      </div>
+      <div class="topnav" role="navigation" aria-label="top navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for neutronbraggedge.braggedges_handler.braggedge_calculator</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">configparser</span>
+<span class="kn">from</span> <span class="nn">.structure_handler</span> <span class="kn">import</span> <span class="n">StructureHandler</span>
+<span class="kn">from</span> <span class="nn">..config</span> <span class="kn">import</span> <span class="n">config_file</span> <span class="k">as</span> <span class="n">config_config_file</span>
+
+
+<div class="viewcode-block" id="BraggEdgeCalculator"><a class="viewcode-back" href="../../../braggedges_handler.html#neutronbraggedge.braggedges_handler.braggedge_calculator.BraggEdgeCalculator">[docs]</a><span class="k">class</span> <span class="nc">BraggEdgeCalculator</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This class calculates the h, k, and l values allowed for the given structure.</span>
+<span class="sd">    The number of h,k,l set is by default set to 10 but can be changed</span>
+<span class="sd">    </span>
+<span class="sd">    Args:</span>
+<span class="sd">    structure_name: default &#39;FCC&#39;. Must be either [&#39;FCC&#39;, &#39;BCC&#39;]</span>
+<span class="sd">    </span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure_name</span><span class="o">=</span><span class="s2">&quot;FCC&quot;</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">number_of_set</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structure</span> <span class="o">=</span> <span class="n">structure_name</span> <span class="c1">#only used to test validity of input</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span> <span class="o">=</span> <span class="n">structure_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_set</span> <span class="o">=</span> <span class="n">number_of_set</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">lattice</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">structure</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span>
+    
+    <span class="nd">@structure.setter</span>
+    <span class="k">def</span> <span class="nf">structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">structure_name</span><span class="p">):</span>
+        
+        <span class="n">_config_file</span> <span class="o">=</span> <span class="n">config_config_file</span>
+        <span class="n">config_obj</span> <span class="o">=</span> <span class="n">configparser</span><span class="o">.</span><span class="n">ConfigParser</span><span class="p">()</span>
+        <span class="n">config_obj</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">_config_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_list_structure</span> <span class="o">=</span> <span class="n">config_obj</span><span class="p">[</span><span class="s1">&#39;DEFAULT&#39;</span><span class="p">][</span><span class="s1">&#39;list_structure&#39;</span><span class="p">]</span>
+        
+        <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">structure_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_structure</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Structure name should be in the list &quot;</span> <span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_list_structure</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span> <span class="o">=</span> <span class="n">structure_name</span>
+        
+    <span class="k">def</span> <span class="nf">calculate_hkl</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">_structure_handler</span> <span class="o">=</span> <span class="n">StructureHandler</span><span class="p">(</span><span class="n">structure</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_structure</span><span class="p">,</span>
+            <span class="n">number_of_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_number_of_set</span><span class="p">)</span>      
+        <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span> <span class="o">=</span> <span class="n">_structure_handler</span><span class="o">.</span><span class="n">hkl</span>
+        
+<div class="viewcode-block" id="BraggEdgeCalculator.calculate_bragg_edges"><a class="viewcode-back" href="../../../braggedges_handler.html#neutronbraggedge.braggedges_handler.braggedge_calculator.BraggEdgeCalculator.calculate_bragg_edges">[docs]</a>    <span class="k">def</span> <span class="nf">calculate_bragg_edges</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;This calculate the d_spacing and bragg edges of the various h, k and l&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span>
+        
+        <span class="n">_bragg_edges_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">_d_spacing</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">_hkl</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">hkl</span><span class="p">:</span>
+            <span class="n">_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_individual_bragg_edge</span><span class="p">(</span><span class="n">lattice</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lattice</span><span class="p">,</span>
+                                                            <span class="n">h</span> <span class="o">=</span> <span class="n">_hkl</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                            <span class="n">k</span> <span class="o">=</span> <span class="n">_hkl</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                                            <span class="n">l</span> <span class="o">=</span> <span class="n">_hkl</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="n">_d_spacing</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">_result</span><span class="p">)</span>
+            <span class="n">_bragg_edges_array</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="mf">2.</span> <span class="o">*</span> <span class="n">_result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bragg_edges</span> <span class="o">=</span> <span class="n">_bragg_edges_array</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">d_spacing</span> <span class="o">=</span> <span class="n">_d_spacing</span></div>
+            
+    <span class="k">def</span> <span class="nf">_calculate_individual_bragg_edge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lattice</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+                                         <span class="n">h</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">l</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">_den</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">h</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">k</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">l</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">lattice</span><span class="p">)</span><span class="o">/</span><span class="n">_den</span></div>
+        
+    <span class="c1">#def _calculate_individual_lattice(self, h=1, k=1, l=1, bragg_edge_value=0, bragg_edge_error=0):</span>
+        <span class="c1">#_num = np.sqrt(h**2 + k**2 + l**2)</span>
+        <span class="c1">#_value = float(bragg_edge_value/2.)*_num</span>
+        <span class="c1">#_error = float(bragg_edge_error/2.)*_num</span>
+        <span class="c1">#return [_value, _error]</span>
+        
+    <span class="c1">#def calculate_lattice_array(self, exp_bragg_edge_value, exp_bragg_edge_error=None):</span>
+        <span class="c1">#&quot;&quot;&quot;calculate the lattice given the hkl and bragg edge value&quot;&quot;&quot;</span>
+        <span class="c1">#_lattice_array = []</span>
+        <span class="c1">#_lattice_error_array = []</span>
+        <span class="c1">#for _index, _hkl in enumerate(exp_bragg_edge_value):</span>
+            <span class="c1">#_hkl = self.hkl[_index]</span>
+            <span class="c1">#_bragg = exp_bragg_edge_value[_index]</span>
+            
+            <span class="c1">#if exp_bragg_edge_error is not None:</span>
+                <span class="c1">#_error = exp_bragg_edge_error[_index]</span>
+            <span class="c1">#else:</span>
+                <span class="c1">#_error = 0</span>
+            <span class="c1">#[_result, _result_error] = self._calculate_individual_lattice(h = _hkl[0],</span>
+                                                                   <span class="c1">#k = _hkl[1],</span>
+                                                                   <span class="c1">#l = _hkl[2],</span>
+                                                                   <span class="c1">#bragg_edge_value = _bragg,</span>
+                                                                   <span class="c1">#bragg_edge_error = _error)</span>
+            <span class="c1">#_lattice_array.append(_result)</span>
+            <span class="c1">#_lattice_error_array.append(_result_error)</span>
+        
+        <span class="c1">#self.lattice_experimental = _lattice_array</span>
+        <span class="c1">#self.lattice_error_experimental = _lattice_error_array</span>
+            
+        <span class="c1">#self.average_lattice_experimental = self._calculate_average_lattice_experimental()</span>
+        
+    <span class="c1">#def _calculate_average_lattice_experimental(self):</span>
+        <span class="c1">#_lattice_exp = self.lattice_experimental</span>
+        <span class="c1">#_lattice_error_exp = self.lattice_error_experimental</span>
+        
+        <span class="c1">#_mean_value = np.mean(_lattice_exp)</span>
+        <span class="c1">#_sum_error = 0</span>
+        <span class="c1">#for _error in _lattice_error_exp:</span>
+            <span class="c1">#_sum_error += _error * _error</span>
+        
+        <span class="c1">#_mean_error = np.sqrt(_sum_error)</span>
+        
+        <span class="c1">#self.mean_lattice_experimental = [_mean_value, _mean_error]</span>
+        
+        
+        
+        
+</pre></div>
+
+      </div>
+      <div class="bottomnav" role="navigation" aria-label="bottom navigation">
+      
+        <p>
+        <a class="uplink" href="../../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer" role="contentinfo">
+        &copy; Copyright 2016, JeanBilheux.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.3.5.
+    </div>
+  </body>
+</html>
