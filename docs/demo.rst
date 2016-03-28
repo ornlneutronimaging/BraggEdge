@@ -11,7 +11,7 @@ From **python**, first you need to import the package
 Metadata of Elements
 --------------------
 
-For a particular element you can retrieve:
+For a particular element, or a list of elements, you can retrieve:
  - lattice parameter
  - h, k and l values
  - Crystal structure
@@ -30,7 +30,6 @@ hkl are: [][1,1,0],[2,0,0],[2,1,1],[2,2,0]]
 >>> print("bragg edges are: ", _handler.bragg_edges)
 bragg edges are: [2.0268, 1.4332, 1.1702, 1.0134]
 
-
 It is also possible to display all metadata at once
 
 >>> print(_handler)
@@ -47,6 +46,55 @@ Using local metadata Table: True
  2 | 1 | 1 |  1.1702 |    2.3404
  2 | 2 | 0 |  1.0134 |    2.0269
 ===================================
+
+In this example, we are retrieving the data for *Fe* and *Al*
+
+>>> _handler = BraggEdge(material=['Al', 'Fe'], number_of_bragg_edges = 4)
+>>> print("Crystal Structure of Al is: %s" %_handler.metadata['Crystal_structure']['Al'])
+'FCC'
+>>> print("Lattice of Al is: %.2f" %_handler.metadata['lattice']['Al'])
+4.45
+
+Here, we display the metadata for a list of material
+>>> print(_handler)
+=============================================
+Material: Al
+Lattice : 4.0460Å
+Crystal Structure: FCC
+Using local metadata Table: True
+=============================================
+ h | k | l |	 d (Å)  |	 BraggEdge
+---------------------------------------------
+ 1 | 1 | 1 |	 2.33596 |	 4.67192
+ 2 | 0 | 0 |	 2.02300 |	 4.04600
+ 2 | 2 | 0 |	 1.43048 |	 2.86095
+ 2 | 2 | 2 |	 1.16798 |	 2.33596
+ 3 | 1 | 1 |	 1.21991 |	 2.43983
+ 3 | 3 | 1 |	 0.92822 |	 1.85643
+ 3 | 3 | 3 |	 0.77865 |	 1.55731
+ 4 | 0 | 0 |	 1.01150 |	 2.02300
+ 4 | 2 | 0 |	 0.90471 |	 1.80943
+ 4 | 2 | 2 |	 0.82589 |	 1.65177
+=============================================
+=============================================
+Material: Fe
+Lattice : 2.8664Å
+Crystal Structure: BCC
+Using local metadata Table: True
+=============================================
+ h | k | l |	 d (Å)  |	 BraggEdge
+---------------------------------------------
+ 1 | 1 | 0 |	 2.02685 |	 4.05370
+ 2 | 0 | 0 |	 1.43320 |	 2.86640
+ 2 | 1 | 1 |	 1.17020 |	 2.34041
+ 2 | 2 | 0 |	 1.01343 |	 2.02685
+ 2 | 2 | 2 |	 0.82746 |	 1.65492
+ 3 | 1 | 0 |	 0.90644 |	 1.81287
+ 3 | 2 | 1 |	 0.76608 |	 1.53216
+ 3 | 3 | 0 |	 0.67562 |	 1.35123
+ 3 | 3 | 2 |	 0.61112 |	 1.22224
+ 4 | 0 | 0 |	 0.71660 |	 1.43320
+=============================================
 
 
 Lambda Calculation
