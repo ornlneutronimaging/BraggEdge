@@ -56,6 +56,7 @@ In this example, we are retrieving the data for *Fe* and *Al*
 4.45
 
 Here, we display the metadata for a list of material
+
 >>> print(_handler)
 =============================================
 Material: Al
