@@ -37,17 +37,23 @@ class RetrieveMaterialMetadata(object):
         """
         if material is None:
             raise NameError("Please provide a material")
+        
 
         self._material = material
         self.use_local_table = use_local_table
 
         self._retrieve_table()
-        self._retrieve_metadata()
+        if not (material.lower() == 'all'):
+            self._retrieve_metadata()
         
     def _retrieve_table(self):
-        """retrieve the table using the url defined in the config file"""
+        """retrieve the table """
         metadata_table = RetrieveMetadataTable()
         self.table = metadata_table.get_table()
+
+    def full_list_material(self):
+        _list_material = self.table.index.values
+        return _list_material
         
     def _retrieve_metadata(self):
         """retrieve the metadata ('lattice constant','crystal structure')"""

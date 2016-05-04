@@ -34,6 +34,15 @@ class TestRetrieveMaterialMetadata(unittest.TestCase):
         """Assert in RetrieveMaterialMetadata - NameError is riased if crystal structure unknown"""
         self.assertRaises(NameError, RetrieveMaterialMetadata, 'VN')
 
+    def test_retrieving_full_list_of_material(self):
+        """Assert in RetrieveMaterialMetadata - Full list of material available returned"""
+        retrieve_material = RetrieveMaterialMetadata(material = 'all',
+                                                     use_local_table = False)
+        
+        list_returned = retrieve_material.full_list_material()
+        list_expected_3_first = ['C (diamond)', 'C (graphite)', 'Si']
+        self.assertTrue(all(list_returned[0:3] == list_expected_3_first))
+        
 
 if __name__ == '__main__':
     unittest.main()
