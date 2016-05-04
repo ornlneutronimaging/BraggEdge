@@ -14,7 +14,11 @@ to run the tests
 # Documentation
 to build the documentation
 > cd docs
+
 > make html
 
 to visualize the documentation, via a browser, open
 > docs/_build/html/index.hmtl
+
+or on the web 
+http://ornlneutronimaging.github.io/BraggEdge/
