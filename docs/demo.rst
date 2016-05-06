@@ -47,6 +47,7 @@ Using local metadata Table: True
  2 | 2 | 0 |  1.0134 |    2.0269
 ===================================
 
+
 In this example, we are retrieving the data for *Fe* and *Al*
 
 >>> _handler = BraggEdge(material=['Al', 'Fe'], number_of_bragg_edges = 4)
@@ -96,6 +97,22 @@ Using local metadata Table: True
  3 | 3 | 2 |	 0.61112 |	 1.22224
  4 | 0 | 0 |	 0.71660 |	 1.43320
 =============================================
+
+It is possible to display the full list of material available
+
+>>> from neutronbraggedge.material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
+>>> retrieve_all_material = RetrieveMaterialMetadata(material = 'all')
+>>> print(retrieve_all_material.full_list_material())
+['C (diamond)' 'C (graphite)' 'Si' 'Ge' 'AlAs' 'AlP' 'AlSb' 'GaP' 'GaAs'
+    'GaSb' 'inconel' 'InP' 'InAs' 'InSb' 'MgO' 'SiC' 'CdS' 'CdSe' 'CdTe' 'ZnO'
+    'ZnS' 'PbS' 'PbTe' 'BN' 'BP' 'CdS' 'ZnS' 'AlN' 'GaN' 'InN' 'LiF' 'LiCl'
+    'LiBr' 'LiI' 'NaF' 'NaCl' 'NaBr' 'NaI' 'KF' 'KCl' 'KBr' 'KI' 'RbF' 'RbCl'
+    'RbBr' 'RbI' 'CsF' 'CsCl' 'CsI' 'Al' 'Fe' 'Ni' 'Cu' 'Mo' 'Pd' 'Ag' 'W'
+    'Pt' 'Au' 'Pb' 'TiN' 'ZrN' 'HfN' 'VN' 'CrN' 'NbN' 'TiC' 'ZrC0.97'
+    'HfC0.99' 'VC0.97' 'NC0.99' 'TaC0.99' 'Cr3C2' 'WC' 'ScN' 'LiNbO3' 'KTaO3'
+    'BaTiO3' 'SrTiO3' 'CaTiO3' 'PbTiO3' 'EuTiO3' 'SrVO3' 'CaVO3' 'BaMnO3'
+    'CaMnO3' 'SrRuO3' 'YAlO3']
+
 
 
 Lambda Calculation

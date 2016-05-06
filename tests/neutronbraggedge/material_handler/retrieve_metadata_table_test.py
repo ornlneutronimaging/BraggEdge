@@ -36,9 +36,6 @@ class TestRetrieveMetadataTable(unittest.TestCase):
         value_0_0 = 'Diamond (FCC)'
         self.assertEqual(value_0_0, _table.values[0][1])
 
-    def test_retrieve_table_from_local(self):
-        """checking the local table can be retrieved"""
-        pass
 
 if __name__ == '__main__':
     unittest.main()
