@@ -22,6 +22,7 @@ setup(
         'lxml',
         'html5lib',
         'beautifulsoup4',
+        'cython'
     ],
     dependency_links = [
     ],
