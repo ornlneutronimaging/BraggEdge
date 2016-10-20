@@ -16,13 +16,13 @@ setup(
                   ],
     test_suite = 'tests',
     install_requires = [
+        'cython',
         'numpy',
         'configparser',
         'pandas',
         'lxml',
         'html5lib',
         'beautifulsoup4',
-        'cython',
     ],
     dependency_links = [
     ],
