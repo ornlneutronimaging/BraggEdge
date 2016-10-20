@@ -9,6 +9,50 @@ class TestBraggEdge(unittest.TestCase):
     def setUp(self):
         pass
 
+
+    def test_raise_error_when_nothing_passed_in(self):
+        """Assert an error is raised when no material are passed in"""
+        self.assertRaises(ValueError, BraggEdge)
+        
+    def test_raise_error_when_bad_new_material_input_format(self):
+        """Assert an error is raised when the new_material array format is wrong"""
+        new_material = [{'wrong_name': 'Ta', 'wrong_lattice_constant': 34545}]
+        self.assertRaises(ValueError, BraggEdge, None, new_material)
+
+    def test_retrieve_correct_metadata_for_single_local_material(self):
+        """Assert the correct metadata are retrieved for a single local material"""
+        new_material = [{'name': 'Ta', 'lattice': 0.5, 'crystal_structure': 'BCC'}]
+        _handler = BraggEdge(new_material = new_material)
+        _metadata = _handler.metadata
+        self.assertEqual(0.5, _metadata['lattice']['Ta'])
+        self.assertEqual('BCC', _metadata['crystal_structure']['Ta'])
+        
+    def test_retrieve_correct_metadata_for_multi_local_material(self):
+        """Assert the correct metadata are retrieved for a couple of local material"""
+        new_material = [{'name': 'Ta', 'lattice': 0.5, 'crystal_structure': 'BCC'},
+                        {'name': 'Ni', 'lattice': 1.5, 'crystal_structure': 'FCC'}]
+        _handler = BraggEdge(new_material = new_material)
+        _metadata = _handler.metadata
+        self.assertEqual(0.5, _metadata['lattice']['Ta'])
+        self.assertEqual(1.5, _metadata['lattice']['Ni'])
+        self.assertEqual('BCC', _metadata['crystal_structure']['Ta'])
+        self.assertEqual('FCC', _metadata['crystal_structure']['Ni'])
+        
+    def test_calculate_d_spacing_for_single_local_material(self):
+        """Assert the d_spacing calculation is correct for a single local material"""
+        new_material = [{'name': 'Ta', 'lattice': 5.0, 'crystal_structure': 'BCC'}]
+        _handler = BraggEdge(new_material = new_material)
+        _d_spacing = _handler.d_spacing
+        self.assertAlmostEqual(_d_spacing['Ta'][0], 3.5355, delta = 0.0001)
+        
+    def test_calculate_hkl_for_single_local_material(self):
+        """Assert the hkl calculation is correct for a single local material"""
+        new_material = [{'name': 'Ta', 'lattice': 5.0, 'crystal_structure': 'BCC'}]
+        _handler = BraggEdge(new_material = new_material)
+        _hkl = _handler.hkl
+        self.assertEqual(_hkl['Ta'][0], [1, 1, 0])
+        self.assertEqual(_hkl['Ta'][1], [2, 0, 0])
+
     def test_retrieving_correct_metadata_for_Ni(self):
         """Assert the correct metadata are returned for Ni"""
         _handler = BraggEdge(material = 'Ni')

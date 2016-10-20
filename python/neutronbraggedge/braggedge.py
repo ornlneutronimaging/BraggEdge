@@ -60,20 +60,46 @@ class BraggEdge(object):
     metadata = None
     bragg_edges = None
     d_spacing = None
-
+    
     def __init__(self, material=None, 
+                 new_material = None,
                  number_of_bragg_edges=10, 
                  use_local_metadata_table=True):
         """
         Constructor
         
         Arguments:
-           material: name of the material such as 'Ni', 'Fe' ...
-           number_of_bragg_edge:  Default 10. Number of row to display and calculate data for.
-           use_local_metadata_table: default True. Use local defined table to retrieve lattice parameters,
+           - material: name of the material such as 'Ni', 'Fe' ...
+           - new_material: dictionary of new materials defined as
+              [{'name': 'Ta',
+               'lattice': 0.333,
+               'crystal_structure': 'FCC'},
+               {'name': 'Ur',
+               'lattice': 0.5555,
+               'crystal_structure': 'BCC'}]
+           - number_of_bragg_edge:  Default 10. Number of row to display and calculate data for.
+           - use_local_metadata_table: default True. Use local defined table to retrieve lattice parameters,
                                      crystal structure. If False, will go to wiki web page.
         
         """
+
+        if material is None:
+            if new_material is None:
+                raise ValueError("No material or new_material defined!")
+            else:
+                #parse dictionary
+                list_material = []
+                try:
+                    
+                    for _element in new_material:
+                        _name = _element['name']
+                        list_material.append(_name)
+                        _lattice_constant = _element['lattice']
+                        _crystal_structure =  _element['crystal_structure']
+                except:
+                    raise ValueError("Check the format of the new element array!")
+                    
+                material = list_material
 
         if not (type(material) is list):
             material = [material]
@@ -82,7 +108,7 @@ class BraggEdge(object):
         self.number_of_bragg_edges = number_of_bragg_edges
         self.use_local_metadata_table = use_local_metadata_table
         
-        self._retrieve_metadata()
+        self._retrieve_metadata(new_material = new_material)
         self._calculate_hkl()
         self._calculate_braggedges()
         
@@ -104,17 +130,26 @@ class BraggEdge(object):
         exp_lattice_parameter = _calculator.lattice_experimentatl
         return exp_lattice_parameter
         
-    def _retrieve_metadata(self):
+    def _retrieve_metadata(self, new_material=None):
         """This method retrieves the lattice and crystal structure of the material"""
         _lattice = {}
         _crystal_structure = {}
 
-        for _material in self.material:
-            _handler = RetrieveMaterialMetadata(material = _material,
-                                                use_local_table = self.use_local_metadata_table)
-            _lattice[_material] = _handler.lattice
-            _crystal_structure[_material] = _handler.crystal_structure
+        if new_material is None: #retrieve infos from ascii table
+            for _material in self.material:
+                _handler = RetrieveMaterialMetadata(material = _material,
+                                                    use_local_table = self.use_local_metadata_table)
+                _lattice[_material] = _handler.lattice
+                _crystal_structure[_material] = _handler.crystal_structure
                 
+        else: #local infos
+            for _element in new_material:
+                _material = _element['name']
+                _local_lattice = _element['lattice']
+                _local_crystal_structure =  _element['crystal_structure']
+
+                _lattice[_material] = _local_lattice
+                _crystal_structure[_material] = _local_crystal_structure
 
         self.lattice = _lattice
         self.crystal_structure = _crystal_structure
