@@ -31,10 +31,8 @@ install:
   - conda config --set always_yes true
   - conda update conda
   - conda create -n testenv pip nose python=$TRAVIS_PYTHON_VERSION numpy astropy scipy
-#  - conda install -n testenv -c scikit-xray xraylib lmfit=0.8.3 netcdf4 # install from scikit-xray channel
+#  - conda install -n testenv -c scikit-xray xraylib lmfit=0.8.3 netcdf4 # install from scikit-xray channel pandas cython
   - source activate testenv
-  - conda install cython
-  - conda install pandas
   - python setup.py install
 #  - pip install coveralls
   - pip install codecov

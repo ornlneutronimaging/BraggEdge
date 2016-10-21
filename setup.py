@@ -16,10 +16,9 @@ setup(
                   ],
     test_suite = 'tests',
     install_requires = [
-        'cython',
         'numpy',
         'configparser',
-        'pandas',
+#        'pandas',
         'lxml',
         'html5lib',
         'beautifulsoup4',
