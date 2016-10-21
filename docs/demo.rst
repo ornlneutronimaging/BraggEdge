@@ -50,7 +50,7 @@ Using local metadata Table: True
 
 In this example, we are retrieving the data for *Fe* and *Al*
 
->>> _handler = BraggEdge(material=['Al', 'Fe'], number_of_bragg_edges = 4)
+>>> _handler = BraggEdge(material=['Al', 'Fe'], number_of_bragg_edges = 10)
 >>> print("Crystal Structure of Al is: %s" %_handler.metadata['Crystal_structure']['Al'])
 'FCC'
 >>> print("Lattice of Al is: %.2f" %_handler.metadata['lattice']['Al'])
@@ -113,6 +113,31 @@ It is possible to display the full list of material available
     'BaTiO3' 'SrTiO3' 'CaTiO3' 'PbTiO3' 'EuTiO3' 'SrVO3' 'CaVO3' 'BaMnO3'
     'CaMnO3' 'SrRuO3' 'YAlO3']
 
+
+In the case where the material is not in the list of material available, it is possible to define "on the fly" 
+this material such as demonstrated here
+
+>>> _handler = BraggEdge(new_material = {'name': "AlSiC", 'lattice': 2.8664, 'crystal_structure': 'BCC'})
+>>> print(_handler)
+===================================
+Material: AlSiC
+Lattice : 2.8664Å
+Crystal Structure: BCC
+Using local metadata Table: True
+=============================================
+ h | k | l |	 d (Å)  |	 BraggEdge
+---------------------------------------------
+ 1 | 1 | 0 |	 2.02685 |	 4.05370
+ 2 | 0 | 0 |	 1.43320 |	 2.86640
+ 2 | 1 | 1 |	 1.17020 |	 2.34041
+ 2 | 2 | 0 |	 1.01343 |	 2.02685
+ 2 | 2 | 2 |	 0.82746 |	 1.65492
+ 3 | 1 | 0 |	 0.90644 |	 1.81287
+ 3 | 2 | 1 |	 0.76608 |	 1.53216
+ 3 | 3 | 0 |	 0.67562 |	 1.35123
+ 3 | 3 | 2 |	 0.61112 |	 1.22224
+ 4 | 0 | 0 |	 0.71660 |	 1.43320
+=============================================
 
 
 Lambda Calculation
