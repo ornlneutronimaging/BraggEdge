@@ -1,6 +1,0 @@
-numpy
-configparser
-pandas
-lxml
-html5lib
-beautifulsoup4
