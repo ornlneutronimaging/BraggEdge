@@ -6,6 +6,9 @@ from ..utilities import Utilities
 class TOF(object):
     """This class handles the loading of the TOF and the automatic conversion to 's'"""
     
+    tof_array = []
+    counts_array = []
+    
     def __init__(self, filename=None, tof_array=None, units='s'):
         """Constructor of the TOF class
         
@@ -14,11 +17,12 @@ class TOF(object):
         (only CSV file is supported so far)
            example: file_tof.txt
                     #first row of the file
-                    1.
-                    2.
-                    3.
-                    4.
-                    5.
+                    1.0  34
+                    2.2  31
+                    3.4  5
+                    4.5  10
+                    5.6  22
+                    ...
 
         * tof_array: optional tof array. This argument will be ignored if filename is not None
         * units: optional units of the input tof array (default to 'seconds')
@@ -59,4 +63,8 @@ class TOF(object):
         _ascii_array = Utilities.load_ascii(filename = self.filename, sep='')
         _tof_column = _ascii_array[:,0]
         self.tof_array = _tof_column
+
+        _counts_column = _ascii_array[:,1]
+        self.counts_array = _counts_column
+        
 

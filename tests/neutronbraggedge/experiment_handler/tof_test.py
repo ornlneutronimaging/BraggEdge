@@ -64,6 +64,13 @@ class TofTest(unittest.TestCase):
         _tof_handler = TOF(filename = _filename)
         _tof_expected = np.array([9.6e-7, 1.12e-5, 2.144e-5, 3.168e-5])
         self.assertTrue(all(_tof_expected == _tof_handler.tof_array[0:4]))
+        
+    def test_loading_counts_column(self):
+        """Assert in TOF - second column (counts) is correctly loaded"""
+        _filename = './tests/data/tof.txt'
+        _tof_handler = TOF(filename = _filename)
+        _counts_expected = np.array([2137, 1988, 1979, 2078])
+        self.assertTrue(all(_counts_expected == _tof_handler.counts_array[0:4]))
 
 
 if __name__ == '__main__':
