@@ -6,3 +6,4 @@
 .coverage
 /cover/*
 .DS_Store*
+/dist/*
