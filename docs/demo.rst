@@ -117,7 +117,7 @@ It is possible to display the full list of material available
 In the case where the material is not in the list of material available, it is possible to define "on the fly" 
 this material such as demonstrated here
 
->>> _handler = BraggEdge(new_material = {'name': "AlSiC", 'lattice': 2.8664, 'crystal_structure': 'BCC'})
+>>> _handler = BraggEdge(new_material = [{'name': "AlSiC", 'lattice': 2.8664, 'crystal_structure': 'BCC'}])
 >>> print(_handler)
 ===================================
 Material: AlSiC
