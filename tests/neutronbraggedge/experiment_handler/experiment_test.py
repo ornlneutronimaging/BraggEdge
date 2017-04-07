@@ -93,10 +93,10 @@ class ExperimentTest(unittest.TestCase):
 
     def test_calculate_distance_source_detector(self):
         """Assert in Experiment - the distance source detector is corectly calculated"""
-        _tof_file = './tests/data/tof.txt'
+        _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _detector_offset_micros = 4500
-        _lambda_file = './tests/data/lambda.txt'
+        _lambda_file = 'tests/data/lambda.txt'
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
         _tof_array = _tof_obj.tof_array[0:20]
         _lambda_array = _lambda_obj.lambda_array[0:20]
@@ -106,15 +106,14 @@ class ExperimentTest(unittest.TestCase):
                                   detector_offset_micros = _detector_offset_micros)
         _distance_expected = 1.609 #m
         _distance_returned = _exp_handler.distance_source_detector
-        print(_distance_returned)
         self.assertAlmostEqual(_distance_expected, _distance_returned, delta = 1e-6)
         
     def test_calculate_detector_offset(self):
         """Assert in Experiment - the detector offset is correctly calculated"""
-        _tof_file = './tests/data/tof.txt'
+        _tof_file = 'tests/data/tof.txt'
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
-        _lambda_file = './tests/data/lambda.txt'
+        _lambda_file = 'tests/data/lambda.txt'
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
         _tof_array = _tof_obj.tof_array[0:20]
         _lambda_array = _lambda_obj.lambda_array[0:20]
