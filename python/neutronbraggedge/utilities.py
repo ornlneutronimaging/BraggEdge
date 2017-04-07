@@ -198,7 +198,8 @@ class Utilities(object):
         """
         _input_file = filename
         try:
-            _final_array = np.genfromtxt(_input_file, delimiter = sep)
+            _final_array = np.genfromtxt(_input_file, 
+                                         delimiter = sep)
             return _final_array
         except:
             raise ValueError("Bad file format!")

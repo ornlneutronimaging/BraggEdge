@@ -9,7 +9,8 @@ from neutronbraggedge.experiment_handler.experiment import Experiment
 class ExperimentTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        _file_path = os.path.dirname(__file__)
+        self.data_path = os.path.abspath(os.path.join(_file_path, '../../data'))
 
     def test_experiment_value_error_when_no_tof_provided(self):
         """Assert in experiemnt - that ValueError is raised when tof array is missing"""
@@ -36,7 +37,7 @@ class ExperimentTest(unittest.TestCase):
         
     def test_experiment_calculate_main_coefficient(self):
         """Assert in experiment - the calculation of main coefficient is correct"""
-        _tof_file = 'tests/data/tof.txt'
+        _tof_file = os.path.join(self.data_path, 'tof.txt')
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_s = 4500e-6
@@ -47,7 +48,7 @@ class ExperimentTest(unittest.TestCase):
     
     def test_experiment_calculate_lambda(self):
         """Assert in experiment - the calculation of lambda is correct"""
-        _tof_file = 'tests/data/tof.txt'
+        _tof_file = os.path.join(self.data_path, 'tof.txt')
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
@@ -67,25 +68,25 @@ class ExperimentTest(unittest.TestCase):
         
     def test_create_csv_lambda_file(self):
         """Assert in Experiment - the lambda file is correctly exported"""
-        _tof_file = 'tests/data/tof.txt'
+        _tof_file = os.path.join(self.data_path, 'tof.txt')
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
         _exp_obj = Experiment(tof = _tof_obj.tof_array,
                               distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
-        _output_filename = 'tests/data/remove_me.txt'
+        _output_filename = os.path.join(self.data_path, 'remove_me.txt')
         _exp_obj.export_lambda(filename = _output_filename)
         self.assertTrue(os.path.isfile(_output_filename))
         os.remove(_output_filename) # cleanup temp file
         
     def test_create_csv_lambda_file_without_providing_name(self):
         """Assert in Experiment - no file is created if no filename is provided"""
-        _tof_file = 'tests/data/tof.txt'
+        _tof_file = os.path.join(self.data_path, 'tof.txt')
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
         _detector_offset_micros = 4500
-        _output_file_name = 'tests/data/no_file.txt'
+        _output_file_name = os.path.join(self.data_path, 'no_file.txt')
         _exp_obj = Experiment(tof = _tof_obj.tof_array,
                               distance_source_detector_m = _distance_source_detector_m,
                               detector_offset_micros = _detector_offset_micros)
@@ -93,10 +94,10 @@ class ExperimentTest(unittest.TestCase):
 
     def test_calculate_distance_source_detector(self):
         """Assert in Experiment - the distance source detector is corectly calculated"""
-        _tof_file = 'tests/data/tof.txt'
+        _tof_file = os.path.join(self.data_path, 'tof.txt')
         _tof_obj = TOF(filename = _tof_file)
         _detector_offset_micros = 4500
-        _lambda_file = 'tests/data/lambda.txt'
+        _lambda_file = os.path.join(self.data_path, 'lambda.txt')
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
         _tof_array = _tof_obj.tof_array[0:20]
         _lambda_array = _lambda_obj.lambda_array[0:20]
@@ -110,10 +111,10 @@ class ExperimentTest(unittest.TestCase):
         
     def test_calculate_detector_offset(self):
         """Assert in Experiment - the detector offset is correctly calculated"""
-        _tof_file = 'tests/data/tof.txt'
+        _tof_file = os.path.join(self.data_path, 'tof.txt')
         _tof_obj = TOF(filename = _tof_file)
         _distance_source_detector_m = 1.609
-        _lambda_file = 'tests/data/lambda.txt'
+        _lambda_file = os.path.join(self.data_path, 'lambda.txt')
         _lambda_obj = LambdaWavelength(filename = _lambda_file)
         _tof_array = _tof_obj.tof_array[0:20]
         _lambda_array = _lambda_obj.lambda_array[0:20]

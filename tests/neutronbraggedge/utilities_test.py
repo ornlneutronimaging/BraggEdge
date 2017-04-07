@@ -7,7 +7,11 @@ from neutronbraggedge.utilities import Utilities
 class UtilitiesTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        _file_path = os.path.dirname(__file__)
+        self.data_path = os.path.abspath(os.path.join(_file_path, '../data'))
+
+    def get_full_path(self, file_name):
+        return os.path.join(self.data_path, file_name)
 
     def test_convert_time_units_raise_value_error_when_no_data_provided(self):
         """Assert in utilities - ValueError raised when no data provided"""
@@ -145,17 +149,17 @@ class UtilitiesTest(unittest.TestCase):
 
     def test_load_csv_raise_value_error(self):
         """Assert in Utilities - testing load_csv - ValueError raised when wrong file format"""
-        input_file = 'tests/data/bad_file.txt'
+        input_file = self.get_full_path('bad_file.txt')
         self.assertRaises(ValueError, Utilities.load_csv, input_file)
 
     def test_load_ascii_raise_value_error(self):
         """Assert in Utilities - testing load_ascii - ValueError is raised when file format is wrong"""
-        input_file = 'tests/data/bad_file.txt'
+        input_file = self.get_full_path('bad_file.txt')
         self.assertRaises(ValueError, Utilities.load_ascii, input_file)
 
     def test_load_ascii_with_space_separator(self):
         """Assert in Utilities - testing load_ascii - space separated file read correctly"""
-        input_file = 'tests/data/good_tof.txt'
+        input_file = self.get_full_path('good_tof.txt')
         _array = Utilities.load_ascii(filename = input_file,
                                       sep = ' ')[0]
         expected_start_of_array = np.array([[1., 20.],[2., 21.]])[0]

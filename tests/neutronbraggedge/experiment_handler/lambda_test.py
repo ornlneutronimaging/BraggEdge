@@ -7,7 +7,8 @@ from neutronbraggedge.experiment_handler.lambda_wavelength import LambdaWaveleng
 class TofTest(unittest.TestCase):
 
     def setUp(self):
-        pass
+        _file_path = os.path.dirname(__file__)
+        self.data_path = os.path.abspath(os.path.join(_file_path, '../../data'))
 
     def test_loading_manual_lambda_array(self):
         """Assert in LambdaWavelength - manual loading of array"""
@@ -27,7 +28,7 @@ class TofTest(unittest.TestCase):
 
     def test_loading_auto_lambda_array(self):
         """Assert in LambdaWavelength - auto loading of array"""
-        _lambda_filename = 'tests/data/lambda.txt'
+        _lambda_filename = os.path.join(self.data_path, 'lambda.txt')
         _lambda_handler = LambdaWavelength(filename = _lambda_filename)
         _lambda_expected = np.array([1.10664703784e-09, 1.10916473754e-09, 1.11168243725e-09,
                                      1.11420013696e-09, 1.11671783666e-09, 1.11923553637e-09,
@@ -40,7 +41,7 @@ class TofTest(unittest.TestCase):
 
     def test_load_bad_file_name(self):
         """Assert in LambdaWavelength - file name is provided but does not exist"""
-        _lambda_filename = 'tests/data/i_do_not_exist.txt'
+        _lambda_filename = os.path.join(self.data_path, 'i_do_not_exist.txt')
         self.assertRaises(IOError, LambdaWavelength, _lambda_filename)
 
 if __name__ == '__main__':
