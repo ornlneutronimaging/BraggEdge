@@ -122,9 +122,9 @@ class StructureHandler(object):
         self.structure = structure
         self.number_of_set = number_of_set
         
-        if structure is 'FCC':
+        if structure == 'FCC':
             _handler = FCCHandler(number_of_set = self.number_of_set)
-        elif structure is 'BCC':
+        elif structure == 'BCC':
             _handler = BCCHandler(number_of_set = self.number_of_set)
 
         self.hkl = _handler.hkl
