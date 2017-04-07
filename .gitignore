@@ -7,3 +7,5 @@
 /cover/*
 .DS_Store*
 /dist/*
+/build/*
+neutronbraggedge.egg-info/*
