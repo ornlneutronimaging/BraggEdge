@@ -80,15 +80,15 @@ class Lattice(object):
         _bragg_edge_array = self.bragg_edge_array
         _bragg_edge_array_error = self.bragg_edge_error_array
         
-        zipped = list(zip(self.hkl, _bragg_edge_array, _bragg_edge_array_error))
+        zipped = zip(self.hkl, _bragg_edge_array, _bragg_edge_array_error)
         self.hkl_bragg_edge = list(zipped)
         
     def display_hkl_bragg_edge(self):
         """Display the hkl_bragg_edge list using pretty table form"""
         print("hkl Bragg Edge Table")
-        print(("=" * self.space))
+        print("=" * self.space)
         print("hkl \t\t Bragg Edge Value\t Bragg Edge Error \t Lattice")
-        print(("-" * self.space))
+        print("-" * self.space)
         _lattice_array = self.lattice_array
         for _index, _row in enumerate(self.hkl_bragg_edge):
             _key = _row[0]
@@ -96,10 +96,10 @@ class Lattice(object):
             _error = _row[2]
             _lattice = _lattice_array[_index]
             if np.isnan(_error):
-                print(("%r\t %.5f \t\t\t %.5f \t\t\t %.5f" %(_key, _value, _error, _lattice)))
+                print("%r\t %.5f \t\t\t %.5f \t\t\t %.5f" %(_key, _value, _error, _lattice))
             else:
-                print(("%r\t %.5f \t\t %.5f \t\t %.5f" %(_key, _value, _error, _lattice)))
-        print(("-" * self.space))
+                print("%r\t %.5f \t\t %.5f \t\t %.5f" %(_key, _value, _error, _lattice))
+        print("-" * self.space)
         print()
         return True
 
@@ -182,22 +182,22 @@ class Lattice(object):
         """Display the lattice statistics using a pretty table form"""
         _lattice_statistics = self.lattice_statistics
         print("Lattice Statistics")
-        print(("=" * self.space))
-        print(("min: %.5f" %_lattice_statistics['min']))
-        print(("max: %.5f" %_lattice_statistics['max']))
-        print(("median: %.5f" %_lattice_statistics['median']))
-        print(("mean: %.5f +/- %.5f" %(_lattice_statistics['mean'][0], _lattice_statistics['mean'][1])))
-        print(("std: %.5f" %_lattice_statistics['std']))
-        print(("-" * self.space))
+        print("=" * self.space)
+        print("min: %.5f" %_lattice_statistics['min'])
+        print("max: %.5f" %_lattice_statistics['max'])
+        print("median: %.5f" %_lattice_statistics['median'])
+        print("mean: %.5f +/- %.5f" %(_lattice_statistics['mean'][0], _lattice_statistics['mean'][1]))
+        print("std: %.5f" %_lattice_statistics['std'])
+        print("-" * self.space)
         print("")
     
     def display_recap(self):
         """Display a summary of input and outputs"""
         print(" -- Recap --")
-        print(("=" * self.space))
-        print(("Material: %r" %self.material))
-        print(("Crystal Structure: %r" %self._crystal_structure))
-        print(("-" * self.space))
+        print("=" * self.space)
+        print("Material: %r" %self.material)
+        print("Crystal Structure: %r" %self._crystal_structure)
+        print("-" * self.space)
         print("")
         
         self.display_hkl_bragg_edge()

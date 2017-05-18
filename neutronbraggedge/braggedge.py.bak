@@ -199,27 +199,27 @@ class BraggEdge(object):
         
         for _material in self.material:
 
-            print(('=' * nbr_ticks))
-            print(("Material: %s" %_material))
-            print(("Lattice : %.4f\u212B" %self.metadata['lattice'][_material]))
-            print(("Crystal Structure: %s" %self.metadata['crystal_structure'][_material]))
-            print(("Using local metadata Table: %s" %self.use_local_metadata_table))
-            print(('=' * nbr_ticks))
-            print(" h | k | l |\t d (\u212B)  |\t BraggEdge")
-            print(('-' * nbr_ticks))
+            print('=' * nbr_ticks)
+            print("Material: %s" %_material)
+            print(u"Lattice : %.4f\u212B" %self.metadata['lattice'][_material])
+            print("Crystal Structure: %s" %self.metadata['crystal_structure'][_material])
+            print("Using local metadata Table: %s" %self.use_local_metadata_table)
+            print('=' * nbr_ticks)
+            print(u" h | k | l |\t d (\u212B)  |\t BraggEdge")
+            print('-' * nbr_ticks)
 
             _hkl = self.hkl[_material]
             _bragg_edges = self.bragg_edges[_material]
             _d_spacing = self.d_spacing[_material]
         
             for index in range(len(_d_spacing)):
-                print((" %d | %d | %d |\t %.5f |\t %.5f" %(_hkl[index][0],
+                print(" %d | %d | %d |\t %.5f |\t %.5f" %(_hkl[index][0],
                                                           _hkl[index][1],
                                                           _hkl[index][2], 
                                                           _d_spacing[index],
-                                                          _bragg_edges[index])))
+                                                          _bragg_edges[index]))
         
-            print(('=' * nbr_ticks))
+            print('=' * nbr_ticks)
 
 
         return ""
