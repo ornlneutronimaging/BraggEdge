@@ -4,8 +4,13 @@ sudo: false
 language: python
 
 python:
-  - 2.7
-  - 3.4
+#  - 2.7
+  - 3.5
+
+sudo: false
+env:
+  global:
+    - secure: "g6BVthPkjklTgzs/7Lu3OW9ruVdyQaamxBQra/Aw9HpLFSb2e4TFU9qbyYkRVxZqllKHnxm8Fq4d7PhUy+hGGNpN+9dgnf/IPmxS27b0+5ZlTuPbqv33kztQmfwwOhHQEWal6liROSQyZIW6a/QarFE6Loj0TeYXSmKiT2gNnzgAfJj1Tdj3R+gyqS5YgWVt9Tl31gjkEt7xEdfZKam0/j1lvD5ImzsH3X+mPiAGMkCrmEvyElsd2Ytylb5e4xp4wO+zJWgWO1oRdXqrSSgM2zgKw2A8ukkUqdI9c4alQbyzTdXeoj7mpWSBsAR++8tqK7qqh21zX3lRwOAy+DahDPmFgwVGjfa9NOOaDiLdRoFprpdqo5HOZOMttfDXu5velT+Oo6XMQDSeKhBV0ZPnNZHz8baJAtcrYcl/QiuiLb+YXGJZ0j7/lRTs/2y/8dpdG3SkyZzVnfr6PcP2UjbqQYypEBQEEx/AN1AqTAeqdKQP9zpyDRMpJSHRSSxJBAbdVKxuPrkTkb8MfBjY+qUmsrfAqnwl/ISvaq+wCNs5UqMOIybInf0sLTLUPnmiDcju/BsgfHZVuu/f04e5KCiUoRQW7AXfZl5yDoY1P5TkB4bK66UO6DRya24rSkkOOtY7Cer35JaXln0NVjNFPzyyrehzigsM18PC23dYS3foVBk="
 
 # branches:
 #   only:
@@ -41,9 +46,16 @@ install:
 
 script:
   - nosetests -v --rednose --cover-package=neutronbraggedge --with-coverage 
+#  - set -e
+#  - pip install doctr
+#  - cd docs
+#  - make html
+#  - cd ..
+#  - doctr deploy . --built-docs path/to/html
+
 #   - python tests/getdata.py
 #   - python tests/ivenus/signon.py
-#   - nosetests --exe
+
 
 notifications:
   email:

@@ -1,0 +1,456 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>How to use This library &#8212; BraggEdge 0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The API Reference" href="api.html" />
+    <link rel="prev" title="Welcome to braggedge’s documentation!" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="how-to-use-this-library">
+<h1>How to use This library<a class="headerlink" href="#how-to-use-this-library" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">neutronbraggedge</span>
+</pre></div>
+</div>
+<p>From <strong>python</strong>, first you need to import the package</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neutronbraggedge.braggedge</span> <span class="k">import</span> <span class="n">BraggEdge</span>
+</pre></div>
+</div>
+<div class="section" id="metadata-of-elements">
+<h2>Metadata of Elements<a class="headerlink" href="#metadata-of-elements" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>For a particular element, or a list of elements, you can retrieve:</dt>
+<dd><ul class="first last simple">
+<li>lattice parameter</li>
+<li>h, k and l values</li>
+<li>Crystal structure</li>
+<li>bragg edges values</li>
+</ul>
+</dd>
+</dl>
+<p>For this example, we are retrieving the data for <em>Fe</em> and we are only
+interested by the first <em>4</em> crystal orientation.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_handler</span> <span class="o">=</span> <span class="n">BraggEdge</span><span class="p">(</span><span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;Fe&#39;</span><span class="p">,</span> <span class="n">number_of_bragg_edges</span> <span class="o">=</span> <span class="mi">4</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Crystal Structure is: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">_handler</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;cyrstal_structure]))</span>
+<span class="go">&#39;BCC&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lattice is </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">_handler</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">])</span>
+<span class="go">2.87</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;hkl are: &quot;</span> <span class="p">,</span> <span class="n">_handler</span><span class="o">.</span><span class="n">hkl</span><span class="p">)</span>
+<span class="go">hkl are: [][1,1,0],[2,0,0],[2,1,1],[2,2,0]]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;bragg edges are: &quot;</span><span class="p">,</span> <span class="n">_handler</span><span class="o">.</span><span class="n">bragg_edges</span><span class="p">)</span>
+<span class="go">bragg edges are: [2.0268, 1.4332, 1.1702, 1.0134]</span>
+</pre></div>
+</div>
+<p>It is also possible to display all metadata at once</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_handler</span><span class="p">)</span>
+<span class="go">===================================</span>
+<span class="go">Material: Fe</span>
+<span class="go">Lattice: 2.8664A</span>
+<span class="go">Crystal Structure: BCC</span>
+<span class="go">Using local metadata Table: True</span>
+<span class="go">===================================</span>
+<span class="go"> h | k | l |   d(A)  |    BraggEdge</span>
+<span class="go">===================================</span>
+<span class="go"> 1 | 1 | 0 |  2.0269 |    4.0537</span>
+<span class="go"> 2 | 0 | 0 |  1.4332 |    2.8664</span>
+<span class="go"> 2 | 1 | 1 |  1.1702 |    2.3404</span>
+<span class="go"> 2 | 2 | 0 |  1.0134 |    2.0269</span>
+<span class="go">===================================</span>
+</pre></div>
+</div>
+<p>In this example, we are retrieving the data for <em>Fe</em> and <em>Al</em></p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_handler</span> <span class="o">=</span> <span class="n">BraggEdge</span><span class="p">(</span><span class="n">material</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Al&#39;</span><span class="p">,</span> <span class="s1">&#39;Fe&#39;</span><span class="p">],</span> <span class="n">number_of_bragg_edges</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Crystal Structure of Al is: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">_handler</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;Crystal_structure&#39;</span><span class="p">][</span><span class="s1">&#39;Al&#39;</span><span class="p">])</span>
+<span class="go">&#39;FCC&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Lattice of Al is: </span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span><span class="n">_handler</span><span class="o">.</span><span class="n">metadata</span><span class="p">[</span><span class="s1">&#39;lattice&#39;</span><span class="p">][</span><span class="s1">&#39;Al&#39;</span><span class="p">])</span>
+<span class="go">4.45</span>
+</pre></div>
+</div>
+<p>Here, we display the metadata for a list of material</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_handler</span><span class="p">)</span>
+<span class="go">=============================================</span>
+<span class="go">Material: Al</span>
+<span class="go">Lattice : 4.0460Å</span>
+<span class="go">Crystal Structure: FCC</span>
+<span class="go">Using local metadata Table: True</span>
+<span class="go">=============================================</span>
+<span class="go"> h | k | l |     d (Å)  |        BraggEdge</span>
+<span class="go">---------------------------------------------</span>
+<span class="go"> 1 | 1 | 1 |     2.33596 |       4.67192</span>
+<span class="go"> 2 | 0 | 0 |     2.02300 |       4.04600</span>
+<span class="go"> 2 | 2 | 0 |     1.43048 |       2.86095</span>
+<span class="go"> 2 | 2 | 2 |     1.16798 |       2.33596</span>
+<span class="go"> 3 | 1 | 1 |     1.21991 |       2.43983</span>
+<span class="go"> 3 | 3 | 1 |     0.92822 |       1.85643</span>
+<span class="go"> 3 | 3 | 3 |     0.77865 |       1.55731</span>
+<span class="go"> 4 | 0 | 0 |     1.01150 |       2.02300</span>
+<span class="go"> 4 | 2 | 0 |     0.90471 |       1.80943</span>
+<span class="go"> 4 | 2 | 2 |     0.82589 |       1.65177</span>
+<span class="go">=============================================</span>
+<span class="go">=============================================</span>
+<span class="go">Material: Fe</span>
+<span class="go">Lattice : 2.8664Å</span>
+<span class="go">Crystal Structure: BCC</span>
+<span class="go">Using local metadata Table: True</span>
+<span class="go">=============================================</span>
+<span class="go"> h | k | l |     d (Å)  |        BraggEdge</span>
+<span class="go">---------------------------------------------</span>
+<span class="go"> 1 | 1 | 0 |     2.02685 |       4.05370</span>
+<span class="go"> 2 | 0 | 0 |     1.43320 |       2.86640</span>
+<span class="go"> 2 | 1 | 1 |     1.17020 |       2.34041</span>
+<span class="go"> 2 | 2 | 0 |     1.01343 |       2.02685</span>
+<span class="go"> 2 | 2 | 2 |     0.82746 |       1.65492</span>
+<span class="go"> 3 | 1 | 0 |     0.90644 |       1.81287</span>
+<span class="go"> 3 | 2 | 1 |     0.76608 |       1.53216</span>
+<span class="go"> 3 | 3 | 0 |     0.67562 |       1.35123</span>
+<span class="go"> 3 | 3 | 2 |     0.61112 |       1.22224</span>
+<span class="go"> 4 | 0 | 0 |     0.71660 |       1.43320</span>
+<span class="go">=============================================</span>
+</pre></div>
+</div>
+<p>It is possible to display the full list of material available</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neutronbraggedge.material_handler.retrieve_material_metadata</span> <span class="k">import</span> <span class="n">RetrieveMaterialMetadata</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">retrieve_all_material</span> <span class="o">=</span> <span class="n">RetrieveMaterialMetadata</span><span class="p">(</span><span class="n">material</span> <span class="o">=</span> <span class="s1">&#39;all&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">retrieve_all_material</span><span class="o">.</span><span class="n">full_list_material</span><span class="p">())</span>
+<span class="go">[&#39;C (diamond)&#39; &#39;C (graphite)&#39; &#39;Si&#39; &#39;Ge&#39; &#39;AlAs&#39; &#39;AlP&#39; &#39;AlSb&#39; &#39;GaP&#39; &#39;GaAs&#39;</span>
+<span class="go">    &#39;GaSb&#39; &#39;inconel&#39; &#39;InP&#39; &#39;InAs&#39; &#39;InSb&#39; &#39;MgO&#39; &#39;SiC&#39; &#39;CdS&#39; &#39;CdSe&#39; &#39;CdTe&#39; &#39;ZnO&#39;</span>
+<span class="go">    &#39;ZnS&#39; &#39;PbS&#39; &#39;PbTe&#39; &#39;BN&#39; &#39;BP&#39; &#39;CdS&#39; &#39;ZnS&#39; &#39;AlN&#39; &#39;GaN&#39; &#39;InN&#39; &#39;LiF&#39; &#39;LiCl&#39;</span>
+<span class="go">    &#39;LiBr&#39; &#39;LiI&#39; &#39;NaF&#39; &#39;NaCl&#39; &#39;NaBr&#39; &#39;NaI&#39; &#39;KF&#39; &#39;KCl&#39; &#39;KBr&#39; &#39;KI&#39; &#39;RbF&#39; &#39;RbCl&#39;</span>
+<span class="go">    &#39;RbBr&#39; &#39;RbI&#39; &#39;CsF&#39; &#39;CsCl&#39; &#39;CsI&#39; &#39;Al&#39; &#39;Fe&#39; &#39;Ni&#39; &#39;Cu&#39; &#39;Mo&#39; &#39;Pd&#39; &#39;Ag&#39; &#39;W&#39;</span>
+<span class="go">    &#39;Pt&#39; &#39;Au&#39; &#39;Pb&#39; &#39;TiN&#39; &#39;ZrN&#39; &#39;HfN&#39; &#39;VN&#39; &#39;CrN&#39; &#39;NbN&#39; &#39;TiC&#39; &#39;ZrC0.97&#39;</span>
+<span class="go">    &#39;HfC0.99&#39; &#39;VC0.97&#39; &#39;NC0.99&#39; &#39;TaC0.99&#39; &#39;Cr3C2&#39; &#39;WC&#39; &#39;ScN&#39; &#39;LiNbO3&#39; &#39;KTaO3&#39;</span>
+<span class="go">    &#39;BaTiO3&#39; &#39;SrTiO3&#39; &#39;CaTiO3&#39; &#39;PbTiO3&#39; &#39;EuTiO3&#39; &#39;SrVO3&#39; &#39;CaVO3&#39; &#39;BaMnO3&#39;</span>
+<span class="go">    &#39;CaMnO3&#39; &#39;SrRuO3&#39; &#39;YAlO3&#39;]</span>
+</pre></div>
+</div>
+<p>In the case where the material is not in the list of material available, it is possible to define “on the fly”
+this material such as demonstrated here</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_handler</span> <span class="o">=</span> <span class="n">BraggEdge</span><span class="p">(</span><span class="n">new_material</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s2">&quot;AlSiC&quot;</span><span class="p">,</span> <span class="s1">&#39;lattice&#39;</span><span class="p">:</span> <span class="mf">2.8664</span><span class="p">,</span> <span class="s1">&#39;crystal_structure&#39;</span><span class="p">:</span> <span class="s1">&#39;BCC&#39;</span><span class="p">}])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_handler</span><span class="p">)</span>
+<span class="go">===================================</span>
+<span class="go">Material: AlSiC</span>
+<span class="go">Lattice : 2.8664Å</span>
+<span class="go">Crystal Structure: BCC</span>
+<span class="go">Using local metadata Table: True</span>
+<span class="go">=============================================</span>
+<span class="go"> h | k | l |     d (Å)  |        BraggEdge</span>
+<span class="go">---------------------------------------------</span>
+<span class="go"> 1 | 1 | 0 |     2.02685 |       4.05370</span>
+<span class="go"> 2 | 0 | 0 |     1.43320 |       2.86640</span>
+<span class="go"> 2 | 1 | 1 |     1.17020 |       2.34041</span>
+<span class="go"> 2 | 2 | 0 |     1.01343 |       2.02685</span>
+<span class="go"> 2 | 2 | 2 |     0.82746 |       1.65492</span>
+<span class="go"> 3 | 1 | 0 |     0.90644 |       1.81287</span>
+<span class="go"> 3 | 2 | 1 |     0.76608 |       1.53216</span>
+<span class="go"> 3 | 3 | 0 |     0.67562 |       1.35123</span>
+<span class="go"> 3 | 3 | 2 |     0.61112 |       1.22224</span>
+<span class="go"> 4 | 0 | 0 |     0.71660 |       1.43320</span>
+<span class="go">=============================================</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lambda-calculation">
+<h2>Lambda Calculation<a class="headerlink" href="#lambda-calculation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">neutronbraggedge.experiment_handler</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>In order to convert a TOF range into lambda, you will need to provide:</dt>
+<dd><ul class="first last simple">
+<li>distance source-detector (in meters)</li>
+<li>detector offset (micros)</li>
+<li>tof array</li>
+</ul>
+</dd>
+</dl>
+<p>First, you need to load your TOF range. You can either provide this array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_tof_handler</span> <span class="o">=</span> <span class="n">TOF</span><span class="p">(</span><span class="n">tof</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.6000E-07</span><span class="p">,</span> <span class="mf">1.1200E-05</span><span class="p">,</span> <span class="mf">2.1440E-05</span><span class="p">,</span> <span class="mf">3.1680E-05</span><span class="p">],</span> <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or by providing the name of an ascii file name where each tof is on its own row</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_tof_handler</span> <span class="o">=</span> <span class="n">TOF</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">my_tof</span><span class="o">.</span><span class="n">txt</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then it is possible to calculate the Lambda array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distance_source_detector_m</span> <span class="o">=</span> <span class="mf">16.09</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="mi">4500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">tof</span> <span class="o">=</span> <span class="n">_tof_handler</span><span class="o">.</span><span class="n">tof_array</span><span class="p">,</span> <span class="n">distance_source_detector_m</span> <span class="o">=</span> <span class="n">distance_source_detector_m</span><span class="p">,</span> <span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="n">detector_offset_micros</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_exp</span><span class="o">.</span><span class="n">lambda_array</span><span class="p">)</span>
+<span class="go">[1.10664e-10, 1.109165e-10, 1.111682e-10, 1.114200e-10]</span>
+</pre></div>
+</div>
+<p>To export lambda into a csv file</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_exp</span><span class="o">.</span><span class="n">export_lambda</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;my_lambda_file.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="distance-source-detector-calculation">
+<h2>Distance source-Detector Calculation<a class="headerlink" href="#distance-source-detector-calculation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">neutronbraggedge.experiment_handler</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>In order to calculate the <em>source-detector</em> length, you must provide:</dt>
+<dd><ul class="first last simple">
+<li>detector offset (micros)</li>
+<li>tof array</li>
+<li>lambda array (Angstroms)</li>
+</ul>
+</dd>
+</dl>
+<p>First, you need to load your TOF range. You can either provide this array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_tof_handler</span> <span class="o">=</span> <span class="n">TOF</span><span class="p">(</span><span class="n">tof</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.6000E-07</span><span class="p">,</span> <span class="mf">1.1200E-05</span><span class="p">,</span> <span class="mf">2.1440E-05</span><span class="p">,</span> <span class="mf">3.1680E-05</span><span class="p">],</span> <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or by providing the name of an ascii file name where each tof is on its own row</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_tof_handler</span> <span class="o">=</span> <span class="n">TOF</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">my_tof</span><span class="o">.</span><span class="n">txt</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Same thing with lambda array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_lambda_handler</span> <span class="o">=</span> <span class="n">LambdaWavelength</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.10664e-10</span><span class="p">,</span> <span class="mf">1.109165e-10</span><span class="p">,</span> <span class="mf">1.111682e-10</span><span class="p">,</span> <span class="mf">1.114200e-10</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>or by providing the name of an ascii file where each lambda is on its own row</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_lambda_handler</span> <span class="o">=</span> <span class="n">LambdaWavelength</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;my_lambda.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="mi">4500</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">tof</span> <span class="o">=</span> <span class="n">_tof_handler</span><span class="o">.</span><span class="n">tof_array</span><span class="p">,</span> <span class="n">lambda_array</span> <span class="o">=</span> <span class="n">_lambda_handler</span><span class="o">.</span><span class="k">lambda</span><span class="p">,</span> <span class="n">detector_offset_micros</span> <span class="o">=</span> <span class="n">detector_offset_micros</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_exp</span><span class="o">.</span><span class="n">distance_source_detector_m</span><span class="p">)</span>
+<span class="go">16.09</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="detector-offset-calculation">
+<h2>Detector Offset Calculation<a class="headerlink" href="#detector-offset-calculation" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">neutronbraggedge.experiment_handler</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>In order to calculate the <em>detector offsetr</em>, you must provide:</dt>
+<dd><ul class="first last simple">
+<li>distance source-detector (m)</li>
+<li>tof array</li>
+<li>lambda array (Angstroms)</li>
+</ul>
+</dd>
+</dl>
+<p>First, you need to load your TOF range. You can either provide this array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_tof_handler</span> <span class="o">=</span> <span class="n">TOF</span><span class="p">(</span><span class="n">tof</span> <span class="o">=</span> <span class="p">[</span><span class="mf">9.6000E-07</span><span class="p">,</span> <span class="mf">1.1200E-05</span><span class="p">,</span> <span class="mf">2.1440E-05</span><span class="p">,</span> <span class="mf">3.1680E-05</span><span class="p">],</span> <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>or by providing the name of an ascii file name where each tof is on its own row</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_tof_handler</span> <span class="o">=</span> <span class="n">TOF</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="n">my_tof</span><span class="o">.</span><span class="n">txt</span><span class="p">,</span> <span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;micros&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Same thing with lambda array</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_lambda_handler</span> <span class="o">=</span> <span class="n">LambdaWavelength</span><span class="p">(</span><span class="n">data</span> <span class="o">=</span> <span class="p">[</span><span class="mf">1.10664e-9</span><span class="p">,</span> <span class="mf">1.109165e-9</span><span class="p">,</span> <span class="mf">1.111682e-9</span><span class="p">,</span> <span class="mf">1.114200e-9</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>or by providing the name of an ascii file where each lambda is on its own row</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">_lambda_handler</span> <span class="o">=</span> <span class="n">LambdaWavelength</span><span class="p">(</span><span class="n">filename</span> <span class="o">=</span> <span class="s1">&#39;my_lambda.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">distance_source_detector_m</span> <span class="o">=</span> <span class="mf">14.09</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">_exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">tof</span> <span class="o">=</span> <span class="n">_tof_handler</span><span class="o">.</span><span class="n">tof_array</span><span class="p">,</span> <span class="n">lambda_array</span> <span class="o">=</span> <span class="n">_lambda_handler</span><span class="o">.</span><span class="k">lambda</span><span class="p">,</span> <span class="n">distance_source_detector_m</span> <span class="o">=</span> <span class="n">distance_source_detector_m</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">_exp</span><span class="o">.</span><span class="n">detector_offset_micros</span><span class="p">)</span>
+<span class="go">4500</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="lattice-calculator">
+<h2>Lattice Calculator<a class="headerlink" href="#lattice-calculator" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">neutronbraggedge.lattice_handler.lattice</span> <span class="k">import</span> <span class="n">Lattice</span>
+</pre></div>
+</div>
+<p>In order to calculate the average lattice for a given material, the following information must be
+provided:</p>
+<blockquote>
+<div><ul class="simple">
+<li>material name</li>
+<li>crystal structure</li>
+<li>bragg edge array</li>
+</ul>
+</div></blockquote>
+<p>example:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">o_lattice</span> <span class="o">=</span> <span class="n">Lattice</span><span class="p">(</span><span class="n">material</span> <span class="o">=</span> <span class="s2">&quot;Si&quot;</span><span class="p">,</span>
+<span class="go">                        crystal_structure = &quot;FCC&quot;,</span>
+<span class="go">                        bragg_edge_array = [1.1, None, 3.3, 4.4])</span>
+</pre></div>
+</div>
+<p>The algorithm automatically calculate the hkl bragg edge sequence and the lattice</p>
+<p>Those calculation can be display using</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">o_lattice</span><span class="o">.</span><span class="n">display_hkl_bragg_edge</span><span class="p">()</span>
+<span class="go">  hkl Bragg Edge Table</span>
+<span class="go">  ==================================================</span>
+<span class="go">  hkl            Bragg Edge      Lattice</span>
+<span class="go">  --------------------------------------------------</span>
+<span class="go">  [1, 1, 1]      1.1000          0.9526</span>
+<span class="go">  [2, 0, 0]      nan             nan</span>
+<span class="go">  [2, 2, 0]      3.3000          4.6669</span>
+<span class="go">  [2, 2, 2]      4.4000          7.6210</span>
+<span class="go">  --------------------------------------------------</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">o_lattice</span><span class="o">.</span><span class="n">display_lattice_statistics</span><span class="p">()</span>
+<span class="go"> Lattice Statistics</span>
+<span class="go"> ==================================================</span>
+<span class="go"> min: 0.95263</span>
+<span class="go"> max: 7.62102</span>
+<span class="go"> median: 4.66690</span>
+<span class="go"> mean: 4.41352</span>
+<span class="go"> std: 2.72825</span>
+<span class="go"> --------------------------------------------------</span>
+</pre></div>
+</div>
+<p>or</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">o_lattice</span><span class="o">.</span><span class="n">display_recap</span><span class="p">()</span>
+<span class="go">  Recap</span>
+<span class="go">  ==================================================</span>
+<span class="go">  Material: &#39;Si&#39;</span>
+<span class="go">  Crystal Structure: &#39;FCC&#39;</span>
+<span class="go">  --------------------------------------------------</span>
+<span class="go">  hkl Bragg Edge Table</span>
+<span class="go">  ==================================================</span>
+<span class="go">  hkl            Bragg Edge      Lattice</span>
+<span class="go">  --------------------------------------------------</span>
+<span class="go">  [1, 1, 1]      1.1000          0.9526</span>
+<span class="go">  [2, 0, 0]      nan             nan</span>
+<span class="go">  [2, 2, 0]      3.3000          4.6669</span>
+<span class="go">  [2, 2, 2]      4.4000          7.6210</span>
+<span class="go">  --------------------------------------------------</span>
+<span class="go">  Lattice Statistics</span>
+<span class="go">  ==================================================</span>
+<span class="go">  min: 0.95263</span>
+<span class="go">  max: 7.62102</span>
+<span class="go">  median: 4.66690</span>
+<span class="go">  mean: 4.41352 +/- 0.0000</span>
+<span class="go">  std: 2.72825</span>
+<span class="go">  --------------------------------------------------</span>
+</pre></div>
+</div>
+<p>To retrieve the various values:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">o_lattice</span><span class="o">.</span><span class="n">hkl</span><span class="p">)</span>
+<span class="go"> [[1, 1, 1], [2, 0, 0], [2, 2, 0], [2, 2, 2]]</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">o_lattice</span><span class="o">.</span><span class="n">lattice_statistics</span><span class="p">)</span>
+<span class="go">{&#39;mean&#39;: 4.4135187510990521, &#39;min&#39;: 0.95262794416288255, &#39;median&#39;: 4.6669047558312133, &#39;max&#39;: 7.6210235533030604, &#39;std&#39;: 2.7282507644454284}</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">o_lattice</span><span class="o">.</span><span class="n">lattice_statistics</span><span class="p">[</span><span class="s1">&#39;mean&#39;</span><span class="p">])</span>
+<span class="go">4.4135187511</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">BraggEdge</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">How to use This library</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#metadata-of-elements">Metadata of Elements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lambda-calculation">Lambda Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#distance-source-detector-calculation">Distance source-Detector Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#detector-offset-calculation">Detector Offset Calculation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lattice-calculator">Lattice Calculator</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">The API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="material_handler.html">The Material Handler Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="braggedges_handler.html">The BraggEdges Handler Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="experiment_handler.html">The Experiment Handler Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lattice_handler.html">The Lattice Handler Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utilities.html">The Utilities Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">Welcome to braggedge’s documentation!</a></li>
+      <li>Next: <a href="api.html" title="next chapter">The API Reference</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, Jean Bilheux.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/demo.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
