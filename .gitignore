@@ -2,10 +2,10 @@
 *~
 .ipynb*
 /tests/BraggEdge_data_set
-/docs/_build/*
 .coverage
 /cover/*
 .DS_Store*
 /dist/*
 /build/*
 neutronbraggedge.egg-info/*
+.idea*
