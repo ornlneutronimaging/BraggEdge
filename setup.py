@@ -1,9 +1,11 @@
 #!/usr/bin/env python
 from setuptools import setup, find_packages
 
+VERSION = neutronbraggedge.__version__
+
 setup(
     name = "neutronbraggedge",
-    version = "2.0.1",
+    version = VERSION,
     author = "Jean Bilheux",
     author_email = "bilheuxjm@ornl.gov", 
     packages = find_packages(exclude=['tests', 'notebooks']),
@@ -31,8 +33,8 @@ setup(
     classifiers = ['Development Status :: 3 - Alpha',
                    'Topic :: Scientific/Engineering :: Physics',
                    'Intended Audience :: Developers',
-                   'Programming Language :: Python :: 2.7',
-                   'Programming Language :: Python :: 3.5'],
+                   'Programming Language :: Python :: 3.5',
+                   'Programming Language :: Python :: 3.6'],
     # download_url = '',
 )
 
