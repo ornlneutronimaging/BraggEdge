@@ -9,3 +9,4 @@
 /build/*
 neutronbraggedge.egg-info/*
 .idea*
+.cache*
