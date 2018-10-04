@@ -11,7 +11,7 @@ class BraggEdge(object):
         
       From **python**, first you need to import the package
 
-    >>> from braggedge.braggedge import BraggEdge
+    >>> from neutronbraggedge.braggedge import BraggEdge
     
     For a particular element you can retrieve:
      - lattice parameter
