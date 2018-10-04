@@ -1,4 +1,5 @@
 import sys
+import os
 import numpy as np
 import configparser
 from .structure_handler import StructureHandler
@@ -29,6 +30,8 @@ class BraggEdgeCalculator(object):
     def structure(self, structure_name):
         
         _config_file = config_config_file
+        print("config file ({}) exists? {}".format(_config_file, os.path.exists(_config_file)))
+        #_config_file = os.path.abspath('../config.cfg')
         config_obj = configparser.ConfigParser()
         config_obj.read(_config_file)
         self._list_structure = config_obj['DEFAULT']['list_structure']

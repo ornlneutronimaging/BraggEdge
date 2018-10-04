@@ -13,9 +13,9 @@ setup(
     package_data = { 'neutronbraggedge' : ['data/material_list.dat', 
                                            'data/full_material_list.dat']},
     include_package_data = True,
-    #data_files = [('neutronbraggedge', ['neutronbraggedge/config.cfg']),
+    data_files = [('neutronbraggedge', ['neutronbraggedge/config.cfg']),
                   #('neutronbraggedge/data', ['neutronbraggedge/data/material_list.dat'])
-                  #],
+                  ],
     test_suite = 'tests',
     install_requires = [
         'numpy',
