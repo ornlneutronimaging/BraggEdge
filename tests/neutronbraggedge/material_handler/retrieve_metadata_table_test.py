@@ -1,5 +1,6 @@
 import unittest
 import os
+import pytest
 from neutronbraggedge import config
 from neutronbraggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
 
@@ -10,6 +11,7 @@ class TestRetrieveMetadataTable(unittest.TestCase):
         _config_file = config.config_file
         self._config_file = os.path.abspath(_config_file)
 
+    @pytest.mark.skip(reason="Not using the url database right now")
     def test_retrieve_table_from_url(self):
         """checking if the table is correctly loaded from URL"""
        

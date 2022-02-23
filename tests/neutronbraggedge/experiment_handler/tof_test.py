@@ -76,6 +76,27 @@ class TofTest(unittest.TestCase):
         _counts_expected = np.array([2137, 1988, 1979, 2078])
         self.assertTrue(all(_counts_expected == _tof_handler.counts_array[0:4]))
 
+    def test_loading_second_ascii_format(self):
+        """assert tof2 can be loaded, columns are white spaced"""
+        _filename = self.get_full_path('tof2.txt')
+        _tof_handler = TOF(filename=_filename)
+        print(_tof_handler.counts_array[0:4])
+        _counts_expected = np.array([9120595, 10638008, 12523304, 14676656])
+        self.assertTrue(all(_counts_expected == _tof_handler.counts_array[0: 4]))
+
+        _tof_expected = np.array([1.136e-05, 2.16e-05, 3.184e-05, 4.208e-05])
+        self.assertTrue(all(_tof_expected == _tof_handler.tof_array[0: 4]))
+
+    def test_loading_third_ascii_format(self):
+        """assert tof3 can be loaded, columns are white spaced"""
+        _filename = self.get_full_path('tof3.txt')
+        _tof_handler = TOF(filename=_filename)
+        print(_tof_handler.counts_array[0:4])
+        _counts_expected = np.array([9120595, 10638008, 12523304, 14676656])
+        self.assertTrue(all(_counts_expected == _tof_handler.counts_array[0: 4]))
+
+        _tof_expected = np.array([1.136e-05, 2.16e-05, 3.184e-05, 4.208e-05])
+        self.assertTrue(all(_tof_expected == _tof_handler.tof_array[0: 4]))
 
 if __name__ == '__main__':
     unittest.main()
