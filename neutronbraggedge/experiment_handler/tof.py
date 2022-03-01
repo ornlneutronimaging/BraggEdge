@@ -63,25 +63,63 @@ class TOF(object):
                                                           from_units=units,
                                                           to_units='s')
 
+    @staticmethod
+    def _first_line_number_with_real_data(line):
+        str_line = str(line)
+        if str_line.startswith("#"):
+            return 1
+        else:
+            return 0
+
+    @staticmethod
+    def _is_this_numeric(value_to_evaluate):
+        if not np.isfinite(value_to_evaluate):
+            return False
+            
+        try:
+            float(value_to_evaluate)
+            return True
+        except ValueError:
+            return False
+
     def load_data(self):
         """Load the data from the filename name provided"""
         
         # only loader implemented so far !
         try:
             _ascii_array = Utilities.load_ascii(filename=self.filename, sep='')
-            _tof_column = _ascii_array[:, 0]
+            start_row = TOF._first_line_number_with_real_data(_ascii_array[0, 0])
+
+            _tof_column = _ascii_array[start_row:, 0]
+
+            if not TOF._is_this_numeric(_tof_column[0]):
+                start_row += 1
+
+            _tof_column = _ascii_array[start_row:, 0]
+            _counts_column = _ascii_array[start_row:, 1]
+
+            self.tof_array = _tof_column
+            self.counts_array = _counts_column
+            return
+
         except IndexError:
             pass  # try another format
 
         try:
             _ascii_array = Utilities.load_ascii(filename=self.filename, sep=',')
-            _tof_column = _ascii_array[1:, 0]  # first row must be excluded in this format
+            start_row = TOF._first_line_number_with_real_data(_ascii_array[0, 0])
+
+            _tof_column = _ascii_array[start_row:, 0]  # first row must be excluded in this format
+
+            if not TOF._is_this_numeric(_tof_column[0]):
+                start_row += 1
+
+            _tof_column = _ascii_array[start_row:, 0]
+            _counts_column = _ascii_array[start_row:, 1]
+
+            self.tof_array = _tof_column
+            self.counts_array = _counts_column
+            return
+
         except IndexError:
             raise IndexError("Format not implemented!")
-
-        self.tof_array = _tof_column
-
-        _counts_column = _ascii_array[1: ,1]
-        self.counts_array = _counts_column
-        
-
