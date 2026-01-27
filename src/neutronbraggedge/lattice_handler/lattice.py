@@ -54,7 +54,7 @@ class Lattice(object):
         self._crystal_structure = structure_name
         
     def _format_array(self, bragg_edge_array):
-        """Make sure that None value are replaced by np.NaN"""
+        """Make sure that None value are replaced by np.nan"""
         _bragg_edge_array_formated = []
 
         if bragg_edge_array is None:
@@ -64,7 +64,7 @@ class Lattice(object):
 
         for _value in bragg_edge_array:
             if _value is None:
-                _value = np.NaN
+                _value = np.nan
             _bragg_edge_array_formated.append(_value)
         _bragg_edge_array_formated = np.array(_bragg_edge_array_formated)
         return _bragg_edge_array_formated

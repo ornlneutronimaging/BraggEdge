@@ -65,10 +65,10 @@ class RetrieveMaterialMetadata(object):
         self._retrieve_crystal_structure(_metadata)
         
     def _retrieve_lattice(self, _metadata):
-        self.lattice = float(_metadata[0])
+        self.lattice = float(_metadata.iloc[0])
         
     def _retrieve_crystal_structure(self, _metadata):
-        _full_crystal_str = _metadata[1]
+        _full_crystal_str = _metadata.iloc[1]
 
         if 'FCC' in _full_crystal_str:
             _crystal_str = 'FCC'

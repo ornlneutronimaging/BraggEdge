@@ -53,7 +53,7 @@ class TofTest(unittest.TestCase):
         """Assert in TOF - that an error is thrown when the units is not recognized"""
         _tof_array = np.array([1.e9, 2.e9, 3.e9, 4.e9, 5.e9, 6.e9, 7.e9, 8.e9, 9.e9])
         _tof_units = 'crazys'
-        self.assertRaises(NotImplementedError, None, TOF, _tof_array, _tof_units)
+        self.assertRaises(ValueError, TOF, tof_array=_tof_array, units=_tof_units)
 
     def test_loading_good_tof_file(self):
         """Assert in TOF - that correctly formated tof file is correctly loaded"""
