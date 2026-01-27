@@ -85,7 +85,7 @@ class TestLattice(unittest.TestCase):
         self.assertEqual(_expected_first_value, o_lattice.hkl_bragg_edge[0][1])
         
         _expected_second_key = [2, 0, 0]
-        _expected_second_value = np.NaN
+        _expected_second_value = np.nan
         self.assertEqual(_expected_second_key, o_lattice.hkl_bragg_edge[1][0])
         self.assertTrue(math.isnan(o_lattice.hkl_bragg_edge[1][1]))
 

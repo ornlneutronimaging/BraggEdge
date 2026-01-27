@@ -1,0 +1,164 @@
+[project]
+name = "neutronbraggedge"
+description = "Bragg Edge calculations for neutron imaging"
+readme = "README.md"
+authors = [
+  {name = "Jean Bilheux", email = "bilheuxjm@ornl.gov"},
+]
+maintainers = [
+  {name = "Jean Bilheux", email = "bilheuxjm@ornl.gov"},
+  {name = "Chen Zhang", email = "zhangc@ornl.gov"},
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Physics",
+  "Intended Audience :: Science/Research",
+]
+dynamic = ["version"]
+requires-python = ">=3.11,<3.13"
+license = "BSD-3-Clause"
+keywords = ["Bragg Edge", "neutron", "imaging", "crystallography", "diffraction"]
+dependencies = [
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "lxml>=4.9",
+  "beautifulsoup4>=4.12",
+  "html5lib>=1.1",
+  # Note: configparser is stdlib in Python 3, no longer needed as dependency
+]
+
+[project.urls]
+homepage = "https://github.com/ornlneutronimaging/BraggEdge"
+documentation = "https://braggedge.readthedocs.io/"
+"Bug Tracker" = "https://github.com/ornlneutronimaging/BraggEdge/issues"
+"Source Code" = "https://github.com/ornlneutronimaging/BraggEdge"
+
+[build-system]
+requires = [
+  "setuptools>=61.0",
+  "wheel",
+  "versioningit>=3.0",
+]
+build-backend = "setuptools.build_meta"
+
+# Automatic versioning from git tags
+[tool.versioningit.vcs]
+method = "git"
+default-tag = "2.0.5"
+
+[tool.versioningit.next-version]
+method = "minor"
+
+[tool.versioningit.format]
+distance = "{next_version}.dev{distance}"
+dirty = "{version}+d{build_date:%Y%m%d}"
+distance-dirty = "{next_version}.dev{distance}+d{build_date:%Y%m%d%H%M}"
+
+[tool.versioningit.write]
+file = "src/neutronbraggedge/_version.py"
+
+# Package discovery
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["tests*", "docs*", "notebooks*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.cfg", "*.dat", "data/*.dat"]
+
+# pytest configuration
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+testpaths = ["tests"]
+python_files = ["test*.py", "*_test.py"]
+norecursedirs = [".git", "tmp*", "_tmp*", "__pycache__"]
+markers = [
+  "unit: unit tests",
+  "integration: integration tests",
+  "slow: tests that are slow to run",
+]
+
+# Coverage configuration
+[tool.coverage.run]
+branch = true
+source = ["src/neutronbraggedge"]
+
+[tool.coverage.report]
+exclude_lines = [
+  "pragma: no cover",
+  "if TYPE_CHECKING:",
+  "raise NotImplementedError",
+]
+
+# Ruff configuration
+[tool.ruff]
+target-version = "py311"
+line-length = 120
+exclude = ["notebooks/**", "**/*.ipynb"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP"]
+ignore = []
+
+[tool.ruff.lint.isort]
+known-first-party = ["neutronbraggedge"]
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+# Pixi configuration
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "linux-64", "osx-64"]
+
+[tool.pixi.pypi-dependencies]
+neutronbraggedge = { path = ".", editable = true }
+
+[tool.pixi.dependencies]
+python = ">=3.11,<3.13"
+numpy = ">=1.24"
+pandas = ">=2.0"
+lxml = ">=4.9"
+beautifulsoup4 = ">=4.12"
+html5lib = ">=1.1"
+
+[tool.pixi.tasks]
+# Testing
+test = "pytest tests --cov-branch --cov=src/neutronbraggedge --cov-report=term --cov-report=xml"
+test-fast = "pytest tests -x"
+# Linting
+lint = "ruff check src tests"
+format = "ruff format src tests"
+# Building
+build = "python -m build"
+# Cleanup
+clean = {depends-on = ["rm_build", "rm_test"]}
+rm_build = "rm -rf dist/ build/ src/*.egg-info/"
+rm_test = "rm -rf .coverage .pytest_cache coverage.xml htmlcov/"
+
+[tool.pixi.feature.test.dependencies]
+pytest = ">=7.0"
+pytest-cov = "*"
+
+[tool.pixi.feature.dev.dependencies]
+pip = "*"
+versioningit = ">=3.0"
+pre-commit = "*"
+ruff = "*"
+python-build = "*"
+
+[tool.pixi.feature.docs.dependencies]
+sphinx = ">=7.0"
+sphinx-rtd-theme = "*"
+myst-parser = "*"
+
+[tool.pixi.environments]
+default = {features = ["test", "dev"], solve-group = "default"}
+docs = {features = ["docs"], solve-group = "default"}

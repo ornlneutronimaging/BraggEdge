@@ -58,7 +58,7 @@ class TOF(object):
             else:
                 raise ValueError("Please provide a tof array")
 
-        if units is not 's':
+        if units != 's':
             self.tof_array = Utilities.convert_time_units(data=self.tof_array,
                                                           from_units=units,
                                                           to_units='s')

@@ -246,7 +246,7 @@ class BraggEdge(object):
             _metadata = self._format_metadata(_material)
             _data = self._format_data(_material)
             
-            if file_type is 'csv':
+            if file_type == 'csv':
                 Utilities.save_csv(filename = _filename,
                                    data = _data,
                                    metadata = _metadata)
