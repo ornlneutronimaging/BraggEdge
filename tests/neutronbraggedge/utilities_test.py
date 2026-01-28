@@ -64,7 +64,7 @@ class UtilitiesTest(unittest.TestCase):
         _data = [1, 2, 3, 4, 5]
         self.assertTrue(all(_data == Utilities.convert_time_units(data=_data, from_units="s", to_units="s")))
 
-    def tets_convert_time_units_numpy_array(self):
+    def test_convert_time_units_numpy_array(self):
         """Assert in utilities - converting numpy array time units value"""
         _data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
         self.assertTrue(all(_data == Utilities.convert_time_units(data=_data, from_units="s", to_units="s")))

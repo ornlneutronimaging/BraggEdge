@@ -3,8 +3,9 @@ This class will retrieve the table from the URL and reformat it to be able to
 quickly retrieve the metadata for a given material
 """
 
-# import os
 import configparser
+import io
+import urllib.request
 
 import pandas as pd
 
@@ -65,15 +66,25 @@ class RetrieveMetadataTable:
 
     def retrieve_table_from_url(self):
         """retrieve the table using the url defined in the config.cfg file"""
-        table_list = pd.read_html(self.url)
+        # Wikipedia blocks requests without proper User-Agent headers
+        request = urllib.request.Request(
+            self.url,
+            headers={"User-Agent": "neutronbraggedge/2.0 (scientific research tool)"},
+        )
+        with urllib.request.urlopen(request) as response:
+            html_content = response.read().decode("utf-8")
+        table_list = pd.read_html(io.StringIO(html_content))
         self.raw_table = table_list[0]
         self.format_table_from_url()
 
     def format_table_from_url(self):
-        """reformat the table from the url to easily extrade the metadata"""
+        """reformat the table from the url to easily extract the metadata"""
         _table = self.raw_table
-        _table.columns = _table.values[0][:]
-        _table = _table[1:]
+        # Check if pandas already extracted headers correctly
+        if "Material" not in _table.columns:
+            # Fallback for older table format: first row contains headers
+            _table.columns = _table.values[0][:]
+            _table = _table[1:]
         _table = _table.set_index("Material")
         self.table = _table
 
