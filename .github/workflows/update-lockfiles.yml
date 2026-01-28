@@ -1,0 +1,54 @@
+name: Update Lockfiles
+
+on:
+  schedule:
+    # Run monthly on the first day at 00:00 UTC
+    - cron: "0 0 1 * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-lockfiles:
+    name: Update pixi.lock
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Pixi
+        uses: prefix-dev/setup-pixi@v0.8.1
+        with:
+          pixi-version: v0.39.5
+          cache: false  # Don't cache when updating
+
+      - name: Update lockfile
+        run: pixi update
+
+      - name: Check for changes
+        id: check-changes
+        run: |
+          if git diff --quiet pixi.lock; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create Pull Request
+        if: steps.check-changes.outputs.changed == 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update pixi.lock"
+          title: "chore: Update dependency lockfile"
+          body: |
+            This PR updates `pixi.lock` with the latest compatible dependency versions.
+
+            **Automated PR** - Created by the monthly lockfile update workflow.
+
+            Please review the changes and ensure tests pass before merging.
+          branch: chore/update-lockfiles
+          delete-branch: true
+          labels: dependencies
