@@ -33,6 +33,7 @@ jobs:
         with:
           pixi-version: v0.39.5
           cache: true
+          locked: false  # Allow lockfile updates for CI flexibility
 
       - name: Run tests with coverage
         run: pixi run test
@@ -58,6 +59,7 @@ jobs:
         with:
           pixi-version: v0.39.5
           cache: true
+          locked: false  # Allow lockfile updates for CI flexibility
 
       - name: Run linting
         run: pixi run lint

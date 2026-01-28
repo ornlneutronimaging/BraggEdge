@@ -26,6 +26,7 @@ jobs:
         with:
           pixi-version: v0.39.5
           cache: true
+          locked: false  # Allow lockfile updates for build flexibility
 
       - name: Build package
         run: pixi run build
