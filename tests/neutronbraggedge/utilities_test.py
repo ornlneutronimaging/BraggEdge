@@ -1,144 +1,149 @@
-import os
-import unittest
+"""Tests for Utilities class."""
 
 import numpy as np
+import pytest
 
 from neutronbraggedge.utilities import Utilities
 
 
-class UtilitiesTest(unittest.TestCase):
-    def setUp(self):
-        _file_path = os.path.dirname(__file__)
-        self.data_path = os.path.abspath(os.path.join(_file_path, "../data"))
-
-    def get_full_path(self, file_name):
-        return os.path.join(self.data_path, file_name)
+class TestUtilities:
+    """Tests for utility functions."""
 
     def test_convert_time_units_raise_value_error_when_no_data_provided(self):
-        """Assert in utilities - ValueError raised when no data provided"""
-        self.assertRaises(ValueError, Utilities.convert_time_units)
+        """ValueError raised when no data provided."""
+        with pytest.raises(ValueError):
+            Utilities.convert_time_units()
 
     def test_convert_time_units_raise_value_error_when_units_not_supported(self):
-        """Assert in utilities - ValueError raised when no units converted"""
-        self.assertRaises(ValueError, Utilities.convert_time_units, 45, "bad_units", "s")
-        self.assertRaises(ValueError, Utilities.convert_time_units, 45, "s", "bad_units")
-        self.assertRaises(ValueError, Utilities.convert_time_units, 45, "bad_units", "bad_units")
+        """ValueError raised when units not supported."""
+        with pytest.raises(ValueError):
+            Utilities.convert_time_units(45, "bad_units", "s")
+        with pytest.raises(ValueError):
+            Utilities.convert_time_units(45, "s", "bad_units")
+        with pytest.raises(ValueError):
+            Utilities.convert_time_units(45, "bad_units", "bad_units")
 
     def test_get_time_conversion_coeff(self):
-        """Assert in utilities - correct time coefficient are returned"""
-        self.assertEqual(1, Utilities.get_time_conversion_coeff(from_units="s", to_units="s"))
-        self.assertEqual(1.0e3, Utilities.get_time_conversion_coeff(from_units="s", to_units="ms"))
-        self.assertEqual(1.0e6, Utilities.get_time_conversion_coeff(from_units="s", to_units="micros"))
-        self.assertEqual(1.0e9, Utilities.get_time_conversion_coeff(from_units="s", to_units="ns"))
+        """Correct time coefficients are returned."""
+        assert Utilities.get_time_conversion_coeff(from_units="s", to_units="s") == 1
+        assert Utilities.get_time_conversion_coeff(from_units="s", to_units="ms") == 1.0e3
+        assert Utilities.get_time_conversion_coeff(from_units="s", to_units="micros") == 1.0e6
+        assert Utilities.get_time_conversion_coeff(from_units="s", to_units="ns") == 1.0e9
 
-        self.assertEqual(1.0e-3, Utilities.get_time_conversion_coeff(from_units="ms", to_units="s"))
-        self.assertEqual(1, Utilities.get_time_conversion_coeff(from_units="ms", to_units="ms"))
-        self.assertEqual(1e3, Utilities.get_time_conversion_coeff(from_units="ms", to_units="micros"))
-        self.assertEqual(1e6, Utilities.get_time_conversion_coeff(from_units="ms", to_units="ns"))
+        assert Utilities.get_time_conversion_coeff(from_units="ms", to_units="s") == 1.0e-3
+        assert Utilities.get_time_conversion_coeff(from_units="ms", to_units="ms") == 1
+        assert Utilities.get_time_conversion_coeff(from_units="ms", to_units="micros") == 1e3
+        assert Utilities.get_time_conversion_coeff(from_units="ms", to_units="ns") == 1e6
 
-        self.assertEqual(1.0e-6, Utilities.get_time_conversion_coeff(from_units="micros", to_units="s"))
-        self.assertEqual(1.0e-3, Utilities.get_time_conversion_coeff(from_units="micros", to_units="ms"))
-        self.assertEqual(1, Utilities.get_time_conversion_coeff(from_units="micros", to_units="micros"))
-        self.assertEqual(1e3, Utilities.get_time_conversion_coeff(from_units="micros", to_units="ns"))
+        assert Utilities.get_time_conversion_coeff(from_units="micros", to_units="s") == 1.0e-6
+        assert Utilities.get_time_conversion_coeff(from_units="micros", to_units="ms") == 1.0e-3
+        assert Utilities.get_time_conversion_coeff(from_units="micros", to_units="micros") == 1
+        assert Utilities.get_time_conversion_coeff(from_units="micros", to_units="ns") == 1e3
 
-        self.assertEqual(1e-9, Utilities.get_time_conversion_coeff(from_units="ns", to_units="s"))
-        self.assertEqual(1e-6, Utilities.get_time_conversion_coeff(from_units="ns", to_units="ms"))
-        self.assertEqual(1e-3, Utilities.get_time_conversion_coeff(from_units="ns", to_units="micros"))
-        self.assertEqual(1, Utilities.get_time_conversion_coeff(from_units="ns", to_units="ns"))
+        assert Utilities.get_time_conversion_coeff(from_units="ns", to_units="s") == 1e-9
+        assert Utilities.get_time_conversion_coeff(from_units="ns", to_units="ms") == 1e-6
+        assert Utilities.get_time_conversion_coeff(from_units="ns", to_units="micros") == 1e-3
+        assert Utilities.get_time_conversion_coeff(from_units="ns", to_units="ns") == 1
 
     def test_get_time_conversion_raise_error(self):
-        """Assert in utilities - ValueError is raised when wrong units given"""
-        self.assertRaises(ValueError, Utilities.get_time_conversion_coeff, "s", "bad_units")
-        self.assertRaises(ValueError, Utilities.get_time_conversion_coeff, "bad_units", "s")
-        self.assertRaises(ValueError, Utilities.get_time_conversion_coeff, "bad_units", "bad_units")
+        """ValueError is raised when wrong units given."""
+        with pytest.raises(ValueError):
+            Utilities.get_time_conversion_coeff("s", "bad_units")
+        with pytest.raises(ValueError):
+            Utilities.get_time_conversion_coeff("bad_units", "s")
+        with pytest.raises(ValueError):
+            Utilities.get_time_conversion_coeff("bad_units", "bad_units")
 
     def test_convert_time_units_single_value(self):
-        """Assert in utilities - converting single time units value"""
-        self.assertEqual(5, Utilities.convert_time_units(data=5, from_units="s", to_units="s"))
-        self.assertAlmostEqual(
-            4.5e-3, Utilities.convert_time_units(data=4500.0, from_units="micros", to_units="s"), delta=0.000000001
-        )
+        """Converting single time units value."""
+        assert Utilities.convert_time_units(data=5, from_units="s", to_units="s") == 5
+        result = Utilities.convert_time_units(data=4500.0, from_units="micros", to_units="s")
+        assert result == pytest.approx(4.5e-3, abs=0.000000001)
 
     def test_convert_time_units_list_array(self):
-        """Assert in utilities - converting list time units value"""
-        _data = [1, 2, 3, 4, 5]
-        self.assertTrue(all(_data == Utilities.convert_time_units(data=_data, from_units="s", to_units="s")))
+        """Converting list time units value."""
+        data = [1, 2, 3, 4, 5]
+        result = Utilities.convert_time_units(data=data, from_units="s", to_units="s")
+        assert all(data == result)
 
     def test_convert_time_units_numpy_array(self):
-        """Assert in utilities - converting numpy array time units value"""
-        _data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
-        self.assertTrue(all(_data == Utilities.convert_time_units(data=_data, from_units="s", to_units="s")))
+        """Converting numpy array time units value."""
+        data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+        result = Utilities.convert_time_units(data=data, from_units="s", to_units="s")
+        assert all(data == result)
 
     def test_array_multiply_coeff_with_no_array(self):
-        """Assert in utilities - multiply nothing by a coeff value"""
-        self.assertRaises(ValueError, Utilities.array_multiply_coeff)
+        """Multiply nothing by a coeff value raises ValueError."""
+        with pytest.raises(ValueError):
+            Utilities.array_multiply_coeff()
 
     def test_array_multiply_coeff(self):
-        """Assert in utilities - multiply array by coeff value"""
-        _data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
-        _coeff = 2.5
-        _new_data = Utilities.array_multiply_coeff(data=_data, coeff=_coeff)
-        _expected_data = np.array([2.5, 5.0, 7.5, 10, 12.5])
-        self.assertTrue(all(_expected_data == _new_data))
+        """Multiply array by coeff value."""
+        data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+        coeff = 2.5
+        new_data = Utilities.array_multiply_coeff(data=data, coeff=coeff)
+        expected_data = np.array([2.5, 5.0, 7.5, 10, 12.5])
+        assert all(expected_data == new_data)
 
     def test_array_add_coeff_with_no_array(self):
-        """Assert in utilities - add nothing to a coeff value"""
-        self.assertRaises(ValueError, Utilities.array_add_coeff)
+        """Add nothing to a coeff value raises ValueError."""
+        with pytest.raises(ValueError):
+            Utilities.array_add_coeff()
 
     def test_array_add_coeff(self):
-        """Assert in utilities - adding coeff to array"""
-        _data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
-        _coeff = 5.0
-        _new_data = Utilities.array_add_coeff(data=_data, coeff=_coeff)
-        _expected_data = np.array([6.0, 7.0, 8.0, 9.0, 10.0])
-        self.assertTrue(all(_expected_data == _new_data))
+        """Adding coeff to array."""
+        data = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+        coeff = 5.0
+        new_data = Utilities.array_add_coeff(data=data, coeff=coeff)
+        expected_data = np.array([6.0, 7.0, 8.0, 9.0, 10.0])
+        assert all(expected_data == new_data)
 
     def test_array_divide_array_not_same_size(self):
-        """Assert in Utilities - Numerator array not same size as denominator array"""
-        _numerator = np.array([1, 2, 3])
-        _denominator = np.array([1, 2])
-        self.assertRaises(ValueError, Utilities.array_divide_array, _numerator, _denominator)
+        """Numerator array not same size as denominator array raises ValueError."""
+        numerator = np.array([1, 2, 3])
+        denominator = np.array([1, 2])
+        with pytest.raises(ValueError):
+            Utilities.array_divide_array(numerator, denominator)
 
     def test_array_divide_array_works(self):
-        """Assert in Utilities - Ratio of arrays works"""
-        _numerator = np.array([10, 20, 30, 40, 50])
-        _denominator = np.array([1, 2, 3, 4, 5])
-        _ratio_expected = np.array([10, 10, 10, 10, 10])
-        _ratio_returned = Utilities.array_divide_array(numerator=_numerator, denominator=_denominator)
-        self.assertTrue(all(_ratio_expected == _ratio_returned))
+        """Ratio of arrays works."""
+        numerator = np.array([10, 20, 30, 40, 50])
+        denominator = np.array([1, 2, 3, 4, 5])
+        ratio_expected = np.array([10, 10, 10, 10, 10])
+        ratio_returned = Utilities.array_divide_array(numerator=numerator, denominator=denominator)
+        assert all(ratio_expected == ratio_returned)
 
     def test_array_minus_array_raise_error(self):
-        """Assert in Utilities - array1 minus array2 raise error if not same size"""
-        _array1 = np.array([1, 2, 3])
-        _array2 = np.array([1, 2])
-        self.assertRaises(ValueError, Utilities.array_minus_array, _array1, _array2)
+        """Array1 minus array2 raises error if not same size."""
+        array1 = np.array([1, 2, 3])
+        array2 = np.array([1, 2])
+        with pytest.raises(ValueError):
+            Utilities.array_minus_array(array1, array2)
 
     def test_array_minus_array_works(self):
-        """Assert in Utilities - array1 minus array2 works returns correct array"""
-        _array1 = np.array([2, 4, 6])
-        _array2 = np.array([2, 3, 4])
-        _array_returned = Utilities.array_minus_array(_array1, _array2)
-        _array_expected = np.array([0, 1, 2])
-        self.assertTrue(all(_array_expected == _array_returned))
+        """Array1 minus array2 returns correct array."""
+        array1 = np.array([2, 4, 6])
+        array2 = np.array([2, 3, 4])
+        array_returned = Utilities.array_minus_array(array1, array2)
+        array_expected = np.array([0, 1, 2])
+        assert all(array_expected == array_returned)
 
-    def test_load_csv_raise_value_error(self):
-        """Assert in Utilities - testing load_csv - ValueError raised when wrong file format"""
-        input_file = self.get_full_path("bad_file.txt")
-        self.assertRaises(ValueError, Utilities.load_csv, input_file)
+    def test_load_csv_raise_value_error(self, get_data_file):
+        """ValueError raised when wrong file format."""
+        input_file = get_data_file("bad_file.txt")
+        with pytest.raises(ValueError):
+            Utilities.load_csv(input_file)
 
-    def test_load_ascii_raise_value_error(self):
-        """Assert in Utilities - testing load_ascii - ValueError is raised when file format is wrong"""
-        input_file = self.get_full_path("bad_file.txt")
-        self.assertRaises(ValueError, Utilities.load_ascii, input_file)
+    def test_load_ascii_raise_value_error(self, get_data_file):
+        """ValueError is raised when file format is wrong."""
+        input_file = get_data_file("bad_file.txt")
+        with pytest.raises(ValueError):
+            Utilities.load_ascii(input_file)
 
-    def test_load_ascii_with_space_separator(self):
-        """Assert in Utilities - testing load_ascii - space separated file read correctly"""
-        input_file = self.get_full_path("good_tof.txt")
-        _array = Utilities.load_ascii(filename=input_file, sep=" ")[0]
+    def test_load_ascii_with_space_separator(self, get_data_file):
+        """Space separated file read correctly."""
+        input_file = get_data_file("good_tof.txt")
+        array = Utilities.load_ascii(filename=input_file, sep=" ")[0]
         expected_start_of_array = np.array([[1.0, 20.0], [2.0, 21.0]])[0]
-        returned_array = _array[0:2]
-        self.assertTrue(all(expected_start_of_array == returned_array))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        returned_array = array[0:2]
+        assert all(expected_start_of_array == returned_array)
