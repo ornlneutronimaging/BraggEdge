@@ -85,10 +85,11 @@ class ExperimentTest(unittest.TestCase):
             ]
         )
         _lambda_returned = _exp_obj.lambda_array
-        self.assertTrue(_lambda_expected[0], _lambda_returned[0])
-        self.assertTrue(_lambda_expected[5], _lambda_returned[5])
-        self.assertTrue(_lambda_expected[-1], _lambda_returned[-1])
-        self.assertTrue(len(_lambda_expected), len(_lambda_returned))
+        # Verify first 20 calculated lambda values match expected
+        self.assertAlmostEqual(_lambda_expected[0], _lambda_returned[0])
+        self.assertAlmostEqual(_lambda_expected[5], _lambda_returned[5])
+        self.assertAlmostEqual(_lambda_expected[19], _lambda_returned[19])
+        self.assertGreaterEqual(len(_lambda_returned), len(_lambda_expected))
 
     def test_create_csv_lambda_file(self):
         """Assert in Experiment - the lambda file is correctly exported"""

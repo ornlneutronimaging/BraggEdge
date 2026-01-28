@@ -115,7 +115,7 @@ class BraggEdge:
         """calculates the experimental lattice parameter values given an array of
         bragg edge values"""
 
-        if experimental_bragg_edge_error is None:
+        if experimental_bragg_edge_values is None:
             raise ValueError("Please provide an array of bragg edge values")
 
         if experimental_bragg_edge_error is not None:

@@ -48,7 +48,7 @@ class RetrieveMaterialMetadata:
 
     def _retrieve_table(self):
         """retrieve the table"""
-        metadata_table = RetrieveMetadataTable()
+        metadata_table = RetrieveMetadataTable(use_local_table=self.use_local_table)
         self.table = metadata_table.get_table()
 
     def full_list_material(self):
