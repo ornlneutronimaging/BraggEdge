@@ -99,11 +99,16 @@ exclude_lines = [
 [tool.ruff]
 target-version = "py311"
 line-length = 120
-exclude = ["notebooks/**", "**/*.ipynb"]
+exclude = ["notebooks/**", "**/*.ipynb", "docs/_build/**"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "W", "UP"]
-ignore = []
+ignore = [
+  "E701",  # Multiple statements on one line (colon) - existing code style, fix in #22
+  "E722",  # Bare except - existing code, fix in #22
+  "E741",  # Ambiguous variable name (l) - h,k,l are standard Miller indices notation
+  "UP031", # Use format specifiers instead of percent format - fix in #22
+]
 
 [tool.ruff.lint.isort]
 known-first-party = ["neutronbraggedge"]
@@ -133,9 +138,11 @@ html5lib = ">=1.1"
 # Testing
 test = "pytest tests --cov-branch --cov=src/neutronbraggedge --cov-report=term --cov-report=xml"
 test-fast = "pytest tests -x"
-# Linting
+# Linting & Formatting
 lint = "ruff check src tests"
 format = "ruff format src tests"
+pre-commit = "pre-commit run --all-files"
+pre-commit-install = "pre-commit install"
 # Building
 build = "python -m build"
 # Cleanup

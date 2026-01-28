@@ -20,5 +20,5 @@ to build the documentation
 to visualize the documentation, via a browser, open
 > docs/_build/html/index.hmtl
 
-or on the web 
+or on the web
 http://ornlneutronimaging.github.io/BraggEdge/

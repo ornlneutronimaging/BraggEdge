@@ -16,7 +16,7 @@ For a particular element, or a list of elements, you can retrieve:
  - h, k and l values
  - Crystal structure
  - bragg edges values
- 
+
 For this example, we are retrieving the data for *Fe* and we are only
 interested by the first *4* crystal orientation.
 
@@ -114,7 +114,7 @@ It is possible to display the full list of material available
     'CaMnO3' 'SrRuO3' 'YAlO3']
 
 
-In the case where the material is not in the list of material available, it is possible to define "on the fly" 
+In the case where the material is not in the list of material available, it is possible to define "on the fly"
 this material such as demonstrated here
 
 >>> _handler = BraggEdge(new_material = [{'name': "AlSiC", 'lattice': 2.8664, 'crystal_structure': 'BCC'}])
@@ -148,16 +148,16 @@ Lambda Calculation
 In order to convert a TOF range into lambda, you will need to provide:
  - distance source-detector (in meters)
  - detector offset (micros)
- - tof array 
- 
+ - tof array
+
 First, you need to load your TOF range. You can either provide this array
- 
+
 >>> _tof_handler = TOF(tof = [9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units = 'micros')
- 
+
 or by providing the name of an ascii file name where each tof is on its own row
 
 >>> _tof_handler = TOF(filename = my_tof.txt, units = 'micros')
- 
+
 Then it is possible to calculate the Lambda array
 
 >>> distance_source_detector_m = 16.09
@@ -180,15 +180,15 @@ In order to calculate the *source-detector* length, you must provide:
  - detector offset (micros)
  - tof array
  - lambda array (Angstroms)
- 
+
 First, you need to load your TOF range. You can either provide this array
- 
+
 >>> _tof_handler = TOF(tof = [9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units = 'micros')
- 
+
 or by providing the name of an ascii file name where each tof is on its own row
 
 >>> _tof_handler = TOF(filename = my_tof.txt, units = 'micros')
- 
+
 Same thing with lambda array
 
 >>> _lambda_handler = LambdaWavelength(data = [1.10664e-10, 1.109165e-10, 1.111682e-10, 1.114200e-10])
@@ -214,15 +214,15 @@ In order to calculate the *detector offsetr*, you must provide:
  - distance source-detector (m)
  - tof array
  - lambda array (Angstroms)
- 
+
 First, you need to load your TOF range. You can either provide this array
- 
+
 >>> _tof_handler = TOF(tof = [9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units = 'micros')
- 
+
 or by providing the name of an ascii file name where each tof is on its own row
 
 >>> _tof_handler = TOF(filename = my_tof.txt, units = 'micros')
- 
+
 Same thing with lambda array
 
 >>> _lambda_handler = LambdaWavelength(data = [1.10664e-9, 1.109165e-9, 1.111682e-9, 1.114200e-9])
@@ -248,8 +248,8 @@ In order to calculate the average lattice for a given material, the following in
 provided:
   - material name
   - crystal structure
-  - bragg edge array 
-  
+  - bragg edge array
+
 example:
 
 >>> o_lattice = Lattice(material = "Si",
@@ -258,7 +258,7 @@ example:
 
 The algorithm automatically calculate the hkl bragg edge sequence and the lattice
 
-Those calculation can be display using 
+Those calculation can be display using
 
 >>> o_lattice.display_hkl_bragg_edge()
   hkl Bragg Edge Table

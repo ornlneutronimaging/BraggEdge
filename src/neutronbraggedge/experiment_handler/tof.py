@@ -1,19 +1,21 @@
-import numpy as np
 import os
+
+import numpy as np
+
 from ..utilities import Utilities
 
 
-class TOF(object):
+class TOF:
     """This class handles the loading of the TOF and the automatic conversion to 's'"""
-    
+
     tof_array = []
     counts_array = []
-    
-    def __init__(self, filename=None, tof_array=None, units='s'):
+
+    def __init__(self, filename=None, tof_array=None, units="s"):
         """Constructor of the TOF class
-        
+
         Arguments:
-        * filename: optional input file name. If file exist, data will be automatically loaded 
+        * filename: optional input file name. If file exist, data will be automatically loaded
         (only CSV file is supported so far)
            example: file_tof.txt
                     #first row of the file
@@ -38,9 +40,9 @@ class TOF(object):
         Raises:
         * ValueError: - input file provided as the wrong format
                       - neither input file and tof_array are provided
-                      
+
         * IOError: - file does not exist
-        
+
         """
 
         if filename is not None:
@@ -48,20 +50,18 @@ class TOF(object):
                 self.filename = filename
                 self.load_data()
             else:
-                raise IOError("File does not exist")
+                raise OSError("File does not exist")
         else:
             if tof_array is not None:
-                if not type(tof_array) is np.ndarray:
+                if type(tof_array) is not np.ndarray:
                     self.tof_array = np.array(tof_array)
                 else:
                     self.tof_array = tof_array
             else:
                 raise ValueError("Please provide a tof array")
 
-        if units != 's':
-            self.tof_array = Utilities.convert_time_units(data=self.tof_array,
-                                                          from_units=units,
-                                                          to_units='s')
+        if units != "s":
+            self.tof_array = Utilities.convert_time_units(data=self.tof_array, from_units=units, to_units="s")
 
     @staticmethod
     def _first_line_number_with_real_data(line):
@@ -75,7 +75,7 @@ class TOF(object):
     def _is_this_numeric(value_to_evaluate):
         if not np.isfinite(value_to_evaluate):
             return False
-            
+
         try:
             float(value_to_evaluate)
             return True
@@ -84,10 +84,10 @@ class TOF(object):
 
     def load_data(self):
         """Load the data from the filename name provided"""
-        
+
         # only loader implemented so far !
         try:
-            _ascii_array = Utilities.load_ascii(filename=self.filename, sep='')
+            _ascii_array = Utilities.load_ascii(filename=self.filename, sep="")
             start_row = TOF._first_line_number_with_real_data(_ascii_array[0, 0])
 
             _tof_column = _ascii_array[start_row:, 0]
@@ -106,7 +106,7 @@ class TOF(object):
             pass  # try another format
 
         try:
-            _ascii_array = Utilities.load_ascii(filename=self.filename, sep=',')
+            _ascii_array = Utilities.load_ascii(filename=self.filename, sep=",")
             start_row = TOF._first_line_number_with_real_data(_ascii_array[0, 0])
 
             _tof_column = _ascii_array[start_row:, 0]  # first row must be excluded in this format
