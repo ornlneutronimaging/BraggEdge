@@ -1,66 +1,70 @@
-import os
-import unittest
+"""Tests for Experiment class."""
 
 import numpy as np
+import pytest
 
 from neutronbraggedge.experiment_handler.experiment import Experiment
 from neutronbraggedge.experiment_handler.lambda_wavelength import LambdaWavelength
 from neutronbraggedge.experiment_handler.tof import TOF
 
 
-class ExperimentTest(unittest.TestCase):
-    def setUp(self):
-        _file_path = os.path.dirname(__file__)
-        self.data_path = os.path.abspath(os.path.join(_file_path, "../../data"))
+class TestExperiment:
+    """Tests for experiment handling."""
 
     def test_experiment_value_error_when_no_tof_provided(self):
-        """Assert in experiemnt - that ValueError is raised when tof array is missing"""
-        self.assertRaises(ValueError, Experiment)
+        """ValueError is raised when tof array is missing."""
+        with pytest.raises(ValueError):
+            Experiment()
 
     def test_experiment_value_error_when_missing_argument_for_lambda_calculation(self):
-        """Assert ValueError raised when detector_offset or LDS are missing."""
-        _tof = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
-        self.assertRaises(ValueError, Experiment, _tof)
-        self.assertRaises(ValueError, Experiment, _tof, None, 1)
-        self.assertRaises(ValueError, Experiment, _tof, None, None, 2)
+        """ValueError raised when detector_offset or LDS are missing."""
+        tof = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+        with pytest.raises(ValueError):
+            Experiment(tof)
+        with pytest.raises(ValueError):
+            Experiment(tof, None, 1)
+        with pytest.raises(ValueError):
+            Experiment(tof, None, None, 2)
 
     def test_experiment_value_error_when_lambda_provided_and_either_lds_or_offset_missing(self):
-        """Assert in experiment - that ValueError is raised when LdS and offset are missing when lambda provided"""
-        _tof = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
-        _lambda = [11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0]
-        self.assertRaises(ValueError, Experiment, _tof, _lambda)
+        """ValueError is raised when LdS and offset are missing when lambda provided."""
+        tof = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+        lambda_array = [11.0, 12.0, 13.0, 14.0, 15.0, 16.0, 17.0]
+        with pytest.raises(ValueError):
+            Experiment(tof, lambda_array)
 
     def test_experiment_value_error_when_lambda_and_tof_not_same_size(self):
-        """Assert in experiment - that ValueError is raised when tof and lambda array do not have the same size"""
-        _tof = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
-        _lambda = [11.0, 12.0, 13.0, 14.0, 15.0]
-        self.assertRaises(ValueError, Experiment, _tof, _lambda, 10)
+        """ValueError is raised when tof and lambda array do not have the same size."""
+        tof = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0]
+        lambda_array = [11.0, 12.0, 13.0, 14.0, 15.0]
+        with pytest.raises(ValueError):
+            Experiment(tof, lambda_array, 10)
 
-    def test_experiment_calculate_main_coefficient(self):
-        """Assert in experiment - the calculation of main coefficient is correct"""
-        _tof_file = os.path.join(self.data_path, "tof.txt")
-        _tof_obj = TOF(filename=_tof_file)
-        _distance_source_detector_m = 1.609
-        _detector_offset_s = 4500e-6
-        _exp_obj = Experiment(
-            tof=_tof_obj.tof_array,
-            distance_source_detector_m=_distance_source_detector_m,
-            detector_offset_micros=_detector_offset_s,
+    def test_experiment_calculate_main_coefficient(self, get_data_file):
+        """Calculation of main coefficient is correct."""
+        tof_file = get_data_file("tof.txt")
+        tof_obj = TOF(filename=tof_file)
+        distance_source_detector_m = 1.609
+        detector_offset_s = 4500e-6
+        exp_obj = Experiment(
+            tof=tof_obj.tof_array,
+            distance_source_detector_m=distance_source_detector_m,
+            detector_offset_micros=detector_offset_s,
         )
-        self.assertAlmostEqual(2.45869e-7, _exp_obj._h_over_MnLds, delta=0.0001)
+        assert exp_obj._h_over_MnLds == pytest.approx(2.45869e-7, abs=0.0001)
 
-    def test_experiment_calculate_lambda(self):
-        """Assert in experiment - the calculation of lambda is correct"""
-        _tof_file = os.path.join(self.data_path, "tof.txt")
-        _tof_obj = TOF(filename=_tof_file)
-        _distance_source_detector_m = 1.609
-        _detector_offset_micros = 4500
-        _exp_obj = Experiment(
-            tof=_tof_obj.tof_array,
-            distance_source_detector_m=_distance_source_detector_m,
-            detector_offset_micros=_detector_offset_micros,
+    def test_experiment_calculate_lambda(self, get_data_file):
+        """Calculation of lambda is correct."""
+        tof_file = get_data_file("tof.txt")
+        tof_obj = TOF(filename=tof_file)
+        distance_source_detector_m = 1.609
+        detector_offset_micros = 4500
+        exp_obj = Experiment(
+            tof=tof_obj.tof_array,
+            distance_source_detector_m=distance_source_detector_m,
+            detector_offset_micros=detector_offset_micros,
         )
-        _lambda_expected = np.array(
+        lambda_expected = np.array(
             [
                 1.10664704e-09,
                 1.10916474e-09,
@@ -84,77 +88,70 @@ class ExperimentTest(unittest.TestCase):
                 1.15448333e-09,
             ]
         )
-        _lambda_returned = _exp_obj.lambda_array
+        lambda_returned = exp_obj.lambda_array
         # Verify first 20 calculated lambda values match expected
-        self.assertAlmostEqual(_lambda_expected[0], _lambda_returned[0])
-        self.assertAlmostEqual(_lambda_expected[5], _lambda_returned[5])
-        self.assertAlmostEqual(_lambda_expected[19], _lambda_returned[19])
-        self.assertGreaterEqual(len(_lambda_returned), len(_lambda_expected))
+        assert lambda_expected[0] == pytest.approx(lambda_returned[0])
+        assert lambda_expected[5] == pytest.approx(lambda_returned[5])
+        assert lambda_expected[19] == pytest.approx(lambda_returned[19])
+        assert len(lambda_returned) >= len(lambda_expected)
 
-    def test_create_csv_lambda_file(self):
-        """Assert in Experiment - the lambda file is correctly exported"""
-        _tof_file = os.path.join(self.data_path, "tof.txt")
-        _tof_obj = TOF(filename=_tof_file)
-        _distance_source_detector_m = 1.609
-        _detector_offset_micros = 4500
-        _exp_obj = Experiment(
-            tof=_tof_obj.tof_array,
-            distance_source_detector_m=_distance_source_detector_m,
-            detector_offset_micros=_detector_offset_micros,
+    def test_create_csv_lambda_file(self, get_data_file, tmp_path):
+        """Lambda file is correctly exported."""
+        tof_file = get_data_file("tof.txt")
+        tof_obj = TOF(filename=tof_file)
+        distance_source_detector_m = 1.609
+        detector_offset_micros = 4500
+        exp_obj = Experiment(
+            tof=tof_obj.tof_array,
+            distance_source_detector_m=distance_source_detector_m,
+            detector_offset_micros=detector_offset_micros,
         )
-        _output_filename = os.path.join(self.data_path, "remove_me.txt")
-        _exp_obj.export_lambda(filename=_output_filename)
-        self.assertTrue(os.path.isfile(_output_filename))
-        os.remove(_output_filename)  # cleanup temp file
+        output_filename = tmp_path / "test_lambda.txt"
+        exp_obj.export_lambda(filename=str(output_filename))
+        assert output_filename.is_file()
 
-    def test_create_csv_lambda_file_without_providing_name(self):
-        """Assert in Experiment - no file is created if no filename is provided"""
-        _tof_file = os.path.join(self.data_path, "tof.txt")
-        _tof_obj = TOF(filename=_tof_file)
-        _distance_source_detector_m = 1.609
-        _detector_offset_micros = 4500
-        _output_file_name = os.path.join(self.data_path, "no_file.txt")
-        _exp_obj = Experiment(
-            tof=_tof_obj.tof_array,
-            distance_source_detector_m=_distance_source_detector_m,
-            detector_offset_micros=_detector_offset_micros,
+    def test_create_csv_lambda_file_without_providing_name(self, get_data_file):
+        """ValueError is raised if no filename is provided for export."""
+        tof_file = get_data_file("tof.txt")
+        tof_obj = TOF(filename=tof_file)
+        distance_source_detector_m = 1.609
+        detector_offset_micros = 4500
+        exp_obj = Experiment(
+            tof=tof_obj.tof_array,
+            distance_source_detector_m=distance_source_detector_m,
+            detector_offset_micros=detector_offset_micros,
         )
-        self.assertRaises(ValueError, _exp_obj.export_lambda)
+        with pytest.raises(ValueError):
+            exp_obj.export_lambda()
 
-    def test_calculate_distance_source_detector(self):
-        """Assert in Experiment - the distance source detector is corectly calculated"""
-        _tof_file = os.path.join(self.data_path, "tof.txt")
-        _tof_obj = TOF(filename=_tof_file)
-        _detector_offset_micros = 4500
-        _lambda_file = os.path.join(self.data_path, "lambda.txt")
-        _lambda_obj = LambdaWavelength(filename=_lambda_file)
-        _tof_array = _tof_obj.tof_array[0:20]
-        _lambda_array = _lambda_obj.lambda_array[0:20]
+    def test_calculate_distance_source_detector(self, get_data_file):
+        """Distance source detector is correctly calculated."""
+        tof_file = get_data_file("tof.txt")
+        tof_obj = TOF(filename=tof_file)
+        detector_offset_micros = 4500
+        lambda_file = get_data_file("lambda.txt")
+        lambda_obj = LambdaWavelength(filename=lambda_file)
+        tof_array = tof_obj.tof_array[0:20]
+        lambda_array = lambda_obj.lambda_array[0:20]
 
-        _exp_handler = Experiment(
-            tof=_tof_array, lambda_array=_lambda_array, detector_offset_micros=_detector_offset_micros
+        exp_handler = Experiment(
+            tof=tof_array, lambda_array=lambda_array, detector_offset_micros=detector_offset_micros
         )
-        _distance_expected = 1.609  # m
-        _distance_returned = _exp_handler.distance_source_detector
-        self.assertAlmostEqual(_distance_expected, _distance_returned, delta=1e-6)
+        distance_expected = 1.609  # m
+        assert exp_handler.distance_source_detector == pytest.approx(distance_expected, abs=1e-6)
 
-    def test_calculate_detector_offset(self):
-        """Assert in Experiment - the detector offset is correctly calculated"""
-        _tof_file = os.path.join(self.data_path, "tof.txt")
-        _tof_obj = TOF(filename=_tof_file)
-        _distance_source_detector_m = 1.609
-        _lambda_file = os.path.join(self.data_path, "lambda.txt")
-        _lambda_obj = LambdaWavelength(filename=_lambda_file)
-        _tof_array = _tof_obj.tof_array[0:20]
-        _lambda_array = _lambda_obj.lambda_array[0:20]
+    def test_calculate_detector_offset(self, get_data_file):
+        """Detector offset is correctly calculated."""
+        tof_file = get_data_file("tof.txt")
+        tof_obj = TOF(filename=tof_file)
+        distance_source_detector_m = 1.609
+        lambda_file = get_data_file("lambda.txt")
+        lambda_obj = LambdaWavelength(filename=lambda_file)
+        tof_array = tof_obj.tof_array[0:20]
+        lambda_array = lambda_obj.lambda_array[0:20]
 
-        _exp_handler = Experiment(
-            tof=_tof_array, lambda_array=_lambda_array, distance_source_detector_m=_distance_source_detector_m
+        exp_handler = Experiment(
+            tof=tof_array, lambda_array=lambda_array, distance_source_detector_m=distance_source_detector_m
         )
-        _offset_expected_micros = 4500  # micros
-        _offset_calculated = _exp_handler.detector_offset_micros
-        self.assertAlmostEqual(_offset_expected_micros, _offset_calculated, delta=1e-6)
-
-
-if __name__ == "__main__":
-    unittest.main()
+        offset_expected_micros = 4500  # micros
+        assert exp_handler.detector_offset_micros == pytest.approx(offset_expected_micros, abs=1e-6)
