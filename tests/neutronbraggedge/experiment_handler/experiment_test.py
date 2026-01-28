@@ -45,11 +45,11 @@ class TestExperiment:
         tof_file = get_data_file("tof.txt")
         tof_obj = TOF(filename=tof_file)
         distance_source_detector_m = 1.609
-        detector_offset_s = 4500e-6
+        detector_offset_micros = 4500
         exp_obj = Experiment(
             tof=tof_obj.tof_array,
             distance_source_detector_m=distance_source_detector_m,
-            detector_offset_micros=detector_offset_s,
+            detector_offset_micros=detector_offset_micros,
         )
         assert exp_obj._h_over_MnLds == pytest.approx(2.45869e-7, abs=0.0001)
 
