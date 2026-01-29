@@ -1,3 +1,5 @@
+"""Utility functions for time unit conversion and file I/O."""
+
 from typing import Literal
 
 import numpy as np

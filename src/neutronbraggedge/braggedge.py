@@ -1,15 +1,28 @@
+"""Bragg edge calculation module for crystalline materials."""
+
 import os
 from typing import Any, Literal, TypedDict
 
 from .braggedges_handler.braggedge_calculator import BraggEdgeCalculator
 from .material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
+from .models import BraggEdgeEntry, BraggEdgeResult
 from .utilities import Utilities
 
 CrystalStructure = Literal["BCC", "FCC"]
 
 
 class NewMaterialDict(TypedDict):
-    """Type definition for new material dictionary."""
+    """Type definition for new material dictionary.
+
+    Attributes
+    ----------
+    name : str
+        Material name/symbol.
+    lattice : float
+        Lattice constant in Angstroms.
+    crystal_structure : CrystalStructure
+        Crystal structure type ("BCC" or "FCC").
+    """
 
     name: str
     lattice: float
@@ -17,55 +30,42 @@ class NewMaterialDict(TypedDict):
 
 
 class BraggEdge:
-    """This is from where the user will retrieve all metadata and calculation
+    """Calculate Bragg edges for crystalline materials.
 
-    Variables:
+    This class retrieves material metadata and calculates Bragg edge positions
+    for neutron diffraction analysis.
 
-      From **python**, first you need to import the package
+    Attributes
+    ----------
+    material : list[str]
+        List of material names.
+    hkl : dict[str, list[list[int]]]
+        Miller indices for each material.
+    bragg_edges : dict[str, list[float]]
+        Bragg edge wavelengths in Angstroms for each material.
+    d_spacing : dict[str, list[float]]
+        Interplanar spacing in Angstroms for each material.
+    metadata : dict[str, Any]
+        Material metadata including lattice and crystal structure.
+
+    Examples
+    --------
+    Calculate Bragg edges for Iron:
 
     >>> from neutronbraggedge.braggedge import BraggEdge
+    >>> handler = BraggEdge(material='Fe', number_of_bragg_edges=4)
+    >>> print(handler.bragg_edges['Fe'])
+    [4.0538, 2.8664, 2.3404, 2.0269]
 
-    For a particular element you can retrieve:
-     - lattice parameter
-     - h, k and l values
-     - Crystal structure
-     - bragg edges values
+    Use a custom material:
 
-    For this example, we are retrieving the data for *Fe* and we are only
-    interested by the first *4* crystal orientation.
+    >>> custom = [{'name': 'MyMat', 'lattice': 3.5, 'crystal_structure': 'FCC'}]
+    >>> handler = BraggEdge(new_material=custom)
 
-    >>> _handler = BraggEdge(material = 'Fe', number_of_bragg_edges = 4)
-    >>> print("Crystal Structure is: %s" %_handler.metadata['cyrstal_structure']))
-    'BCC'
-    >>> print("Lattice is %.2f" %_handler.metadata['lattice'])
-    2.87
-    >>> print("hkl are: " , _handler.hkl)
-    hkl are: [][1,1,0],[2,0,0],[2,1,1],[2,2,0]]
-    >>> print("bragg edges are: ", _handler.bragg_edges)
-    bragg edges are: [2.0268, 1.4332, 1.1702, 1.0134]
+    Get Pydantic model result:
 
-
-    It is also possible to display all metadata at once
-
-    >>> print(_handler)
-    ===================================
-    Material: Fe
-    Lattice: 2.8664A
-    Crystal Structure: BCC
-    Using local metadata Table: True
-    ===================================
-     h | k | l |   d(A)  |    BraggEdge
-    ===================================
-     1 | 1 | 0 |  2.0269 |    4.0537
-     2 | 0 | 0 |  1.4332 |    2.8664
-     2 | 1 | 1 |  1.1702 |    2.3404
-     2 | 2 | 0 |  1.0134 |    2.0269
-    ===================================
-
-    Then you can export the resulting metadata into a CSV file
-
-    >>> _handler.export(filename = 'my_file_name.txt')
-
+    >>> result = handler.to_result('Fe')
+    >>> print(result.model_dump_json())
     """
 
     hkl: dict[str, list[list[int]]] | None = None
@@ -86,24 +86,27 @@ class BraggEdge:
         number_of_bragg_edges: int = 10,
         use_local_metadata_table: bool = True,
     ) -> None:
+        """Initialize BraggEdge calculator.
+
+        Parameters
+        ----------
+        material : str or list[str], optional
+            Material name(s) such as 'Ni', 'Fe'. Either `material` or
+            `new_material` must be provided.
+        new_material : list[NewMaterialDict], optional
+            List of custom material definitions with 'name', 'lattice',
+            and 'crystal_structure' keys.
+        number_of_bragg_edges : int, default 10
+            Number of Bragg edges to calculate.
+        use_local_metadata_table : bool, default True
+            If True, use local metadata table. If False, fetch from Wikipedia.
+
+        Raises
+        ------
+        ValueError
+            If neither `material` nor `new_material` is provided, or if
+            `new_material` has an invalid format.
         """
-        Constructor
-
-        Arguments:
-           - material: name of the material such as 'Ni', 'Fe' ...
-           - new_material: dictionary of new materials defined as
-              [{'name': 'Ta',
-               'lattice': 0.333,
-               'crystal_structure': 'FCC'},
-               {'name': 'Ur',
-               'lattice': 0.5555,
-               'crystal_structure': 'BCC'}]
-           - number_of_bragg_edge:  Default 10. Number of row to display and calculate data for.
-           - use_local_metadata_table: default True. Use local defined table to retrieve lattice parameters,
-                                     crystal structure. If False, will go to wiki web page.
-
-        """
-
         if material is None:
             if new_material is None:
                 raise ValueError("No material or new_material defined!")
@@ -132,28 +135,83 @@ class BraggEdge:
         self._calculate_hkl()
         self._calculate_braggedges()
 
+    def to_result(self, material: str) -> BraggEdgeResult:
+        """Convert calculation results to a Pydantic model.
+
+        Parameters
+        ----------
+        material : str
+            Material name to get results for.
+
+        Returns
+        -------
+        BraggEdgeResult
+            Pydantic model containing all calculation results.
+
+        Raises
+        ------
+        KeyError
+            If the specified material was not calculated.
+
+        Examples
+        --------
+        >>> handler = BraggEdge(material='Fe', number_of_bragg_edges=4)
+        >>> result = handler.to_result('Fe')
+        >>> print(result.lattice)
+        2.8664
+        >>> print(result.model_dump_json(indent=2))
+        """
+        if material not in self.material:
+            raise KeyError(f"Material '{material}' not found. Available: {self.material}")
+
+        entries = []
+        _hkl = self.hkl[material]
+        _d_spacing = self.d_spacing[material]
+        _bragg_edges = self.bragg_edges[material]
+
+        for i in range(len(_d_spacing)):
+            entries.append(
+                BraggEdgeEntry(
+                    h=_hkl[i][0],
+                    k=_hkl[i][1],
+                    l=_hkl[i][2],
+                    d_spacing=_d_spacing[i],
+                    bragg_edge=_bragg_edges[i],
+                )
+            )
+
+        return BraggEdgeResult(
+            material=material,
+            lattice=self.metadata["lattice"][material],
+            crystal_structure=self.metadata["crystal_structure"][material],
+            use_local_table=self.use_local_metadata_table,
+            entries=entries,
+        )
+
     def get_experimental_lattice_parameter(
         self,
         experimental_bragg_edge_values: list[float] | None = None,
         experimental_bragg_edge_error: list[float] | None = None,
     ) -> None:
-        """Calculates the experimental lattice parameter values given an array of
-        bragg edge values.
+        """Calculate experimental lattice parameter from Bragg edge values.
 
         Note: This method is not yet implemented. Use the Lattice class directly
         for experimental lattice parameter calculations.
 
-        Args:
-            experimental_bragg_edge_values: Array of experimental bragg edge values.
-            experimental_bragg_edge_error: Optional array of errors corresponding to
-                ``experimental_bragg_edge_values``.
+        Parameters
+        ----------
+        experimental_bragg_edge_values : list[float], optional
+            Array of experimental Bragg edge values.
+        experimental_bragg_edge_error : list[float], optional
+            Array of errors for the Bragg edge values.
 
-        Raises:
-            ValueError: If ``experimental_bragg_edge_values`` is not provided, or if
-                ``experimental_bragg_edge_error`` is provided and its length does not
-                match ``experimental_bragg_edge_values``.
-            NotImplementedError: This method is not yet implemented. Use the Lattice
-                class directly for experimental lattice parameter calculations.
+        Raises
+        ------
+        ValueError
+            If `experimental_bragg_edge_values` is not provided, or if
+            `experimental_bragg_edge_error` length doesn't match.
+        NotImplementedError
+            This method is not yet implemented.
         """
         if experimental_bragg_edge_values is None:
             raise ValueError("Please provide an array of bragg edge values")
@@ -168,7 +226,7 @@ class BraggEdge:
         )
 
     def _retrieve_metadata(self, new_material: list[NewMaterialDict] | None = None) -> None:
-        """This method retrieves the lattice and crystal structure of the material"""
+        """Retrieve lattice and crystal structure metadata for materials."""
         _lattice: dict[str, float] = {}
         _crystal_structure: dict[str, CrystalStructure] = {}
 
@@ -193,7 +251,7 @@ class BraggEdge:
         self.metadata = {"lattice": self.lattice, "crystal_structure": self.crystal_structure}
 
     def _calculate_hkl(self) -> None:
-        """This method calculate the set of hkl up to the number_of_bragg_edges specified"""
+        """Calculate Miller indices up to number_of_bragg_edges."""
         calculator: dict[str, BraggEdgeCalculator] = {}
         _hkl: dict[str, list[list[int]]] = {}
 
@@ -213,7 +271,7 @@ class BraggEdge:
         self.hkl = _hkl
 
     def _calculate_braggedges(self) -> None:
-        """This method calculates the braggedges values (and the d_spacing in the same time)"""
+        """Calculate Bragg edge wavelengths and d-spacing values."""
         _d_spacing: dict[str, list[float]] = {}
         _bragg_edges: dict[str, list[float]] = {}
 
@@ -228,7 +286,7 @@ class BraggEdge:
         self.bragg_edges = _bragg_edges
 
     def __repr__(self) -> str:
-        """Display the metadata/hkl/d_spacing/bragg edge values"""
+        """Display calculation results via logger."""
         nbr_ticks = 45
 
         for _material in self.material:
@@ -254,17 +312,21 @@ class BraggEdge:
         return ""
 
     def export(self, filename: str | None = None, file_type: str = "csv") -> None:
-        """Export the metadata into various file format
+        """Export calculation results to a file.
 
-        Arguments:
+        Parameters
+        ----------
+        filename : str, optional
+            Output file path.
+        file_type : str, default "csv"
+            Output format. Only "csv" is currently supported.
 
-           filename: output file name to create
-           file_type: format of the file to create
-              only 'csv' (simple comma separated format) is supported for now
-
-        Exception:
-           IOError: if no file name is provided
-
+        Raises
+        ------
+        OSError
+            If no filename is provided.
+        NotImplementedError
+            If an unsupported file type is requested.
         """
         if filename is None:
             raise OSError
@@ -281,12 +343,13 @@ class BraggEdge:
                 raise NotImplementedError
 
     def _format_filename(self, filename: str, material: str) -> str:
+        """Format output filename with material suffix."""
         _filename, _extension = os.path.splitext(filename)
         new_filename = os.path.join(_filename + "_" + material + _extension)
         return new_filename
 
     def _format_metadata(self, _material: str) -> list[str]:
-        """Format the various metadata to put at the top of output file created"""
+        """Format metadata for file header."""
         _metadata: list[str] = []
         _metadata.append("Material: %s" % _material)
         _metadata.append("Lattice : %.4fAngstroms" % self.metadata["lattice"][_material])
@@ -297,7 +360,7 @@ class BraggEdge:
         return _metadata
 
     def _format_data(self, _material: str) -> list[list[int | float]]:
-        """Format the data for the output file created"""
+        """Format calculation data for file output."""
         _data: list[list[int | float]] = []
         _hkl = self.hkl[_material]
         _bragg_edges = self.bragg_edges[_material]
