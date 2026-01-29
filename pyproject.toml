@@ -27,6 +27,8 @@ dependencies = [
   "lxml>=4.9",
   "beautifulsoup4>=4.12",
   "html5lib>=1.1",
+  "pydantic>=2.0",
+  "loguru>=0.7",
   # Note: configparser is stdlib in Python 3, no longer needed as dependency
 ]
 
@@ -103,13 +105,43 @@ line-length = 120
 exclude = ["notebooks/**", "**/*.ipynb", "docs/_build/**"]
 
 [tool.ruff.lint]
-select = ["E", "F", "I", "W", "UP"]
+select = ["E", "F", "I", "W", "UP", "D"]
 ignore = [
   "E701",  # Multiple statements on one line (colon) - existing code style, fix in #22
   "E722",  # Bare except - existing code, fix in #22
   "E741",  # Ambiguous variable name (l) - h,k,l are standard Miller indices notation
   "UP031", # Use format specifiers instead of percent format - fix in #22
+  # Docstring rules - will be fixed in PR3 (#56)
+  "D100",  # Missing docstring in public module
+  "D101",  # Missing docstring in public class
+  "D102",  # Missing docstring in public method
+  "D103",  # Missing docstring in public function
+  "D104",  # Missing docstring in public package
+  "D105",  # Missing docstring in magic method
+  "D107",  # Missing docstring in __init__
+  "D200",  # One-line docstring should fit on one line
+  "D202",  # No blank lines allowed after function docstring
+  "D205",  # 1 blank line required between summary and description
+  "D209",  # Multi-line docstring closing quotes should be on separate line
+  "D400",  # First line should end with a period
+  "D401",  # First line should be in imperative mood
+  "D403",  # First word of docstring should be capitalized
+  "D404",  # First word of docstring should not be "This"
+  "D406",  # Section name should end with a newline
+  "D407",  # Missing dashed underline after section
+  "D410",  # Missing blank line after section
+  "D411",  # Missing blank line before section
+  "D412",  # No blank lines allowed between section header and content
+  "D414",  # Section has no content
+  "D415",  # First line should end with period, question mark, or exclamation point
+  "D417",  # Missing argument descriptions in docstring
 ]
+
+[tool.ruff.lint.pydocstyle]
+convention = "numpy"
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["D"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["neutronbraggedge"]
@@ -134,6 +166,8 @@ pandas = ">=2.0"
 lxml = ">=4.9"
 beautifulsoup4 = ">=4.12"
 html5lib = ">=1.1"
+pydantic = ">=2.0"
+loguru = ">=0.7"
 
 [tool.pixi.tasks]
 # Testing
