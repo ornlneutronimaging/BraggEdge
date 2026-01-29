@@ -1,8 +1,6 @@
 import os
 from typing import Any, Literal, TypedDict
 
-from loguru import logger
-
 from .braggedges_handler.braggedge_calculator import BraggEdgeCalculator
 from .material_handler.retrieve_material_metadata import RetrieveMaterialMetadata
 from .utilities import Utilities
@@ -234,26 +232,24 @@ class BraggEdge:
         nbr_ticks = 45
 
         for _material in self.material:
-            logger.info("=" * nbr_ticks)
-            logger.info("Material: %s" % _material)
-            logger.info("Lattice : %.4f\u212b" % self.metadata["lattice"][_material])
-            logger.info("Crystal Structure: %s" % self.metadata["crystal_structure"][_material])
-            logger.info("Using local metadata Table: %s" % self.use_local_metadata_table)
-            logger.info("=" * nbr_ticks)
-            logger.info(" h | k | l |\t d (\u212b)  |\t BraggEdge")
-            logger.info("-" * nbr_ticks)
+            print("=" * nbr_ticks)
+            print(f"Material: {_material}")
+            print(f"Lattice : {self.metadata['lattice'][_material]:.4f}\u212b")
+            print(f"Crystal Structure: {self.metadata['crystal_structure'][_material]}")
+            print(f"Using local metadata Table: {self.use_local_metadata_table}")
+            print("=" * nbr_ticks)
+            print(" h | k | l |\t d (\u212b)  |\t BraggEdge")
+            print("-" * nbr_ticks)
 
             _hkl = self.hkl[_material]
             _bragg_edges = self.bragg_edges[_material]
             _d_spacing = self.d_spacing[_material]
 
             for index in range(len(_d_spacing)):
-                logger.info(
-                    " %d | %d | %d |\t %.5f |\t %.5f"
-                    % (_hkl[index][0], _hkl[index][1], _hkl[index][2], _d_spacing[index], _bragg_edges[index])
-                )
+                h, k, l = _hkl[index]
+                print(f" {h} | {k} | {l} |\t {_d_spacing[index]:.5f} |\t {_bragg_edges[index]:.5f}")
 
-            logger.info("=" * nbr_ticks)
+            print("=" * nbr_ticks)
 
         return ""
 
