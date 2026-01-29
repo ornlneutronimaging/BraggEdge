@@ -152,11 +152,11 @@ In order to convert a TOF range into lambda, you will need to provide:
 
 First, you need to load your TOF range. You can either provide this array
 
->>> _tof_handler = TOF(tof = [9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units = 'micros')
+>>> _tof_handler = TOF(tof_array=[9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units='micros')
 
 or by providing the name of an ascii file name where each tof is on its own row
 
->>> _tof_handler = TOF(filename = my_tof.txt, units = 'micros')
+>>> _tof_handler = TOF(filename='my_tof.txt', units='micros')
 
 Then it is possible to calculate the Lambda array
 
@@ -183,11 +183,11 @@ In order to calculate the *source-detector* length, you must provide:
 
 First, you need to load your TOF range. You can either provide this array
 
->>> _tof_handler = TOF(tof = [9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units = 'micros')
+>>> _tof_handler = TOF(tof_array=[9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units='micros')
 
 or by providing the name of an ascii file name where each tof is on its own row
 
->>> _tof_handler = TOF(filename = my_tof.txt, units = 'micros')
+>>> _tof_handler = TOF(filename='my_tof.txt', units='micros')
 
 Same thing with lambda array
 
@@ -217,11 +217,11 @@ In order to calculate the *detector offsetr*, you must provide:
 
 First, you need to load your TOF range. You can either provide this array
 
->>> _tof_handler = TOF(tof = [9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units = 'micros')
+>>> _tof_handler = TOF(tof_array=[9.6000E-07, 1.1200E-05, 2.1440E-05, 3.1680E-05], units='micros')
 
 or by providing the name of an ascii file name where each tof is on its own row
 
->>> _tof_handler = TOF(filename = my_tof.txt, units = 'micros')
+>>> _tof_handler = TOF(filename='my_tof.txt', units='micros')
 
 Same thing with lambda array
 
