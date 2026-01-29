@@ -1,17 +1,24 @@
 import os
 
 import numpy as np
+from numpy.typing import ArrayLike, NDArray
 
-from ..utilities import Utilities
+from ..utilities import TimeUnit, Utilities
 
 
 class TOF:
     """This class handles the loading of the TOF and the automatic conversion to 's'"""
 
-    tof_array = []
-    counts_array = []
+    tof_array: NDArray[np.floating]
+    counts_array: NDArray[np.floating]
+    filename: str
 
-    def __init__(self, filename=None, tof_array=None, units="s"):
+    def __init__(
+        self,
+        filename: str | None = None,
+        tof_array: ArrayLike | None = None,
+        units: TimeUnit = "s",
+    ) -> None:
         """Constructor of the TOF class
 
         Arguments:
@@ -64,7 +71,7 @@ class TOF:
             self.tof_array = Utilities.convert_time_units(data=self.tof_array, from_units=units, to_units="s")
 
     @staticmethod
-    def _first_line_number_with_real_data(line):
+    def _first_line_number_with_real_data(line: float | str) -> int:
         str_line = str(line)
         if str_line.startswith("#"):
             return 1
@@ -72,7 +79,7 @@ class TOF:
             return 0
 
     @staticmethod
-    def _is_this_numeric(value_to_evaluate):
+    def _is_this_numeric(value_to_evaluate: float) -> bool:
         if not np.isfinite(value_to_evaluate):
             return False
 
@@ -82,7 +89,7 @@ class TOF:
         except ValueError:
             return False
 
-    def load_data(self):
+    def load_data(self) -> None:
         """Load the data from the filename name provided"""
 
         # only loader implemented so far !

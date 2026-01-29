@@ -1,10 +1,15 @@
 import ast
 import configparser
+from typing import Any, Literal
 
 import numpy as np
+from loguru import logger
+from numpy.typing import ArrayLike, NDArray
 
 from ..braggedges_handler.braggedge_calculator import BraggEdgeCalculator
 from ..config import config_file as config_config_file
+
+CrystalStructure = Literal["BCC", "FCC"]
 
 
 class Lattice:
@@ -12,20 +17,28 @@ class Lattice:
     lattice parameter
     """
 
-    space = 75
+    space: int = 75
 
-    material = None
-    use_local_metadata = True
-    bragg_edge_array = None
+    material: str | None
+    use_local_metadata: bool
+    bragg_edge_array: NDArray[np.floating]
+    bragg_edge_error_array: NDArray[np.floating]
+    _crystal_structure: CrystalStructure
+    _list_structure: list[str]
+    hkl: list[list[int]]
+    hkl_bragg_edge: list[tuple[list[int], float, float]]
+    lattice_array: list[float]
+    lattice_error: list[float]
+    lattice_statistics: dict[str, Any]
 
     def __init__(
         self,
-        material=None,
-        crystal_structure=None,
-        bragg_edge_array=None,
-        bragg_edge_error_array=None,
-        use_local_metadata_table=True,
-    ):
+        material: str | None = None,
+        crystal_structure: CrystalStructure | None = None,
+        bragg_edge_array: ArrayLike | None = None,
+        bragg_edge_error_array: ArrayLike | None = None,
+        use_local_metadata_table: bool = True,
+    ) -> None:
         self.material = material
         self._crystal_structure = crystal_structure
         self.crystal_structure = crystal_structure  # only used to run test
@@ -43,11 +56,11 @@ class Lattice:
         self._calculate()
 
     @property
-    def crystal_structure(self):
+    def crystal_structure(self) -> CrystalStructure:
         return self._crystal_structure
 
     @crystal_structure.setter
-    def crystal_structure(self, structure_name):
+    def crystal_structure(self, structure_name: CrystalStructure | None) -> None:
         _config_file = config_config_file
         config_obj = configparser.ConfigParser()
         config_obj.read(_config_file)
@@ -57,29 +70,29 @@ class Lattice:
             raise ValueError(f"Structure name should be in the list {self._list_structure}")
         self._crystal_structure = structure_name
 
-    def _format_array(self, bragg_edge_array):
+    def _format_array(self, bragg_edge_array: ArrayLike | None) -> NDArray[np.floating]:
         """Make sure that None value are replaced by np.nan"""
-        _bragg_edge_array_formated = []
+        _bragg_edge_array_formated: list[float] = []
 
         if bragg_edge_array is None:
             sz = len(self.bragg_edge_array)
-            _bragg_edge_array_formated = np.zeros(sz)
-            return _bragg_edge_array_formated
+            _bragg_edge_array_formated_arr: NDArray[np.floating] = np.zeros(sz)
+            return _bragg_edge_array_formated_arr
 
         for _value in bragg_edge_array:
             if _value is None:
                 _value = np.nan
             _bragg_edge_array_formated.append(_value)
-        _bragg_edge_array_formated = np.array(_bragg_edge_array_formated)
-        return _bragg_edge_array_formated
+        _bragg_edge_array_formated_arr = np.array(_bragg_edge_array_formated)
+        return _bragg_edge_array_formated_arr
 
-    def _calculate(self):
+    def _calculate(self) -> None:
         """calculate the lattice parameters step by step"""
         self._match_bragg_edge_with_hkl()
         self._calculate_lattice_array()
         self._calculate_lattice_statistics()
 
-    def _match_bragg_edge_with_hkl(self):
+    def _match_bragg_edge_with_hkl(self) -> None:
         """Match each bragg edge with its equivalent hkl"""
         _bragg_edge_array = self.bragg_edge_array
         _bragg_edge_array_error = self.bragg_edge_error_array
@@ -87,12 +100,12 @@ class Lattice:
         zipped = zip(self.hkl, _bragg_edge_array, _bragg_edge_array_error)
         self.hkl_bragg_edge = list(zipped)
 
-    def display_hkl_bragg_edge(self):
+    def display_hkl_bragg_edge(self) -> bool:
         """Display the hkl_bragg_edge list using pretty table form"""
-        print("hkl Bragg Edge Table")
-        print("=" * self.space)
-        print("hkl \t\t Bragg Edge Value\t Bragg Edge Error \t Lattice")
-        print("-" * self.space)
+        logger.info("hkl Bragg Edge Table")
+        logger.info("=" * self.space)
+        logger.info("hkl \t\t Bragg Edge Value\t Bragg Edge Error \t Lattice")
+        logger.info("-" * self.space)
         _lattice_array = self.lattice_array
         for _index, _row in enumerate(self.hkl_bragg_edge):
             _key = _row[0]
@@ -100,18 +113,18 @@ class Lattice:
             _error = _row[2]
             _lattice = _lattice_array[_index]
             if np.isnan(_error):
-                print("%r\t %.5f \t\t\t %.5f \t\t\t %.5f" % (_key, _value, _error, _lattice))
+                logger.info("%r\t %.5f \t\t\t %.5f \t\t\t %.5f" % (_key, _value, _error, _lattice))
             else:
-                print("%r\t %.5f \t\t %.5f \t\t %.5f" % (_key, _value, _error, _lattice))
-        print("-" * self.space)
-        print()
+                logger.info("%r\t %.5f \t\t %.5f \t\t %.5f" % (_key, _value, _error, _lattice))
+        logger.info("-" * self.space)
+        logger.info("")
         return True
 
-    def _calculate_lattice_array(self):
+    def _calculate_lattice_array(self) -> None:
         """Calculate the array of lattice parameters"""
         _hkl_bragg_edge = self.hkl_bragg_edge
-        _lattice_array = []
-        _lattice_error_array = []
+        _lattice_array: list[float] = []
+        _lattice_error_array: list[float] = []
         for _row in _hkl_bragg_edge:
             _hkl = _row[0]
             _bragg_edge = _row[1]
@@ -125,7 +138,12 @@ class Lattice:
         self.lattice_array = _lattice_array
         self.lattice_error = _lattice_error_array
 
-    def _calculate_lattice_coefficient(self, hkl=None, bragg_edge=None, bragg_error=None):
+    def _calculate_lattice_coefficient(
+        self,
+        hkl: list[int] | None = None,
+        bragg_edge: float | None = None,
+        bragg_error: float | None = None,
+    ) -> list[float]:
         """Calculate the lattice coefficient for the given set of hkl and bragg edge"""
         _h, _k, _l = hkl
         _term1 = np.sqrt(_h**2 + _k**2 + _l**2)
@@ -136,7 +154,7 @@ class Lattice:
 
         return [_lattice, _lattice_error]
 
-    def _calculate_lattice_statistics(self):
+    def _calculate_lattice_statistics(self) -> None:
         """Calculate the statistics of the lattice array
         - median
         - average
@@ -145,7 +163,7 @@ class Lattice:
         - min
         - max
         """
-        _lattice_statistics = {}
+        _lattice_statistics: dict[str, Any] = {}
 
         # min
         _min = np.nanmin(self.lattice_array)
@@ -170,10 +188,10 @@ class Lattice:
 
         self.lattice_statistics = _lattice_statistics
 
-    def _calculate_mean_error(self, lattice_error):
-        _mean_error = 0
+    def _calculate_mean_error(self, lattice_error: list[float]) -> float:
+        _mean_error = 0.0
         _index = 0
-        _sum = 0
+        _sum = 0.0
         for _error in lattice_error:
             if not np.isnan(_error):
                 _step1 = _error * _error
@@ -182,27 +200,27 @@ class Lattice:
         _mean_error = np.sqrt(_sum) / _index
         return _mean_error
 
-    def display_lattice_statistics(self):
+    def display_lattice_statistics(self) -> None:
         """Display the lattice statistics using a pretty table form"""
         _lattice_statistics = self.lattice_statistics
-        print("Lattice Statistics")
-        print("=" * self.space)
-        print("min: %.5f" % _lattice_statistics["min"])
-        print("max: %.5f" % _lattice_statistics["max"])
-        print("median: %.5f" % _lattice_statistics["median"])
-        print("mean: %.5f +/- %.5f" % (_lattice_statistics["mean"][0], _lattice_statistics["mean"][1]))
-        print("std: %.5f" % _lattice_statistics["std"])
-        print("-" * self.space)
-        print("")
+        logger.info("Lattice Statistics")
+        logger.info("=" * self.space)
+        logger.info("min: %.5f" % _lattice_statistics["min"])
+        logger.info("max: %.5f" % _lattice_statistics["max"])
+        logger.info("median: %.5f" % _lattice_statistics["median"])
+        logger.info("mean: %.5f +/- %.5f" % (_lattice_statistics["mean"][0], _lattice_statistics["mean"][1]))
+        logger.info("std: %.5f" % _lattice_statistics["std"])
+        logger.info("-" * self.space)
+        logger.info("")
 
-    def display_recap(self):
+    def display_recap(self) -> None:
         """Display a summary of input and outputs"""
-        print(" -- Recap --")
-        print("=" * self.space)
-        print("Material: %r" % self.material)
-        print("Crystal Structure: %r" % self._crystal_structure)
-        print("-" * self.space)
-        print("")
+        logger.info(" -- Recap --")
+        logger.info("=" * self.space)
+        logger.info("Material: %r" % self.material)
+        logger.info("Crystal Structure: %r" % self._crystal_structure)
+        logger.info("-" * self.space)
+        logger.info("")
 
         self.display_hkl_bragg_edge()
         self.display_lattice_statistics()

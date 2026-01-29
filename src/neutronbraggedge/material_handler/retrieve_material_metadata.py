@@ -3,7 +3,14 @@ This class will automatically retrieve the lattice parameter and the crystal str
 element
 """
 
+from typing import Literal
+
+import numpy as np
+import pandas as pd
+
 from .retrieve_metadata_table import RetrieveMetadataTable
+
+CrystalStructure = Literal["BCC", "FCC"]
 
 
 class RetrieveMaterialMetadata:
@@ -21,10 +28,13 @@ class RetrieveMaterialMetadata:
 
     """
 
-    lattice = None
-    crystal_structure = None
+    lattice: float | None
+    crystal_structure: CrystalStructure | None
+    table: pd.DataFrame
+    use_local_table: bool
+    _material: str
 
-    def __init__(self, material=None, use_local_table=True):
+    def __init__(self, material: str | None = None, use_local_table: bool = True) -> None:
         """Constructor that will automatically retrieve the metadata
 
         Args:
@@ -41,21 +51,23 @@ class RetrieveMaterialMetadata:
 
         self._material = material
         self.use_local_table = use_local_table
+        self.lattice = None
+        self.crystal_structure = None
 
         self._retrieve_table()
         if not (material.lower() == "all"):
             self._retrieve_metadata()
 
-    def _retrieve_table(self):
+    def _retrieve_table(self) -> None:
         """retrieve the table"""
         metadata_table = RetrieveMetadataTable(use_local_table=self.use_local_table)
         self.table = metadata_table.get_table()
 
-    def full_list_material(self):
-        _list_material = self.table.index.values
+    def full_list_material(self) -> np.ndarray:
+        _list_material: np.ndarray = self.table.index.values
         return _list_material
 
-    def _retrieve_metadata(self):
+    def _retrieve_metadata(self) -> None:
         """retrieve the metadata ('lattice constant','crystal structure')"""
         try:
             _metadata = self.table.loc[self._material]
@@ -64,14 +76,14 @@ class RetrieveMaterialMetadata:
         self._retrieve_lattice(_metadata)
         self._retrieve_crystal_structure(_metadata)
 
-    def _retrieve_lattice(self, _metadata):
+    def _retrieve_lattice(self, _metadata: pd.Series) -> None:
         self.lattice = float(_metadata.iloc[0])
 
-    def _retrieve_crystal_structure(self, _metadata):
-        _full_crystal_str = _metadata.iloc[1]
+    def _retrieve_crystal_structure(self, _metadata: pd.Series) -> None:
+        _full_crystal_str: str = _metadata.iloc[1]
 
         if "FCC" in _full_crystal_str:
-            _crystal_str = "FCC"
+            _crystal_str: CrystalStructure = "FCC"
         elif "BCC" in _full_crystal_str:
             _crystal_str = "BCC"
         else:

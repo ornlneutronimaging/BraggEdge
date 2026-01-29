@@ -1,13 +1,23 @@
+from typing import Literal
+
 import numpy as np
+from numpy.typing import ArrayLike, NDArray
+
+# Type alias for supported time units
+TimeUnit = Literal["s", "ms", "micros", "ns"]
 
 
 class Utilities:
     """Utilities class"""
 
-    list_of_time_units = ["s", "ms", "micros", "ns"]
+    list_of_time_units: list[str] = ["s", "ms", "micros", "ns"]
 
     @staticmethod
-    def convert_time_units(data=None, from_units="micros", to_units="s"):
+    def convert_time_units(
+        data: ArrayLike | float | None = None,
+        from_units: TimeUnit = "micros",
+        to_units: TimeUnit = "s",
+    ) -> NDArray[np.floating] | float:
         """convert the time units
 
         Parameters:
@@ -31,7 +41,7 @@ class Utilities:
         return data * coeff
 
     @staticmethod
-    def get_time_conversion_coeff(from_units="micros", to_units="s"):
+    def get_time_conversion_coeff(from_units: TimeUnit = "micros", to_units: TimeUnit = "s") -> float:
         """return the coefficient to use to convert from first units to second units
 
         Arguments:
@@ -83,8 +93,14 @@ class Utilities:
             if to_units == "micros":
                 return 1.0e-3
 
+        # This should never be reached due to the validation above
+        return 1.0
+
     @staticmethod
-    def array_multiply_coeff(data=None, coeff=1):
+    def array_multiply_coeff(
+        data: ArrayLike | None = None,
+        coeff: float = 1,
+    ) -> NDArray[np.floating]:
         """multiply each element of the array by the coeff
 
         Parameters:
@@ -105,7 +121,10 @@ class Utilities:
         return final_data
 
     @staticmethod
-    def array_add_coeff(data=None, coeff=1.0):
+    def array_add_coeff(
+        data: ArrayLike | None = None,
+        coeff: float = 1.0,
+    ) -> NDArray[np.floating]:
         """Add coefficient to each element of the array
 
         Parameters:
@@ -127,7 +146,10 @@ class Utilities:
         return final_data
 
     @staticmethod
-    def array_divide_array(numerator=None, denominator=None):
+    def array_divide_array(
+        numerator: NDArray[np.floating] | None = None,
+        denominator: NDArray[np.floating] | None = None,
+    ) -> NDArray[np.floating]:
         """Divide two arrays of the same size
 
         Parameters:
@@ -146,7 +168,10 @@ class Utilities:
         return numerator / denominator
 
     @staticmethod
-    def array_minus_array(array1=None, array2=None):
+    def array_minus_array(
+        array1: NDArray[np.floating] | None = None,
+        array2: NDArray[np.floating] | None = None,
+    ) -> NDArray[np.floating]:
         """Substract second array from first array provided
 
         Parameters:
@@ -165,7 +190,7 @@ class Utilities:
         return array1 - array2
 
     @staticmethod
-    def load_csv(filename=None):
+    def load_csv(filename: str | None = None) -> list[float]:
         """Load a csv file and return its content
 
         Parameters:
@@ -181,7 +206,7 @@ class Utilities:
         _input_file = filename
         try:
             with open(_input_file) as f:
-                _tof = []
+                _tof: list[float] = []
                 for _line in f:
                     if "#" in _line:
                         continue
@@ -194,7 +219,7 @@ class Utilities:
             raise ValueError("Bad file format") from e
 
     @staticmethod
-    def load_ascii(filename=None, sep=""):
+    def load_ascii(filename: str | None = None, sep: str = "") -> NDArray[np.floating]:
         """Load an ascii file using the separator provided to separete the value in the same row
 
         Parameters:
@@ -209,13 +234,17 @@ class Utilities:
         """
         _input_file = filename
         try:
-            _final_array = np.genfromtxt(_input_file, delimiter=sep)
+            _final_array: NDArray[np.floating] = np.genfromtxt(_input_file, delimiter=sep)
             return _final_array
         except:
             raise ValueError("Bad file format!")
 
     @staticmethod
-    def save_csv(filename=None, metadata=None, data=None):
+    def save_csv(
+        filename: str | None = None,
+        metadata: list[str] | None = None,
+        data: list | NDArray | None = None,
+    ) -> None:
         """Create comma separated file (CSV)
 
         Arguments:
