@@ -19,6 +19,16 @@ class TestBraggEdgeCalculator:
         with pytest.raises(ValueError):
             BraggEdgeCalculator(structure_name)
 
+    def test_braggedge_calculator_error_when_substring_structure_given(self):
+        """Error is raised when structure name is a substring of valid names.
+
+        This tests the fix for the substring membership bug where "CC" would
+        incorrectly be accepted because it's a substring of "FCC" and "BCC".
+        """
+        structure_name = "CC"
+        with pytest.raises(ValueError):
+            BraggEdgeCalculator(structure_name)
+
     def test_right_structure_name_is_passed_in_constructor(self):
         """Structure name passed in constructor is correctly used."""
         structure_name = "BCC"

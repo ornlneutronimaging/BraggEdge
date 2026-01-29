@@ -155,6 +155,18 @@ class TestBraggEdge:
         with pytest.raises(ValueError):
             handler.get_experimental_lattice_parameter(exp_bragg_value, exp_bragg_error)
 
+    def test_calculate_experimental_lattice_raises_not_implemented_error(self):
+        """NotImplementedError raised when calling get_experimental_lattice_parameter with valid inputs.
+
+        This method is not yet implemented and should raise NotImplementedError
+        directing users to use the Lattice class directly.
+        """
+        handler = BraggEdge(material="Fe", number_of_bragg_edges=4)
+        exp_bragg_value = np.array([4.0537, 2.8664, 2.3404, 2.0269])
+        exp_bragg_error = np.array([0.001, 0.001, 0.001, 0.001])
+        with pytest.raises(NotImplementedError):
+            handler.get_experimental_lattice_parameter(exp_bragg_value, exp_bragg_error)
+
     def test_loading_single_material_in_list(self):
         """Single element Al data listed in a list correctly calculated."""
         # Just verify no exception is raised

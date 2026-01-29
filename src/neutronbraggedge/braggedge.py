@@ -112,9 +112,24 @@ class BraggEdge:
     def get_experimental_lattice_parameter(
         self, experimental_bragg_edge_values=None, experimental_bragg_edge_error=None
     ):
-        """calculates the experimental lattice parameter values given an array of
-        bragg edge values"""
+        """Calculates the experimental lattice parameter values given an array of
+        bragg edge values.
 
+        Note: This method is not yet implemented. Use the Lattice class directly
+        for experimental lattice parameter calculations.
+
+        Args:
+            experimental_bragg_edge_values: Array of experimental bragg edge values.
+            experimental_bragg_edge_error: Optional array of errors corresponding to
+                ``experimental_bragg_edge_values``.
+
+        Raises:
+            ValueError: If ``experimental_bragg_edge_values`` is not provided, or if
+                ``experimental_bragg_edge_error`` is provided and its length does not
+                match ``experimental_bragg_edge_values``.
+            NotImplementedError: This method is not yet implemented. Use the Lattice
+                class directly for experimental lattice parameter calculations.
+        """
         if experimental_bragg_edge_values is None:
             raise ValueError("Please provide an array of bragg edge values")
 
@@ -122,10 +137,10 @@ class BraggEdge:
             if len(experimental_bragg_edge_error) != len(experimental_bragg_edge_values):
                 raise ValueError("Make sure exp. bragg edge value and error have the same size!")
 
-        _calculator = self._calculator
-        _calculator.calculate_lattice_array(experimental_bragg_edge_values, experimental_bragg_edge_error)
-        exp_lattice_parameter = _calculator.lattice_experimentatl
-        return exp_lattice_parameter
+        raise NotImplementedError(
+            "get_experimental_lattice_parameter is not yet implemented. "
+            "Use the Lattice class directly for experimental lattice calculations."
+        )
 
     def _retrieve_metadata(self, new_material=None):
         """This method retrieves the lattice and crystal structure of the material"""

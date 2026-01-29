@@ -1,3 +1,4 @@
+import ast
 import configparser
 
 import numpy as np
@@ -50,10 +51,10 @@ class Lattice:
         _config_file = config_config_file
         config_obj = configparser.ConfigParser()
         config_obj.read(_config_file)
-        self._list_structure = config_obj["DEFAULT"]["list_structure"]
+        self._list_structure = ast.literal_eval(config_obj["DEFAULT"]["list_structure"])
 
         if structure_name not in self._list_structure:
-            raise ValueError("Structure name should be in the list ", self._list_structure)
+            raise ValueError(f"Structure name should be in the list {self._list_structure}")
         self._crystal_structure = structure_name
 
     def _format_array(self, bragg_edge_array):

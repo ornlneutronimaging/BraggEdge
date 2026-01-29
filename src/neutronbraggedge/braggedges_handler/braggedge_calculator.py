@@ -1,3 +1,4 @@
+import ast
 import configparser
 
 import numpy as np
@@ -29,14 +30,12 @@ class BraggEdgeCalculator:
     @structure.setter
     def structure(self, structure_name):
         _config_file = config_config_file
-        # print("config file ({}) exists? {}".format(_config_file, os.path.exists(_config_file)))
-        # _config_file = os.path.abspath('../config.cfg')
         config_obj = configparser.ConfigParser()
         config_obj.read(_config_file)
-        self._list_structure = config_obj["DEFAULT"]["list_structure"]
+        self._list_structure = ast.literal_eval(config_obj["DEFAULT"]["list_structure"])
 
         if structure_name not in self._list_structure:
-            raise ValueError("Structure name should be in the list ", self._list_structure)
+            raise ValueError(f"Structure name should be in the list {self._list_structure}")
         self._structure = structure_name
 
     def calculate_hkl(self):
@@ -60,47 +59,3 @@ class BraggEdgeCalculator:
     def _calculate_individual_bragg_edge(self, lattice=None, h=1, k=1, l=1):
         _den = np.sqrt(h**2 + k**2 + l**2)
         return float(lattice) / _den
-
-    # def _calculate_individual_lattice(self, h=1, k=1, l=1, bragg_edge_value=0, bragg_edge_error=0):
-    # _num = np.sqrt(h**2 + k**2 + l**2)
-    # _value = float(bragg_edge_value/2.)*_num
-    # _error = float(bragg_edge_error/2.)*_num
-    # return [_value, _error]
-
-    # def calculate_lattice_array(self, exp_bragg_edge_value, exp_bragg_edge_error=None):
-    # """calculate the lattice given the hkl and bragg edge value"""
-    # _lattice_array = []
-    # _lattice_error_array = []
-    # for _index, _hkl in enumerate(exp_bragg_edge_value):
-    # _hkl = self.hkl[_index]
-    # _bragg = exp_bragg_edge_value[_index]
-
-    # if exp_bragg_edge_error is not None:
-    # _error = exp_bragg_edge_error[_index]
-    # else:
-    # _error = 0
-    # [_result, _result_error] = self._calculate_individual_lattice(h = _hkl[0],
-    # k = _hkl[1],
-    # l = _hkl[2],
-    # bragg_edge_value = _bragg,
-    # bragg_edge_error = _error)
-    # _lattice_array.append(_result)
-    # _lattice_error_array.append(_result_error)
-
-    # self.lattice_experimental = _lattice_array
-    # self.lattice_error_experimental = _lattice_error_array
-
-    # self.average_lattice_experimental = self._calculate_average_lattice_experimental()
-
-    # def _calculate_average_lattice_experimental(self):
-    # _lattice_exp = self.lattice_experimental
-    # _lattice_error_exp = self.lattice_error_experimental
-
-    # _mean_value = np.mean(_lattice_exp)
-    # _sum_error = 0
-    # for _error in _lattice_error_exp:
-    # _sum_error += _error * _error
-
-    # _mean_error = np.sqrt(_sum_error)
-
-    # self.mean_lattice_experimental = [_mean_value, _mean_error]
