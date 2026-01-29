@@ -18,7 +18,7 @@ Key concepts:
 
 ## Technology Stack
 
-- **Python**: 3.11-3.12
+- **Python**: 3.11+
 - **Core dependencies**: numpy, pandas, lxml, beautifulsoup4
 - **Environment management**: Pixi (conda-based)
 - **Testing**: pytest with pytest-cov
