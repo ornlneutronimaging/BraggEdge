@@ -180,14 +180,14 @@ class Utilities:
         """
         _input_file = filename
         try:
-            f = open(_input_file)
-            _tof = []
-            for _line in f:
-                if "#" in _line:
-                    continue
-                _value = float(_line.strip())
-                _tof.append(_value)
-            return _tof
+            with open(_input_file) as f:
+                _tof = []
+                for _line in f:
+                    if "#" in _line:
+                        continue
+                    _value = float(_line.strip())
+                    _tof.append(_value)
+                return _tof
         except:
             raise ValueError("Bad file format")
 
@@ -221,14 +221,13 @@ class Utilities:
         * metadata: metadata string array (will be placed at the top of the file with '#' in front)
         * data: data float array"""
         sep = ", "
-        f = open(filename, "w")
-        for _meta in metadata:
-            f.write("# " + _meta + "\n")
-        for _row in data:
-            if (type(_row) is np.ndarray) or (type(_row) is list):
-                _row_string = [str(x) for x in _row]
-                _row_format = sep.join(_row_string)
-            else:
-                _row_format = str(_row)
-            f.write(_row_format + "\n")
-        f.close()
+        with open(filename, "w") as f:
+            for _meta in metadata:
+                f.write("# " + _meta + "\n")
+            for _row in data:
+                if (type(_row) is np.ndarray) or (type(_row) is list):
+                    _row_string = [str(x) for x in _row]
+                    _row_format = sep.join(_row_string)
+                else:
+                    _row_format = str(_row)
+                f.write(_row_format + "\n")
