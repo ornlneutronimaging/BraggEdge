@@ -1,6 +1,7 @@
 import os
 
 import numpy as np
+from numpy.typing import ArrayLike, NDArray
 
 from ..utilities import Utilities
 
@@ -8,7 +9,14 @@ from ..utilities import Utilities
 class LambdaWavelength:
     """This class handles the loading of the Lambda"""
 
-    def __init__(self, filename=None, data=None):
+    lambda_array: NDArray[np.floating] | list[float]
+    filename: str
+
+    def __init__(
+        self,
+        filename: str | None = None,
+        data: ArrayLike | None = None,
+    ) -> None:
         """Constructor of the LambdaWavelength class
 
         Arguments:
@@ -47,7 +55,7 @@ class LambdaWavelength:
             else:
                 raise ValueError("Please provide a lambda array")
 
-    def load_data(self):
+    def load_data(self) -> None:
         """Load the data from the filename name provided"""
 
         # only loaded implemented so far !

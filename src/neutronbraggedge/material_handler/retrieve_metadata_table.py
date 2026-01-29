@@ -34,19 +34,26 @@ class RetrieveMetadataTable:
 
     """
 
-    def __init__(self, use_local_table=True):
+    use_local_table: bool
+    url: str
+    table: pd.DataFrame
+    raw_table: pd.DataFrame
+    _config_file: str
+    _local_table_file: str
+
+    def __init__(self, use_local_table: bool = True) -> None:
         self.use_local_table = use_local_table
         if not use_local_table:
             self._retrieve_url()
 
-    def _retrieve_url(self):
+    def _retrieve_url(self) -> None:
         """retrieve the default url defined in the top config file"""
         self._config_file = config_config_file
         config_obj = configparser.ConfigParser()
         config_obj.read(self._config_file)
         self.url = config_obj["DEFAULT"]["material_metadata_url"]
 
-    def retrieve_table(self):
+    def retrieve_table(self) -> None:
         """retrieve the table that contain the material/lattice parameters....
         by default, the local version is retrieved first, but the web version can
         be selected instead by using False on use_local_table flag
@@ -57,14 +64,14 @@ class RetrieveMetadataTable:
         else:
             self.retrieve_table_from_url()
 
-    def retrieve_table_local(self):
+    def retrieve_table_local(self) -> None:
         """retrieve the local table"""
         self._local_table_file = config_local_table
         local_table = pd.read_csv(self._local_table_file)
         _table = local_table.set_index("Material")
         self.table = _table
 
-    def retrieve_table_from_url(self):
+    def retrieve_table_from_url(self) -> None:
         """retrieve the table using the url defined in the config.cfg file"""
         # Wikipedia blocks requests without proper User-Agent headers
         request = urllib.request.Request(
@@ -77,7 +84,7 @@ class RetrieveMetadataTable:
         self.raw_table = table_list[0]
         self.format_table_from_url()
 
-    def format_table_from_url(self):
+    def format_table_from_url(self) -> None:
         """reformat the table from the url to easily extract the metadata"""
         _table = self.raw_table
         # Check if pandas already extracted headers correctly
@@ -88,7 +95,7 @@ class RetrieveMetadataTable:
         _table = _table.set_index("Material")
         self.table = _table
 
-    def get_table(self):
+    def get_table(self) -> pd.DataFrame:
         """return the table (via url or locally) according to flag used
 
         Args:

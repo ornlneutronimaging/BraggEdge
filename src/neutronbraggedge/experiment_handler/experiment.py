@@ -1,4 +1,5 @@
 import numpy as np
+from numpy.typing import ArrayLike, NDArray
 
 from ..constants import h, mn
 from ..utilities import Utilities
@@ -17,13 +18,28 @@ class Experiment:
     * detector_offset: mandatory only if lambda is the unknown parameter (micros)
     """
 
-    def __init__(self, tof=None, lambda_array=None, distance_source_detector_m=None, detector_offset_micros=None):
+    tof_array: NDArray[np.floating]
+    distance_source_detector: float | None
+    detector_offset_micros: float | None
+    lambda_array: NDArray[np.floating] | None
+    _h_over_MnLds: float
+
+    def __init__(
+        self,
+        tof: ArrayLike | None = None,
+        lambda_array: ArrayLike | None = None,
+        distance_source_detector_m: float | None = None,
+        detector_offset_micros: float | None = None,
+    ) -> None:
         if tof is None:
             raise ValueError("Missing TOF array")
-        self.tof_array = tof
+        self.tof_array = np.array(tof) if not isinstance(tof, np.ndarray) else tof
         self.distance_source_detector = distance_source_detector_m
         self.detector_offset_micros = detector_offset_micros
-        self.lambda_array = lambda_array
+        if lambda_array is not None and not isinstance(lambda_array, np.ndarray):
+            self.lambda_array = np.array(lambda_array)
+        else:
+            self.lambda_array = lambda_array
 
         # if lambda_array is unknown, both distance_source_detector and detector_offset must be provided
         if lambda_array is None:
@@ -47,16 +63,16 @@ class Experiment:
         else:
             self.calculate_lambda()
 
-    def calculate_tof_with_detector_offset(self):
+    def calculate_tof_with_detector_offset(self) -> NDArray[np.floating]:
         """return the tof with detector_offset applied to it"""
         detector_offset_micros = self.detector_offset_micros
         detector_offset_s = Utilities.convert_time_units(detector_offset_micros, from_units="micros", to_units="s")
         # apply detector offset to tof array
         _tof = self.tof_array
-        _tof_with_offset = Utilities.array_add_coeff(data=_tof, coeff=detector_offset_s)
+        _tof_with_offset: NDArray[np.floating] = Utilities.array_add_coeff(data=_tof, coeff=detector_offset_s)
         return _tof_with_offset
 
-    def calculate_distance_source_detector(self):
+    def calculate_distance_source_detector(self) -> None:
         """return the distance source detector
 
         If lambda_array and tof_array are provided, the distance is calculated
@@ -75,9 +91,9 @@ class Experiment:
         # divide numerator by denominator
         _ratio = Utilities.array_divide_array(numerator=_numerator, denominator=_denominator)
 
-        self.distance_source_detector = np.mean(_ratio)
+        self.distance_source_detector = float(np.mean(_ratio))
 
-    def calculate_detector_offset(self):
+    def calculate_detector_offset(self) -> None:
         """return the detector time offset value
 
         If lambda_array and tof_array are provided, the offset is calculated
@@ -102,7 +118,7 @@ class Experiment:
             data=_detector_offset_s, from_units="s", to_units="micros"
         )
 
-    def calculate_lambda(self):
+    def calculate_lambda(self) -> None:
         """return the lambda array when tof_array, distance_source_detector and
         detector_offset are provided
         """
@@ -114,11 +130,11 @@ class Experiment:
         self._h_over_MnLds = _coeff
 
         # multiply constant factor by tof array
-        _lambda = Utilities.array_multiply_coeff(data=_tof_with_offset, coeff=_coeff)
+        _lambda: NDArray[np.floating] = Utilities.array_multiply_coeff(data=_tof_with_offset, coeff=_coeff)
 
         self.lambda_array = _lambda
 
-    def export_lambda(self, filename=None):
+    def export_lambda(self, filename: str | None = None) -> None:
         """export the lambda array into a CSV data file
 
         Parameters:
@@ -127,7 +143,7 @@ class Experiment:
         if filename is None:
             raise ValueError("Please provide a file name!")
 
-        _metadata = []
+        _metadata: list[str] = []
         _metadata.append("Lambda (Angstroms)")
         _metadata.append("")
         _metadata.append("Distance source-detector (m): %.4f" % self.distance_source_detector)

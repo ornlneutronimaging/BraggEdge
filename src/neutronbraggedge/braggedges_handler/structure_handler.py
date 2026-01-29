@@ -2,8 +2,15 @@
 structures
 """
 
+from collections.abc import Generator
+from typing import Literal
+
 # from .braggedge_values_calculator import BraggEdgeValuesCalculator
 MAX_INDEX = 30
+
+# Type alias for Miller indices
+HKL = list[int]  # [h, k, l]
+CrystalStructure = Literal["BCC", "FCC"]
 
 
 class BCCHandler:
@@ -13,12 +20,15 @@ class BCCHandler:
 
     """
 
-    def __init__(self, number_of_set):
+    hkl: list[HKL]
+    number_of_set: int
+
+    def __init__(self, number_of_set: int) -> None:
         self.hkl = []
         self.number_of_set = number_of_set
         self.calculate_hkl()
 
-    def _hkl_generator(self, number_of_h):
+    def _hkl_generator(self, number_of_h: int) -> Generator[HKL, None, None]:
         """generator that is used to produced the right hkl for cyrstal structure"""
         h, k, l = 1, 0, 0
         for h in range(1, number_of_h):
@@ -32,10 +42,10 @@ class BCCHandler:
                     if _sum % 2 == 0:
                         yield [h, k, l]
 
-    def calculate_hkl(self):
+    def calculate_hkl(self) -> None:
         """calculate the list of hkl for BCC crystal structure"""
         _hkl_list = self._hkl_generator(MAX_INDEX)
-        _result = []
+        _result: list[HKL] = []
         for i in range(self.number_of_set):
             _result.append(next(_hkl_list))
         self.hkl = _result
@@ -48,14 +58,15 @@ class FCCHandler:
 
     """
 
-    hkl = []
+    hkl: list[HKL]
+    number_of_set: int
 
-    def __init__(self, number_of_set):
+    def __init__(self, number_of_set: int) -> None:
         self.hkl = []
         self.number_of_set = number_of_set
         self.calculate_hkl()
 
-    def _hkl_generator(self, number_of_h):
+    def _hkl_generator(self, number_of_h: int) -> Generator[HKL, None, None]:
         """generator used to produce right set of hkl parameters"""
         for h in range(1, number_of_h):
             for k in range(0, number_of_h):
@@ -67,7 +78,7 @@ class FCCHandler:
                     if self._same_parity(h, k, l):
                         yield [h, k, l]
 
-    def _same_parity(self, h, k, l):
+    def _same_parity(self, h: int, k: int, l: int) -> bool:
         """This function check if the 3 variables h, k, l have the same parity or not
 
         Args:
@@ -86,7 +97,7 @@ class FCCHandler:
             return True
         return False
 
-    def _is_even(self, n):
+    def _is_even(self, n: int) -> bool:
         """Check if a variable n is even
 
         Args:
@@ -100,10 +111,10 @@ class FCCHandler:
             return True
         return False
 
-    def calculate_hkl(self):
+    def calculate_hkl(self) -> None:
         """calculate the hkl allowed for a FCC crystal structure"""
         _hkl_list = self._hkl_generator(MAX_INDEX)
-        _result = []
+        _result: list[HKL] = []
         for i in range(self.number_of_set):
             _result.append(next(_hkl_list))
         self.hkl = _result
@@ -112,15 +123,18 @@ class FCCHandler:
 class StructureHandler:
     """Various structure handler"""
 
-    hkl = []
+    hkl: list[HKL]
+    structure: CrystalStructure
+    number_of_set: int
 
-    def __init__(self, structure, number_of_set=10):
+    def __init__(self, structure: CrystalStructure, number_of_set: int = 10) -> None:
         if structure not in ["BCC", "FCC"]:
             raise ValueError("structure not implemented yet")
 
         self.structure = structure
         self.number_of_set = number_of_set
 
+        _handler: BCCHandler | FCCHandler
         if structure == "FCC":
             _handler = FCCHandler(number_of_set=self.number_of_set)
         elif structure == "BCC":

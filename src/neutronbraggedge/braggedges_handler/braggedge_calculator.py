@@ -4,7 +4,7 @@ import configparser
 import numpy as np
 
 from ..config import config_file as config_config_file
-from .structure_handler import StructureHandler
+from .structure_handler import HKL, CrystalStructure, StructureHandler
 
 
 class BraggEdgeCalculator:
@@ -17,18 +17,31 @@ class BraggEdgeCalculator:
 
     """
 
-    def __init__(self, structure_name="FCC", lattice=None, number_of_set=10):
+    _structure: CrystalStructure
+    _number_of_set: int
+    _list_structure: list[str]
+    lattice: float | None
+    hkl: list[HKL]
+    bragg_edges: list[float]
+    d_spacing: list[float]
+
+    def __init__(
+        self,
+        structure_name: CrystalStructure = "FCC",
+        lattice: float | None = None,
+        number_of_set: int = 10,
+    ) -> None:
         self.structure = structure_name  # only used to test validity of input
         self._structure = structure_name
         self._number_of_set = number_of_set
         self.lattice = lattice
 
     @property
-    def structure(self):
+    def structure(self) -> CrystalStructure:
         return self._structure
 
     @structure.setter
-    def structure(self, structure_name):
+    def structure(self, structure_name: CrystalStructure) -> None:
         _config_file = config_config_file
         config_obj = configparser.ConfigParser()
         config_obj.read(_config_file)
@@ -38,17 +51,17 @@ class BraggEdgeCalculator:
             raise ValueError(f"Structure name should be in the list {self._list_structure}")
         self._structure = structure_name
 
-    def calculate_hkl(self):
+    def calculate_hkl(self) -> None:
         _structure_handler = StructureHandler(structure=self._structure, number_of_set=self._number_of_set)
         self.hkl = _structure_handler.hkl
 
-    def calculate_bragg_edges(self):
+    def calculate_bragg_edges(self) -> None:
         """This calculate the d_spacing and bragg edges of the various h, k and l"""
         if self.lattice is None:
             raise ValueError
 
-        _bragg_edges_array = []
-        _d_spacing = []
+        _bragg_edges_array: list[float] = []
+        _d_spacing: list[float] = []
         for _hkl in self.hkl:
             _result = self._calculate_individual_bragg_edge(lattice=self.lattice, h=_hkl[0], k=_hkl[1], l=_hkl[2])
             _d_spacing.append(_result)
@@ -56,6 +69,12 @@ class BraggEdgeCalculator:
         self.bragg_edges = _bragg_edges_array
         self.d_spacing = _d_spacing
 
-    def _calculate_individual_bragg_edge(self, lattice=None, h=1, k=1, l=1):
+    def _calculate_individual_bragg_edge(
+        self,
+        lattice: float | None = None,
+        h: int = 1,
+        k: int = 1,
+        l: int = 1,
+    ) -> float:
         _den = np.sqrt(h**2 + k**2 + l**2)
         return float(lattice) / _den
