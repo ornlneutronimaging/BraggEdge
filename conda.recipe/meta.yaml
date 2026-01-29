@@ -1,0 +1,51 @@
+{% set name = "neutronbraggedge" %}
+{% set version = environ.get('PACKAGE_VERSION', '0.0.0') %}
+
+package:
+  name: {{ name }}
+  version: {{ version }}
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation -vv
+
+requirements:
+  host:
+    - python >=3.11,<3.13
+    - pip
+    - setuptools >=61.0
+    - wheel
+    - versioningit >=3.0
+  run:
+    - python >=3.11,<3.13
+    - numpy >=1.24
+    - pandas >=2.0
+    - lxml >=4.9
+    - beautifulsoup4 >=4.12
+    - html5lib >=1.1
+
+test:
+  imports:
+    - neutronbraggedge
+    - neutronbraggedge.braggedge
+
+about:
+  home: https://github.com/ornlneutronimaging/BraggEdge
+  license: BSD-3-Clause
+  license_file: LICENSE
+  summary: Bragg Edge calculations for neutron imaging
+  description: |
+    A Python library for neutron Bragg edge analysis used in neutron imaging
+    research at Oak Ridge National Laboratory. Calculates Bragg edge positions,
+    d-spacings, lattice parameters, and wavelength/TOF conversions.
+  dev_url: https://github.com/ornlneutronimaging/BraggEdge
+  doc_url: https://braggedge.readthedocs.io/
+
+extra:
+  recipe-maintainers:
+    - JeanBilworx
+    - KedoKudo
