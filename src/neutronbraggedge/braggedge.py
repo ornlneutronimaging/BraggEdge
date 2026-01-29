@@ -119,11 +119,16 @@ class BraggEdge:
         for experimental lattice parameter calculations.
 
         Args:
-            experimental_bragg_edge_values: Array of experimental bragg edge values
-            experimental_bragg_edge_error: Optional array of errors
+            experimental_bragg_edge_values: Array of experimental bragg edge values.
+            experimental_bragg_edge_error: Optional array of errors corresponding to
+                ``experimental_bragg_edge_values``.
 
         Raises:
-            NotImplementedError: This method is not yet implemented
+            ValueError: If ``experimental_bragg_edge_values`` is not provided, or if
+                ``experimental_bragg_edge_error`` is provided and its length does not
+                match ``experimental_bragg_edge_values``.
+            NotImplementedError: This method is not yet implemented. Use the Lattice
+                class directly for experimental lattice parameter calculations.
         """
         if experimental_bragg_edge_values is None:
             raise ValueError("Please provide an array of bragg edge values")

@@ -35,7 +35,7 @@ class BraggEdgeCalculator:
         self._list_structure = ast.literal_eval(config_obj["DEFAULT"]["list_structure"])
 
         if structure_name not in self._list_structure:
-            raise ValueError("Structure name should be in the list ", self._list_structure)
+            raise ValueError(f"Structure name should be in the list {self._list_structure}")
         self._structure = structure_name
 
     def calculate_hkl(self):

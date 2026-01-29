@@ -134,6 +134,11 @@ class TestUtilities:
         with pytest.raises(ValueError):
             Utilities.load_csv(input_file)
 
+    def test_load_csv_raise_file_not_found_error(self):
+        """FileNotFoundError raised when file does not exist."""
+        with pytest.raises(FileNotFoundError):
+            Utilities.load_csv("/nonexistent/path/to/file.txt")
+
     def test_load_ascii_raise_value_error(self, get_data_file):
         """ValueError is raised when file format is wrong."""
         input_file = get_data_file("bad_file.txt")

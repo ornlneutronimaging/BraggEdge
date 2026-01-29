@@ -188,8 +188,10 @@ class Utilities:
                     _value = float(_line.strip())
                     _tof.append(_value)
                 return _tof
-        except:
-            raise ValueError("Bad file format")
+        except OSError:
+            raise
+        except ValueError as e:
+            raise ValueError("Bad file format") from e
 
     @staticmethod
     def load_ascii(filename=None, sep=""):
