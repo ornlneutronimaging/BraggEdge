@@ -25,12 +25,12 @@ class RetrieveMetadataTable:
     web page: `Lattice constant
     <https://en.wikipedia.org/wiki/Lattice_constant>`.
 
-    >>> from braggedge.material_hanlder.retrieve_metadata_table import RetrieveMetadataTable
+    >>> from neutronbraggedge.material_handler.retrieve_metadata_table import RetrieveMetadataTable
     >>> retrieve_local_meta = RetrieveMetadataTable()
     >>> _table = retrieve_local_meta.get_table()
 
-    >>> retrieve_url_meta = RetrieveMetadataTable()
-    >>> _table = retrieve_url_meta.get_table(use_local_table = False)
+    >>> retrieve_url_meta = RetrieveMetadataTable(use_local_table=False)
+    >>> _table = retrieve_url_meta.get_table()
 
     """
 
