@@ -1,19 +1,24 @@
-.. braggedge documentation master file, created by
-   sphinx-quickstart on Wed Jan 13 14:59:29 2016.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+neutronbraggedge Documentation
+==============================
 
-Welcome to braggedge's documentation!
-=====================================
+A Python library for neutron Bragg edge analysis used in neutron imaging research.
 
-Contents:
+Bragg edges occur at specific wavelengths in neutron transmission spectra due to
+crystallographic diffraction. This library calculates Bragg edge positions,
+d-spacings, and lattice parameters for various materials.
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents
 
-   includeme
+   installation
    demo
    api
+
+.. toctree::
+   :maxdepth: 2
+   :caption: API Reference
+
    material_handler
    braggedges_handler
    experiment_handler
