@@ -25,14 +25,14 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0  # Full history for versioningit
-      - uses: prefix-dev/setup-pixi@v0.9.4
+      - uses: prefix-dev/setup-pixi@v0.9.5
         with:
           pixi-version: v0.63.2
           manifest-path: pyproject.toml
       - name: Build PyPI package
         run: pixi run build
       - name: Upload PyPI artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: pypi-package
           path: dist/*
@@ -49,7 +49,7 @@ jobs:
       id-token: write  # Required for trusted publishing
     steps:
       - name: Download PyPI artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pypi-package
           path: dist
@@ -93,7 +93,7 @@ jobs:
           conda build conda.recipe --output-folder conda-bld
           ls -la conda-bld/noarch/
       - name: Upload Conda artifact
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: conda-package
           path: conda-bld/noarch/*.tar.bz2
@@ -112,7 +112,7 @@ jobs:
         shell: bash -el {0}
         run: conda install -y anaconda-client
       - name: Download Conda artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: conda-package
           path: conda-pkg
@@ -146,13 +146,13 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Download PyPI artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: pypi-package
           path: dist/pypi
 
       - name: Download Conda artifact
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           name: conda-package
           path: dist/conda
@@ -165,7 +165,7 @@ jobs:
           ls -la dist/conda/
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           files: |
             dist/pypi/*
