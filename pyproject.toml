@@ -42,7 +42,7 @@ documentation = "https://braggedge.readthedocs.io/"
 requires = [
   "setuptools>=61.0",
   "wheel",
-  "versioningit>=3.0",
+  "versioningit>=3.3.0",
 ]
 build-backend = "setuptools.build_meta"
 
