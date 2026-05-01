@@ -28,7 +28,7 @@ dependencies = [
   "beautifulsoup4>=4.12",
   "html5lib>=1.1",
   "pydantic>=2.0",
-  "loguru>=0.7",
+  "loguru>=0.7.3",
   # Note: configparser is stdlib in Python 3, no longer needed as dependency
 ]
 
