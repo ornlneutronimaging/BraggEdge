@@ -22,13 +22,13 @@ requires-python = ">=3.11,<3.13"
 license = "BSD-3-Clause"
 keywords = ["Bragg Edge", "neutron", "imaging", "crystallography", "diffraction"]
 dependencies = [
-  "numpy>=2.4.4",
-  "pandas>=3.0.2",
-  "lxml>=6.1.0",
-  "beautifulsoup4>=4.14.3",
+  "numpy>=1.24",
+  "pandas>=2.0",
+  "lxml>=4.9",
+  "beautifulsoup4>=4.12",
   "html5lib>=1.1",
-  "pydantic>=2.13.3",
-  "loguru>=0.7.3",
+  "pydantic>=2.0",
+  "loguru>=0.7",
   # Note: configparser is stdlib in Python 3, no longer needed as dependency
 ]
 
@@ -40,9 +40,9 @@ documentation = "https://braggedge.readthedocs.io/"
 
 [build-system]
 requires = [
-  "setuptools>=82.0.1",
+  "setuptools>=61.0",
   "wheel",
-  "versioningit>=3.3.0",
+  "versioningit>=3.0",
 ]
 build-backend = "setuptools.build_meta"
 

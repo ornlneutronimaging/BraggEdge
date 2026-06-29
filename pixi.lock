@@ -3416,11 +3416,11 @@ packages:
 - pypi: ./
   name: neutronbraggedge
   requires_dist:
-  - numpy>=2.4.4
-  - pandas>=3.0.2
-  - lxml>=6.1.0
-  - beautifulsoup4>=4.14.3
+  - numpy>=1.24
+  - pandas>=2.0
+  - lxml>=4.9
+  - beautifulsoup4>=4.12
   - html5lib>=1.1
-  - pydantic>=2.13.3
-  - loguru>=0.7.3
+  - pydantic>=2.0
+  - loguru>=0.7
   requires_python: '>=3.11,<3.13'
