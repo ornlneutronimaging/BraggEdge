@@ -21,6 +21,11 @@ jobs:
   grype-scan:
     name: Grype vulnerability scan
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    # Skip on fork PRs: their GITHUB_TOKEN is read-only, so the SARIF upload
+    # (needs security-events: write) would 403 and fail the job for external
+    # contributors. Pushes, schedule, dispatch, and same-repo PRs still run.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read          # for actions/checkout
       security-events: write  # for upload-sarif to upload results to code scanning
@@ -31,10 +36,15 @@ jobs:
         with:
           pixi-version: v0.71.2
           manifest-path: pyproject.toml
-      # setup-pixi installs the default env into .pixi/envs/default; Grype
-      # catalogs both the conda packages (conda-meta) and the PyPI packages
-      # (site-packages) found there. SARIF results upload to code scanning.
+          run-install: false
+      # Install only the runtime-only environment (no test/dev tooling) so Grype
+      # scans the closure that actually ships to users — matching the org
+      # reference's "scan the shipped package" intent and keeping the alert list
+      # to actionable runtime CVEs. Grype catalogs both the conda packages
+      # (conda-meta) and the PyPI packages (site-packages) in the prefix.
+      - name: Install runtime environment
+        run: pixi install --locked --environment runtime
       - name: Scan installed environment with Grype
         uses: neutrons/conda-actions/grype@v2
         with:
-          path: .pixi/envs/default
+          path: .pixi/envs/runtime
