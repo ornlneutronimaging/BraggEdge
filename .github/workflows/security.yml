@@ -31,8 +31,8 @@ jobs:
       security-events: write  # for upload-sarif to upload results to code scanning
       actions: read           # for upload-sarif to read run status (private repos)
     steps:
-      - uses: actions/checkout@v6
-      - uses: prefix-dev/setup-pixi@v0.9.5
+      - uses: actions/checkout@v7
+      - uses: prefix-dev/setup-pixi@v0.10.0
         with:
           pixi-version: v0.71.2
           manifest-path: pyproject.toml
