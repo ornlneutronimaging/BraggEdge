@@ -83,8 +83,11 @@ jobs:
           channels: conda-forge
           channel-priority: strict
       - name: Install conda-build
+        # Install into base: `conda build` is a base-env subcommand plugin,
+        # resolved from the env where conda itself runs (base) — not the
+        # auto-activated `test` env where `conda install` would land it.
         shell: bash -el {0}
-        run: conda install -y conda-build anaconda-client
+        run: conda install -y -n base conda-build anaconda-client
       - name: Build Conda package
         shell: bash -el {0}
         env:
