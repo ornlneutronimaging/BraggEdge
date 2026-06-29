@@ -31,8 +31,8 @@ jobs:
       security-events: write  # for upload-sarif to upload results to code scanning
       actions: read           # for upload-sarif to read run status (private repos)
     steps:
-      - uses: actions/checkout@v6
-      - uses: prefix-dev/setup-pixi@v0.9.5
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+      - uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
           pixi-version: v0.71.2
           manifest-path: pyproject.toml
@@ -45,6 +45,6 @@ jobs:
       - name: Install runtime environment
         run: pixi install --locked --environment runtime
       - name: Scan installed environment with Grype
-        uses: neutrons/conda-actions/grype@v2
+        uses: neutrons/conda-actions/grype@bba9ca89d48d9ae846db9650cc63fde736340b3d # v2
         with:
           path: .pixi/envs/runtime

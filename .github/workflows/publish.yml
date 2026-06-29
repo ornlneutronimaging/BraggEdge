@@ -22,17 +22,17 @@ jobs:
     name: Build PyPI Package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0  # Full history for versioningit
-      - uses: prefix-dev/setup-pixi@v0.9.5
+      - uses: prefix-dev/setup-pixi@a09b6247153796b190642a2b53fac4241043cf6f # v0.10.0
         with:
           pixi-version: v0.71.2
           manifest-path: pyproject.toml
       - name: Build PyPI package
         run: pixi run build
       - name: Upload PyPI artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: pypi-package
           path: dist/*
@@ -49,19 +49,19 @@ jobs:
       id-token: write  # Required for trusted publishing
     steps:
       - name: Download PyPI artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: pypi-package
           path: dist
       - name: Publish to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
+        uses: pypa/gh-action-pypi-publish@cef221092ed1bacb1cc03d23a2d87d1d172e277b # release/v1
 
   # Build and publish to Conda
   build-conda:
     name: Build Conda Package
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0  # Full history for versioningit
       - name: Get version from tag or versioningit
@@ -76,7 +76,7 @@ jobs:
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Package version: $VERSION"
-      - uses: conda-incubator/setup-miniconda@v4
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           auto-update-conda: true
           python-version: "3.11"
@@ -96,7 +96,7 @@ jobs:
           conda build conda.recipe --output-folder conda-bld
           ls -la conda-bld/noarch/
       - name: Upload Conda artifact
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: conda-package
           path: conda-bld/noarch/*.tar.bz2
@@ -107,7 +107,7 @@ jobs:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v')
     steps:
-      - uses: conda-incubator/setup-miniconda@v4
+      - uses: conda-incubator/setup-miniconda@8ee1f361103df19b6f8c8655fd3967a8ecb162d5 # v4
         with:
           auto-update-conda: true
           python-version: "3.11"
@@ -115,7 +115,7 @@ jobs:
         shell: bash -el {0}
         run: conda install -y anaconda-client
       - name: Download Conda artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: conda-package
           path: conda-pkg
@@ -146,16 +146,16 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - name: Download PyPI artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: pypi-package
           path: dist/pypi
 
       - name: Download Conda artifact
-        uses: actions/download-artifact@v8
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           name: conda-package
           path: dist/conda
@@ -168,7 +168,7 @@ jobs:
           ls -la dist/conda/
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v3
+        uses: softprops/action-gh-release@718ea10b132b3b2eba29c1007bb80653f286566b # v3
         with:
           files: |
             dist/pypi/*
