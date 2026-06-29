@@ -1,0 +1,40 @@
+name: security
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches:
+      - main
+      - qa
+      - next
+  schedule:
+    # Weekly (Mon 06:00 UTC) so newly-disclosed CVEs in unchanged deps still surface.
+    - cron: "0 6 * * 1"
+
+# cancel previous job if new commit is pushed
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  grype-scan:
+    name: Grype vulnerability scan
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read          # for actions/checkout
+      security-events: write  # for upload-sarif to upload results to code scanning
+      actions: read           # for upload-sarif to read run status (private repos)
+    steps:
+      - uses: actions/checkout@v6
+      - uses: prefix-dev/setup-pixi@v0.9.5
+        with:
+          pixi-version: v0.71.2
+          manifest-path: pyproject.toml
+      # setup-pixi installs the default env into .pixi/envs/default; Grype
+      # catalogs both the conda packages (conda-meta) and the PyPI packages
+      # (site-packages) found there. SARIF results upload to code scanning.
+      - name: Scan installed environment with Grype
+        uses: neutrons/conda-actions/grype@v2
+        with:
+          path: .pixi/envs/default
