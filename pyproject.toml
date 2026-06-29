@@ -204,3 +204,7 @@ myst-parser = "*"
 [tool.pixi.environments]
 default = {features = ["test", "dev"], solve-group = "default"}
 docs = {features = ["docs"], solve-group = "default"}
+# Runtime-only closure (no test/dev features) — what actually ships to users.
+# Shares the default solve-group so versions match the locked set exactly.
+# Used by the security workflow so Grype scans only shipped deps, not dev tooling.
+runtime = {features = [], solve-group = "default"}
